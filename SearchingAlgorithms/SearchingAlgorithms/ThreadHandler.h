@@ -7,9 +7,9 @@ class threadHandler
 public:
 	threadHandler();
 	~threadHandler();
-
+	//std::thread createThread(void *func);
 private:
-
+	std::thread _t1;
 };
 
 

@@ -15,8 +15,10 @@
 #include <direct.h>
 #include <vector>
 #include <list>
+#include <thread>
 #include <fstream>
 #include <chrono>
+#include <memory>
 
 #include "DataContainers.h"
 #include "FileHandler.h"

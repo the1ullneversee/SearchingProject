@@ -1,21 +1,5 @@
-﻿Build started 03/06/2015 18:54:12.
-     1>Project "C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\SearchingAlgorithms\SearchingAlgorithms.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         T:\Programs\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SearchingAlgorithms.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt DataContainers.cpp SearchTools.cpp main.cpp
-         SearchTools.cpp
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
-         DataContainers.cpp
-       Link:
-         T:\Programs\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\Debug\SearchingAlgorithms.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\Debug\SearchingAlgorithms.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\Debug\SearchingAlgorithms.lib" /MACHINE:X86 Debug\DataContainers.obj
-         Debug\FileHandler.obj
-         Debug\main.obj
-         Debug\SearchTools.obj
-         Debug\stdafx.obj
-         SearchingAlgorithms.vcxproj -> C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\Debug\SearchingAlgorithms.exe
-     1>Done Building Project "C:\Users\Tom.Tom-Phantom\documents\visual studio 2013\Projects\SearchingAlgorithms\SearchingAlgorithms\SearchingAlgorithms.vcxproj" (Build target(s)).
+﻿Build started 08/06/2015 22:50:54.
 
 Build succeeded.
 
-Time Elapsed 00:00:00.47
+Time Elapsed 00:00:00.22

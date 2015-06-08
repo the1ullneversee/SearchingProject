@@ -9,9 +9,13 @@ class Time {
 public:
 	Time();
 	~Time();
-	chrono_type clock_start();
+	void clock_start();
+	void clock_end();
+	void duration();
+
+	/*chrono_type clock_start();
 	chrono_type clock_end();
-	void duration(chrono_type &phase_start, chrono_type &phase_end);
+	void duration(chrono_type &phase_start, chrono_type &phase_end);*/
 private:
 	chrono_type _phase_start;
 	chrono_type _phase_end;

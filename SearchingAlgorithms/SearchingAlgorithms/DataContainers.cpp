@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 DataContainer::DataContainer(){
-
+	std::cout << "Container construction";
 }
 DataContainer::~DataContainer(){
 
