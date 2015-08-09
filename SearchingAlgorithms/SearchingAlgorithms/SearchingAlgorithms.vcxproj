@@ -79,8 +79,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataContainers.h" />
-    <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="DataLayer.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="SearchTools.h" />
     <ClInclude Include="stdafx.h" />
@@ -89,8 +88,7 @@
     <ClInclude Include="Timing.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataContainers.cpp" />
-    <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="DataLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SearchTools.cpp" />
     <ClCompile Include="stdafx.cpp">

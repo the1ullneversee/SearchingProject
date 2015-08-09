@@ -21,7 +21,7 @@
 #include <memory>
 
 #include "DataContainers.h"
-#include "FileHandler.h"
+#include "DataLayer.h"
 #include "SearchTools.h"
 #include "ThreadHandler.h"
 #include "Timing.h"

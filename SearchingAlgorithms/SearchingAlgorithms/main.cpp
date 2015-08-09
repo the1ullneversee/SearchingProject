@@ -9,23 +9,23 @@ int _tmain(int argc, _TCHAR* argv [])
 	// Smart pointers mean you do not have to worry about the deletion of the pointer when you are done using it.
 	// Pass them around to different functions by references
 	// you cannot copy them to stop them being deleted multiple times.
-	std::unique_ptr<fileHandler> fhandler(new fileHandler);
+	std::unique_ptr<dataLayer> dlayerhandle(new dataLayer);
 	//fileHandler *file = new fileHandler();
-	rt = fhandler->readFile("\\String.txt", 2);
+	rt = dlayerhandle->readFile("\\String.txt", 2);
 	if (rt){
 		std::cout << "Error with read file function!\n";
 	}
-	rt = fhandler->readFile("\\Numbers.txt", 1);
+	rt = dlayerhandle->readFile("\\Numbers.txt", 1);
 	if (rt){
 		std::cout << "Error with read file function!\n";
 	}
-	fhandler->intVector.push_back(5);
-	fhandler->intVector.push_back(22);
-	fhandler->intVector.push_back(14);
-	fhandler->intVector.push_back(8);
-	fhandler->saveFile("\\newNumbers.txt", 1, fhandler);
-	std::cout << fhandler->stringVector << std::endl;
-	std::cout << fhandler->intVector << std::endl;
+	dlayerhandle->intVector.push_back(5);
+	dlayerhandle->intVector.push_back(22);
+	dlayerhandle->intVector.push_back(14);
+	dlayerhandle->intVector.push_back(8);
+	dlayerhandle->saveFile("\\newNumbers.txt", 1,*dlayerhandle);
+	std::cout << dlayerhandle->stringVector << std::endl;
+	std::cout << dlayerhandle->intVector << std::endl;
 	return 0;
 }
 
