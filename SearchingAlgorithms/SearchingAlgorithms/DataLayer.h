@@ -21,10 +21,12 @@ public:
 	std::list<std::list<int>> listStorer;
 	friend std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString);
 	friend std::ostream& operator << (std::ostream &out, std::vector<int> &vecInt);
-	friend std::ostream& operator << (std::ostream &out, std::list<std::string>);
-	friend std::ostream& operator << (std::ostream &out, std::list<int>);
+	friend std::ostream& operator << (std::ostream &out, std::list<std::string> &listString);
+	friend std::ostream& operator << (std::ostream &out, std::list<int> &listInt);
+	std::string _directory;
 private:
 	char _cBaseDirectory[FILENAME_MAX];
+	
 	// Define error return types for greater reporting 
 	//enum error_type : int {};
 	enum _container_type : int {default,vectorInt, vectorString, listInt, listString};

@@ -15,9 +15,14 @@ public:
 	bool elementFind(std::list<std::string> &list, std::string key);
 	bool elementFind(std::vector<int> &vector, int key);
 	bool elementFind(std::vector<std::string> &vector, std::string);
+	void searchMenu();
 private:
+	unsigned int _conChoice = NULL;
+	enum _searchType : int { linear, elementFind, binary, bubbleSort };
+	unsigned int _varType = NULL;
 	bool _found;
 	int _intKey;
+	std::string _fileName;
 	std::string _stringKey;
 	std::vector<int>::const_iterator _vecIntIT;
 	std::vector<std::string>::const_iterator _vecStringIT;
