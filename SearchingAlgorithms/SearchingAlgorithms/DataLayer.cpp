@@ -10,12 +10,14 @@ dataLayer::dataLayer()
 
 	_cBaseDirectory[sizeof(_cBaseDirectory) -1] = '\0'; /* not really required */
 	_directory = _cBaseDirectory;
-	std::cout << "The current working directory is: " << _directory << std::endl;
+	//Can add in for testing 
+	//std::cout << "The current working directory is: " << _directory << std::endl;
 }
 
 dataLayer::~dataLayer()
 {
-	std::cout << "DESTRUCTION" << std::endl;
+	// Can add in for testing 
+	//std::cout << "DESTRUCTION" << std::endl;
 }
 
 ret dataLayer::readFile(std::string filename, int containerSelection){

@@ -12,9 +12,17 @@ void searchTools::searchMenu()
 	try {
 		bool locVal = false;
 		while (!locVal){
-			std::cout << " Please enter in the file name you want to search";
+			std::cout << "Please enter in the file name you want to search or enter 1 to get directory list" << std::endl;
 			//try to open the file incase invalid file name;
-			std::cin >> _fileName; 
+			std::cin >> _fileName;
+			if (_fileName == "1") {
+				std::cout << "Listing directory!" << std::endl;
+				bool found = false;
+				while (!found)
+				{
+
+				}
+			} 
 			dataLayer dlay;
 			std::ifstream infile;
 			infile.open(dlay._directory + "\\" + _fileName);
@@ -91,15 +99,15 @@ void searchTools::searchMenu()
 			throw "invalid container choice selection";
 			break;
 		}
-		switch ()
+		/*switch ()
 		{
 		default:
 			break;
-		}
+		}*/
 		
 	}
 	catch (std::string err){
-
+		std::cout << "Operation failed with fatal error: " << err << std::endl;
 	}
 }
 bool searchTools::linearSearch(std::vector<int> &list, int size, int key, int*& rec)
@@ -136,16 +144,15 @@ bool searchTools::linearSearch(std::list<std::string> &list, int size, int key, 
 
 	return _found;
 }
-bool searchTools::elementFind(std::list<int> &list, int key)
+bool searchTools::elementFind(std::list<int> &list, int key) //Finding an element in a int List. 
 {
 	_found = false;
 	Time timer;
 	try{
 		std::cout << "Checking container for elements\n";
 		if (list.size() <= 1 || list.size() == NULL){
-			std::cout << "Container is empty, exiting operation\n";
-			throw; 
-		}
+            	throw "Container is empty, exiting operation";
+			}
 		std::cout << "Starting element find\n";
 		//Need to make the time elements public or do not return the values.
 		timer.clock_start();
@@ -158,8 +165,8 @@ bool searchTools::elementFind(std::list<int> &list, int key)
 		timer.clock_end();
 		timer.duration();
 	}
-	catch (...){
-		std::cout << "Element find operation has failed\n";
+	catch (std::string e){
+		std::cout << "The operation has failed for the following reason: " << e << std::endl;
 	}
 	return _found;
 }

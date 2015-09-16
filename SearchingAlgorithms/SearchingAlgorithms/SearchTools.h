@@ -18,7 +18,7 @@ public:
 	void searchMenu();
 private:
 	unsigned int _conChoice = NULL;
-	enum _searchType : int { linear, elementFind, binary, bubbleSort };
+	enum _searchType : int { linear, findElement, binary, bubbleSort };
 	unsigned int _varType = NULL;
 	bool _found;
 	int _intKey;
