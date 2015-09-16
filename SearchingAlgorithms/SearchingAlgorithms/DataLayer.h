@@ -8,6 +8,7 @@ class dataLayer {
 public:
 	dataLayer();
 	~dataLayer();
+	bool directoryList(LPCTSTR pstr);
 	ret readFile(std::string filename, int containerSelection);
 	ret saveFile(std::string filename, int containerSelection, dataLayer &dataLayer_copy);
 	ret randomNumbers();

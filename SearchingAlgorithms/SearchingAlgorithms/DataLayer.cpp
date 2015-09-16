@@ -198,3 +198,25 @@ std::ostream& operator << (std::ostream &out, std::list<int> &listInt)
 
 	return out;
 }
+bool dataLayer::directoryList(LPCTSTR pstr) {
+
+	CFileFind finder;
+	CString strWildCard(pstr);
+	strWildCard += _T("\\*.*");
+	bool bworking = finder.FindFile(strWildCard);
+	while (bworking) {
+		bworking = finder.FindNextFile();
+
+		//Skip dots
+		if (finder.IsDots())
+			continue;
+
+		if (finder.IsDirectory())
+		{
+			CString str = finder.GetFilePath();
+			std::cout << (LPCTSTR) str << std::endl;
+			directoryList(str);
+		}
+	}
+	return 0;
+}

@@ -4,6 +4,7 @@
 //
 
 #pragma once
+#define _AFXDLL
 
 #include "targetver.h"
 
@@ -19,10 +20,13 @@
 #include <fstream>
 #include <chrono>
 #include <memory>
+#include <cstring>
+#include "afx.h"
 
 #include "DataLayer.h"
 #include "SearchTools.h"
 #include "ThreadHandler.h"
 #include "Timing.h"
+
 
 // TODO: reference additional headers your program requires here

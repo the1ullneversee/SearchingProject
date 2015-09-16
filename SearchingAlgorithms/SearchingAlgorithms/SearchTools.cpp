@@ -7,10 +7,28 @@ searchTools::searchTools(){
 searchTools::~searchTools(){
 
 }
+std::wstring s2ws(const std::string& s)
+{
+	int len;
+	int slength = (int) s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete [] buf;
+	return r;
+}
 void searchTools::searchMenu()
 {
 	try {
 		bool locVal = false;
+		dataLayer dlay;
+		WIN32_FIND_DATA winData;
+		std::wstring stemp = s2ws(dlay._directory);
+		LPCWSTR dirwstr = stemp.c_str();
+		HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
+		
+
 		while (!locVal){
 			std::cout << "Please enter in the file name you want to search or enter 1 to get directory list" << std::endl;
 			//try to open the file incase invalid file name;
@@ -18,12 +36,16 @@ void searchTools::searchMenu()
 			if (_fileName == "1") {
 				std::cout << "Listing directory!" << std::endl;
 				bool found = false;
-				while (!found)
+				//std::cout << dlay._directory << std::endl;
+				if (searchHandle)
 				{
+					do {
+						std::wcout << winData.cFileName << std::endl;
+					} while (FindNextFile(searchHandle, &winData));
+					CloseHandle(searchHandle);
 
 				}
 			} 
-			dataLayer dlay;
 			std::ifstream infile;
 			infile.open(dlay._directory + "\\" + _fileName);
 			if (infile.is_open()) { locVal = true; }
