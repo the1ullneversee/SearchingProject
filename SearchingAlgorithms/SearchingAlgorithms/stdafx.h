@@ -22,6 +22,7 @@
 #include <memory>
 #include <cstring>
 #include "afx.h"
+#include <comdef.h>
 
 #include "DataLayer.h"
 #include "SearchTools.h"

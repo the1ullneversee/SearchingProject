@@ -24,32 +24,66 @@ void searchTools::searchMenu()
 		bool locVal = false;
 		dataLayer dlay;
 		WIN32_FIND_DATA winData;
-		std::wstring stemp = s2ws(dlay._directory);
-		LPCWSTR dirwstr = stemp.c_str();
-		HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
 		
+		//std::wstring stemp = s2ws("C:\\Users\\thomaskn\\Downloads\\*");
+		LPCTSTR errorText = NULL;
 
 		while (!locVal){
-			std::cout << "Please enter in the file name you want to search or enter 1 to get directory list" << std::endl;
+			std::cout << "Please enter in the file name you want to search" << std::endl << "Or enter 1 to get local file list" << std::endl;
 			//try to open the file incase invalid file name;
 			std::cin >> _fileName;
 			if (_fileName == "1") {
-				std::cout << "Listing directory!" << std::endl;
 				bool found = false;
-				//std::cout << dlay._directory << std::endl;
-				if (searchHandle)
-				{
+				std::string locChoice;
+				std::wstring locDirFileName;
+				std::cout << dlay._directory << std::endl;
+				while (!found) {
+					std::wstring stemp = s2ws(dlay._directory + "\\*");
+					LPCWSTR dirwstr = stemp.c_str();
+					HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
+					locDirFileName = winData.cFileName;
+					std::cout << "Listing directory!" << std::endl;
+					std::wcout << "First name" << locDirFileName << std::endl;
+					//Only finds one file which so happens to be the same as the last folder in directory address? Returns Error 18
 					do {
+						//std::wcout << dirwstr << std::endl;
 						std::wcout << winData.cFileName << std::endl;
 					} while (FindNextFile(searchHandle, &winData));
-					CloseHandle(searchHandle);
+					/*_com_error error(GetLastError());
+					errorText = error.ErrorMessage();
+					std::wcout << "Error Code is: " << errorText << std::endl;*/
+					SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | BACKGROUND_BLUE | FOREGROUND_INTENSITY);
 
+					std::cout << std::endl << "Enter up to go up a directory level" << std::endl << "Alternatively type the folder name to enter." << std::endl << "OR type exit if filename is found" << std::endl;
+					std::cin >> locChoice;
+					if (locChoice == "exit" || locChoice == "Exit") {
+						found = true;
+					}
+					else if (locChoice == "up" || locChoice == "Up")
+					{
+						//std::cout << dlay._directory.size() << locDirFileName.size() << dlay._directory << std::endl;
+						//dlay._directory.pop_back();
+						//dlay._directory.erase(dlay._directory.size() - 1, 1);
+						
+						std::size_t Textfound = dlay._directory.find_last_of("/\\");
+						std::cout << dlay._directory << "Size:" << dlay._directory.size() <<  "found: " << Textfound << std::endl;
+						dlay._directory = dlay._directory.substr(0, Textfound);
+						std::cout << dlay._directory << "Size: " << dlay._directory.size() << std::endl;
+					}
+					else {
+						dlay._directory = dlay._directory += "\\" + locChoice;
+					}
+					//reverting back to the normal color
+					SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+					FindClose(searchHandle);
 				}
-			} 
-			std::ifstream infile;
-			infile.open(dlay._directory + "\\" + _fileName);
-			if (infile.is_open()) { locVal = true; }
-			else { std::cout << "Could not open file, try again!" << std::endl; }
+			}
+			else {
+				std::ifstream infile;
+				infile.open(dlay._directory + "\\" + _fileName);
+				if (infile.is_open()) { locVal = true; }
+				else { std::cout << "Could not open file, try again!" << std::endl; }
+			}
 		}
 		while (!locVal){
 			std::cout << " Please Select your container type:/n" << "1: Vector/n" << "2: List/n" << std::endl;
