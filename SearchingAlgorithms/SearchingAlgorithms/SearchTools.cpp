@@ -23,12 +23,14 @@ void searchTools::searchMenu()
 	try {
 		bool locVal = false;
 		dataLayer dlay;
+		_searchType srch = linear;
+		_searchType srchType = linear;
 		WIN32_FIND_DATA winData;
-		
+		_containerType conType = vector;
 		//std::wstring stemp = s2ws("C:\\Users\\thomaskn\\Downloads\\*");
 		LPCTSTR errorText = NULL;
 
-		while (!locVal){
+		while (!locVal) {
 			std::cout << "Please enter in the file name you want to search" << std::endl << "Or enter 1 to get local file list" << std::endl;
 			//try to open the file incase invalid file name;
 			std::cin >> _fileName;
@@ -85,15 +87,19 @@ void searchTools::searchMenu()
 				else { std::cout << "Could not open file, try again!" << std::endl; }
 			}
 		}
+		locVal = false;
 		while (!locVal){
-			std::cout << " Please Select your container type:/n" << "1: Vector/n" << "2: List/n" << std::endl;
+			std::cout << " Please Select your container type:" << "1: Vector/n" << "2: List" << std::endl;
 			std::cin >> _conChoice;
-			if (_conChoice == 1 || _conChoice == 2) { locVal = true; }
+			if (_conChoice == 1 || _conChoice == 2) { 
+				locVal = true;
+				conType = static_cast<_containerType>(_conChoice);
+			}
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
 		}
 		locVal = false;
 		while (!locVal){
-			std::cout << " Please Select your container type:/n" << "1: int/n" << "2: string/n" << std::endl;
+			std::cout << " Please Select your data type:/n" << "1: int/n" << "2: string/n" << std::endl;
 			std::cin >> _varType;
 			if (_conChoice == 1 || _conChoice == 2) { locVal = true; }
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
@@ -102,64 +108,199 @@ void searchTools::searchMenu()
 		while (!locVal){
 			std::cout << " Please Select your search type:/n" << "1: linear/n" << "2: element find/n" <<"3: binary search" << std::endl;
 			int search_type;
-			_searchType srch;
+			// Doesnt work with matching to ENUM!!
 			std::cin >> search_type;
-			if (search_type == _searchType{}) {
+			if (search_type >= 1 && search_type < 5) {
 				locVal = true;
-				_searchType srchType = static_cast<_searchType>(search_type); // static casting the int fed in to match the enums of search types.
+				srchType = static_cast<_searchType>(search_type); // static casting the int fed in to match the enums of search types.
 			}
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
 			
 			
 		}
 		locVal = false;
-		switch (_conChoice)
+		
+		switch (srchType) //Type of search being done
 		{
 		case 1:
-			//Vector
-			switch (_varType){
-			case 1:
-				//String
-				std::cout << "Please Enter the element you would like to find: " << std::endl;
-				std::cin >> _stringKey;
+			switch (conType) // Type of container
+			{
+			case 1: // 
+				//Vector
+				switch (_varType) { // int or string
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
 				break;
 			case 2:
-				//Int
-				std::cout << "Please Enter the element you would like to find: " << std::endl;
-				std::cin >> _intKey;
+				//List
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
 				break;
 			default:
-
+				throw "invalid container choice selection";
 				break;
 			}
 			break;
 		case 2:
-			//List
-			switch (_varType){
+			switch (_conChoice)
+			{
 			case 1:
-				//String
-				std::cout << "Please Enter the element you would like to find: " << std::endl;
-				std::cin >> _stringKey;
+				//Vector
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
 				break;
 			case 2:
-				//Int
-				std::cout << "Please Enter the element you would like to find: " << std::endl;
-				std::cin >> _intKey;
+				//List
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
 				break;
 			default:
+				throw "invalid container choice selection";
+				break;
+			}
+			break;
+		case 3:
+			switch (_conChoice)
+			{
+			case 1:
+				//Vector
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
 
+					break;
+				}
+				break;
+			case 2:
+				//List
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
+				break;
+			default:
+				throw "invalid container choice selection";
+				break;
+			}
+			break;
+		case 4:
+			switch (_conChoice)
+			{
+			case 1:
+				//Vector
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
+				break;
+			case 2:
+				//List
+				switch (_varType) {
+				case 1:
+					//String
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _stringKey;
+					break;
+				case 2:
+					//Int
+					std::cout << "Please Enter the element you would like to find: " << std::endl;
+					std::cin >> _intKey;
+					break;
+				default:
+
+					break;
+				}
+				break;
+			default:
+				throw "invalid container choice selection";
 				break;
 			}
 			break;
 		default:
-			throw "invalid container choice selection";
 			break;
 		}
-		/*switch ()
-		{
-		default:
-			break;
-		}*/
 		
 	}
 	catch (std::string err){
