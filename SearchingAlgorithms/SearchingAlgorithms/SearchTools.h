@@ -7,10 +7,8 @@ class searchTools
 public:
 	searchTools();
 	~searchTools();
-	virtual bool linearSearch(std::vector<int> &list, int size, int key, int*& rec);
-	virtual bool linearSearch(std::vector<std::string> &list, int size, int key, int*& rec);
-	virtual bool linearSearch(std::list<int> &list, int size, int key, int*& rec);
-	virtual bool linearSearch(std::list<std::string> &list, int size, int key, int*& rec);
+	virtual bool linearSearch(dataLayer *dlayer, int key, int rec, bool vec_list);
+	virtual bool linearSearch(dataLayer *dlayer,std::string stringKey,std::string stringRec, bool vec_list);
 	bool elementFind(std::list<int> &list, int key);
 	bool elementFind(std::list<std::string> &list, std::string key);
 	bool elementFind(std::vector<int> &vector, int key);
@@ -23,12 +21,15 @@ private:
 	unsigned int _varType = NULL;
 	bool _found;
 	int _intKey;
+	int _intRec;
+	std::string _stringRec;
 	std::string _fileName;
 	std::string _stringKey;
 	std::vector<int>::const_iterator _vecIntIT;
 	std::vector<std::string>::const_iterator _vecStringIT;
 	std::list<int>::const_iterator _listIntIT;
 	std::list<std::string>::const_iterator _listStringIT;
+	void functionRouting(dataLayer *dlayer, searchTools::_searchType srch, searchTools::_containerType conType, int varType, std::string filename);
 
 };
 

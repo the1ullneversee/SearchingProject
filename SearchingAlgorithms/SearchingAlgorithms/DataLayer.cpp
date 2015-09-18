@@ -3,17 +3,26 @@
 dataLayer::dataLayer()
 {
 	_ret = 0;
+	dataLayer::_directory = "";
+	dataLayer::intVector.push_back(0);
+	dataLayer::intList.push_back(0);
+	dataLayer::stringVector;
+	dataLayer::stringList.push_back("");
+	//dataLayer::vectorStorer.push_back(dataLayer::stringVector);
+	//dataLayer::listStorer
+}
+void dataLayer::getCWD() {
+
 	if (!_getcwd(_cBaseDirectory, sizeof(_cBaseDirectory)))
 	{
 		std::cout << "Error with setting directory\n";
 	}
 
-	_cBaseDirectory[sizeof(_cBaseDirectory) -1] = '\0'; /* not really required */
+	_cBaseDirectory[sizeof(_cBaseDirectory) - 1] = '\0'; /* not really required */
 	_directory = _cBaseDirectory;
 	//Can add in for testing 
 	//std::cout << "The current working directory is: " << _directory << std::endl;
 }
-
 dataLayer::~dataLayer()
 {
 	// Can add in for testing 
@@ -166,6 +175,22 @@ ret dataLayer::randomNumbers()
 		ofFile.close();
 	}
 	return _ret;
+}
+ret dataLayer::containerFiller(std::vector<int> intVector, std::string filename)
+{
+	return ret();
+}
+ret dataLayer::containerFiller(std::list<int> intList, std::string filename)
+{
+	return ret();
+}
+ret dataLayer::containerFiller(std::vector<std::string> stringVector, std::string filename)
+{
+	return ret();
+}
+ret dataLayer::containerFiller(std::list<std::string> stringList, std::string filename)
+{
+	return ret();
 }
 std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
 {

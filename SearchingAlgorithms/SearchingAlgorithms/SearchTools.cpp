@@ -66,9 +66,9 @@ void searchTools::searchMenu()
 						//std::cout << dlay._directory.size() << locDirFileName.size() << dlay._directory << std::endl;
 						//dlay._directory.pop_back();
 						//dlay._directory.erase(dlay._directory.size() - 1, 1);
-						
+
 						std::size_t Textfound = dlay._directory.find_last_of("/\\");
-						std::cout << dlay._directory << "Size:" << dlay._directory.size() <<  "found: " << Textfound << std::endl;
+						std::cout << dlay._directory << "Size:" << dlay._directory.size() << "found: " << Textfound << std::endl;
 						dlay._directory = dlay._directory.substr(0, Textfound);
 						std::cout << dlay._directory << "Size: " << dlay._directory.size() << std::endl;
 					}
@@ -81,6 +81,7 @@ void searchTools::searchMenu()
 				}
 			}
 			else {
+				dlay.getCWD();
 				std::ifstream infile;
 				infile.open(dlay._directory + "\\" + _fileName);
 				if (infile.is_open()) { locVal = true; }
@@ -88,25 +89,25 @@ void searchTools::searchMenu()
 			}
 		}
 		locVal = false;
-		while (!locVal){
+		while (!locVal) {
 			std::cout << " Please Select your container type:" << "1: Vector/n" << "2: List" << std::endl;
 			std::cin >> _conChoice;
-			if (_conChoice == 1 || _conChoice == 2) { 
+			if (_conChoice == 1 || _conChoice == 2) {
 				locVal = true;
 				conType = static_cast<_containerType>(_conChoice);
 			}
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
 		}
 		locVal = false;
-		while (!locVal){
-			std::cout << " Please Select your data type:/n" << "1: int/n" << "2: string/n" << std::endl;
+		while (!locVal) {
+			std::cout << " Please Select your data type:/n" << "1: string" << "2: int" << std::endl;
 			std::cin >> _varType;
 			if (_conChoice == 1 || _conChoice == 2) { locVal = true; }
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
 		}
 		locVal = false;
-		while (!locVal){
-			std::cout << " Please Select your search type:/n" << "1: linear/n" << "2: element find/n" <<"3: binary search" << std::endl;
+		while (!locVal) {
+			std::cout << " Please Select your search type:/n" << "1: linear/n" << "2: element find/n" << "3: binary search" << std::endl;
 			int search_type;
 			// Doesnt work with matching to ENUM!!
 			std::cin >> search_type;
@@ -115,28 +116,44 @@ void searchTools::searchMenu()
 				srchType = static_cast<_searchType>(search_type); // static casting the int fed in to match the enums of search types.
 			}
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
-			
-			
+
+
 		}
-		locVal = false;
-		
-		switch (srchType) //Type of search being done
+		searchTools::functionRouting(&dlay,srchType, conType, _varType, dlay._directory + "\\" + _fileName);
+
+	}
+	catch (std::string err){
+		std::cout << "Operation failed with fatal error: " << err << std::endl;
+	}
+}
+void searchTools::functionRouting(dataLayer *dlayer, searchTools::_searchType srch,searchTools::_containerType conType, int varType, std::string filename) {
+	//Can overload the functions, so do not need to know what type of variable per se. 
+	//dataLayer dlayer;
+	try {
+		switch (srch) //Type of search being done
 		{
 		case 1:
+			//read the file into relevant container, then pass to the searching algorithm. 
+			//WE have to read file in and do the search that way.
+			//Move the container selection into the data layer!
 			switch (conType) // Type of container
 			{
-			case 1: // 
-				//Vector
+			case 1: //Vector
 				switch (_varType) { // int or string
 				case 1:
 					//String
 					std::cout << "Please Enter the element you would like to find: " << std::endl;
 					std::cin >> _stringKey;
+					if (_stringKey == "exit") {
+						throw "Nothing entered!"; _found = true;
+					}
+					linearSearch(dlayer, _stringKey, _stringRec, true);
 					break;
 				case 2:
 					//Int
 					std::cout << "Please Enter the element you would like to find: " << std::endl;
 					std::cin >> _intKey;
+					//searchTools::linearSearch(&dlayer, _stringKey, _stringRec, true);
 					break;
 				default:
 
@@ -167,178 +184,81 @@ void searchTools::searchMenu()
 			}
 			break;
 		case 2:
-			switch (_conChoice)
-			{
-			case 1:
-				//Vector
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			case 2:
-				//List
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			default:
-				throw "invalid container choice selection";
-				break;
-			}
 			break;
 		case 3:
-			switch (_conChoice)
-			{
-			case 1:
-				//Vector
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			case 2:
-				//List
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			default:
-				throw "invalid container choice selection";
-				break;
-			}
 			break;
 		case 4:
-			switch (_conChoice)
-			{
-			case 1:
-				//Vector
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			case 2:
-				//List
-				switch (_varType) {
-				case 1:
-					//String
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _stringKey;
-					break;
-				case 2:
-					//Int
-					std::cout << "Please Enter the element you would like to find: " << std::endl;
-					std::cin >> _intKey;
-					break;
-				default:
-
-					break;
-				}
-				break;
-			default:
-				throw "invalid container choice selection";
-				break;
-			}
 			break;
 		default:
 			break;
 		}
-		
 	}
-	catch (std::string err){
-		std::cout << "Operation failed with fatal error: " << err << std::endl;
+	catch (std::string error) {
+		std::cout << "Program has thrown the following error:" << error << std::endl;
 	}
+	//So we choose Vector|List -> Int|String -> Linear | bubble etc..
+	
+
 }
-bool searchTools::linearSearch(std::vector<int> &list, int size, int key, int*& rec)
+//&Datalayer.intVector, 
+bool searchTools::linearSearch(dataLayer *dlayer, int key, int rec, bool vec_list)
 {
+	Time timer;
 	_found = false;
-	int i;
-	for (i = 0; i < size; i++){
-		if (key == list[i]){
+	int i = 0;
+	
+	if (dlayer->intList.size() <= 1 || dlayer->intList.size() == NULL) {
+		throw "Container is empty, exiting operation";
+	}
+	std::cout << "Starting element find\n";
+	//Need to make the time elements public or do not return the values.
+	timer.clock_start();
+	for (_listIntIT = dlayer->intList.begin(); _listIntIT != dlayer->intList.end(); _listIntIT++) {
+		if (*_listIntIT == key){
 			break;
 		}
-		if (i < size) {
+		/*if (i < dlayer->intList.size()) {
 			_found = true;
-			rec = &list[i];
-		}
+		}*/
 	}
 
 	return _found;
 }
-bool searchTools::linearSearch(std::vector<std::string> &list, int size, int key, int*& rec)
+bool searchTools::linearSearch(dataLayer *dlayer, std::string _stringKey, std::string _stringRec, bool vec_list)
 {
-	_found = false;
+	try {
+		Time timer;
+		_found = false;
+		int i = 0;
+		if (!_found) { throw "ERROR"; }
+		std::cout << "Setting up Linear Search" << std::endl;
+		if (vec_list) { // true = vector
+			if (dlayer->stringVector.empty()) { 
+				throw "Container empty exiting search";
+				//std::cout << "HIT THROW" << std::endl;
+			}
+			else {
+				timer.clock_start();
+				for (i; i < dlayer->stringVector.size(); i++)
+				{
+					if (dlayer->stringVector[i] == _stringKey) {
+						_found = true;
+						//timer.clock_end();
+						break;
+					}
+				}
+				timer.duration();
+			}
+		}
+		else // false = list
+		{
+			if (dlayer->stringList.size() == 0) { throw "Container empty, exiting search"; }
 
-	return _found;
-}
-bool searchTools::linearSearch(std::list<int> &list, int size, int key, int*& rec)
-{
-	_found = false;
-
-	return _found;
-}
-bool searchTools::linearSearch(std::list<std::string> &list, int size, int key, int*& rec)
-{
-	_found = false;
-
+		}
+	}
+	catch (std::string error) {
+		std::cout << error << std::endl;
+	}
 	return _found;
 }
 bool searchTools::elementFind(std::list<int> &list, int key) //Finding an element in a int List. 
