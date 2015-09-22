@@ -20,6 +20,7 @@ private:
 	enum _containerType : int {vector = 1, list = 2};
 	unsigned int _varType = NULL;
 	bool _found;
+	bool _alive;
 	std::size_t _intKey;
 	std::size_t _intRec;
 	std::string _stringRec;

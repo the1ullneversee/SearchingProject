@@ -2,6 +2,7 @@
 
 searchTools::searchTools(){
 	_found = false; 
+	_alive = true;
 	Time timer;
 }
 searchTools::~searchTools(){
@@ -20,121 +21,128 @@ std::wstring s2ws(const std::string& s)
 }
 void searchTools::searchMenu()
 {
-	try {
-		bool locVal = false;
-		std::unique_ptr<dataLayer> dlay(new dataLayer);
-		_searchType srch = linear;
-		_searchType srchType = linear;
-		WIN32_FIND_DATA winData;
-		dataLayer::_container_type conType = dataLayer::vectorInt;
-		//std::wstring stemp = s2ws("C:\\Users\\thomaskn\\Downloads\\*");
-		LPCTSTR errorText = NULL;
+	while (_alive){
+		try {
+			bool locVal = false;
+			std::unique_ptr<dataLayer> dlay(new dataLayer);
+			_searchType srch = linear;
+			_searchType srchType = linear;
+			WIN32_FIND_DATA winData;
+			dataLayer::_container_type conType = dataLayer::vectorInt;
+			//std::wstring stemp = s2ws("C:\\Users\\thomaskn\\Downloads\\*");
+			LPCTSTR errorText = NULL;
 
-		while (!locVal) {
-			std::cout << "Please enter in the file name you want to search" << std::endl << "Or enter 1 to get local file list" << std::endl;
-			//try to open the file incase invalid file name;
-			std::cin >> _fileName;
-			if (_fileName == "1") {
-				bool found = false;
-				std::string locChoice;
-				std::wstring locDirFileName;
-				std::cout << dlay->_directory << std::endl;
-				while (!found) {
-					std::wstring stemp = s2ws(dlay->_directory + "\\*");
-					LPCWSTR dirwstr = stemp.c_str();
-					HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
-					locDirFileName = winData.cFileName;
-					std::cout << "Listing directory!" << std::endl;
-					std::wcout << "First name" << locDirFileName << std::endl;
-					//Only finds one file which so happens to be the same as the last folder in directory address? Returns Error 18
-					do {
-						//std::wcout << dirwstr << std::endl;
-						std::wcout << winData.cFileName << std::endl;
-					} while (FindNextFile(searchHandle, &winData));
-					/*_com_error error(GetLastError());
-					errorText = error.ErrorMessage();
-					std::wcout << "Error Code is: " << errorText << std::endl;*/
-					SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | BACKGROUND_BLUE | FOREGROUND_INTENSITY);
+			while (!locVal) {
+				std::cout << "Please enter in the file name you want to search" << std::endl << "Or enter 1 to get local file list" << std::endl;
+				//try to open the file incase invalid file name;
+				std::cin >> _fileName;
+				if (_fileName == "1") {
+					bool found = false;
+					std::string locChoice;
+					std::wstring locDirFileName;
+					std::cout << dlay->_directory << std::endl;
+					while (!found) {
+						std::wstring stemp = s2ws(dlay->_directory + "\\*");
+						LPCWSTR dirwstr = stemp.c_str();
+						HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
+						locDirFileName = winData.cFileName;
+						std::cout << "Listing directory!" << std::endl;
+						std::wcout << "First name" << locDirFileName << std::endl;
+						//Only finds one file which so happens to be the same as the last folder in directory address? Returns Error 18
+						do {
+							//std::wcout << dirwstr << std::endl;
+							std::wcout << winData.cFileName << std::endl;
+						} while (FindNextFile(searchHandle, &winData));
+						/*_com_error error(GetLastError());
+						errorText = error.ErrorMessage();
+						std::wcout << "Error Code is: " << errorText << std::endl;*/
+						SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | BACKGROUND_BLUE | FOREGROUND_INTENSITY);
 
-					std::cout << std::endl << "Enter up to go up a directory level" << std::endl << "Alternatively type the folder name to enter." << std::endl << "OR type exit if filename is found" << std::endl;
-					std::cin >> locChoice;
-					if (locChoice == "exit" || locChoice == "Exit") {
-						found = true;
+						std::cout << std::endl << "Enter up to go up a directory level" << std::endl << "Alternatively type the folder name to enter." << std::endl << "OR type exit if filename is found" << std::endl;
+						std::cin >> locChoice;
+						if (locChoice == "exit" || locChoice == "Exit") {
+							found = true;
+						}
+						else if (locChoice == "up" || locChoice == "Up")
+						{
+							//std::cout << dlay._directory.size() << locDirFileName.size() << dlay._directory << std::endl;
+							//dlay._directory.pop_back();
+							//dlay._directory.erase(dlay._directory.size() - 1, 1);
+
+							std::size_t Textfound = dlay->_directory.find_last_of("/\\");
+							std::cout << dlay->_directory << "Size:" << dlay->_directory.size() << "found: " << Textfound << std::endl;
+							dlay->_directory = dlay->_directory.substr(0, Textfound);
+							std::cout << dlay->_directory << "Size: " << dlay->_directory.size() << std::endl;
+						}
+						else {
+							dlay->_directory = dlay->_directory += "\\" + locChoice;
+						}
+						//reverting back to the normal color
+						SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+						FindClose(searchHandle);
 					}
-					else if (locChoice == "up" || locChoice == "Up")
-					{
-						//std::cout << dlay._directory.size() << locDirFileName.size() << dlay._directory << std::endl;
-						//dlay._directory.pop_back();
-						//dlay._directory.erase(dlay._directory.size() - 1, 1);
-						
-						std::size_t Textfound = dlay->_directory.find_last_of("/\\");
-						std::cout << dlay->_directory << "Size:" << dlay->_directory.size() << "found: " << Textfound << std::endl;
-						dlay->_directory = dlay->_directory.substr(0, Textfound);
-						std::cout << dlay->_directory << "Size: " << dlay->_directory.size() << std::endl;
-					}
-					else {
-						dlay->_directory = dlay->_directory += "\\" + locChoice;
-					}
-					//reverting back to the normal color
-					SetConsoleTextAttribute(searchHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-					FindClose(searchHandle);
+				}
+				else {
+					dlay->getCWD();
+					std::ifstream infile;
+					infile.open(dlay->_directory + "\\" + _fileName);
+					if (infile.is_open()) { locVal = true; }
+					else { std::cout << "Could not open file, try again!" << std::endl; }
 				}
 			}
-			else {
-				dlay->getCWD();
-				std::ifstream infile;
-				infile.open(dlay->_directory + "\\" + _fileName);
-				if (infile.is_open()) { locVal = true; }
-				else { std::cout << "Could not open file, try again!" << std::endl; }
+			locVal = false;
+			while (!locVal) {
+				std::cout << " Please Select your container type: " << std::endl << "1: integer vector" << std::endl << "2: string vector" << std::endl << "3: integer list" << std::endl << "4: string list" << std::endl;
+				std::cin >> _conChoice;
+				conType = static_cast<dataLayer::_container_type>(_conChoice);
+				for (int i = 0; i < dataLayer::enumTypeEnd; i++) {
+					if (conType == i) { locVal = true; break; }
+				}
+				if (!locVal){
+					std::cout << "Invalid container selection, try again" << std::endl;
+				}
 			}
-		}
-		locVal = false;
-		while (!locVal) {
-			std::cout << " Please Select your container type: " << std::endl << "1: integer vector" << std::endl << "2: string vector" << std::endl << "3: integer list" << std::endl << "4: string list" << std::endl;
-			std::cin >> _conChoice;
-			conType = static_cast<dataLayer::_container_type>(_conChoice);
-			for (int i = 0; i < dataLayer::enumTypeEnd; i++) {
-				if (conType == i) { locVal = true; break; }
-			}
-			if (!locVal){
-				std::cout << "Invalid container selection, try again" << std::endl;
-			}
-		}
-		/*locVal = false;
-		while (!locVal) {
+			/*locVal = false;
+			while (!locVal) {
 			std::cout << " Please Select your data type:/n" << "1: string" << "2: int" << std::endl;
 			std::cin >> _varType;
 			if (_conChoice == 1 || _conChoice == 2) { locVal = true; }
 			else { std::cout << "Invalid container selection, try again" << std::endl; }
-		}*/
-		locVal = false;
-		while (!locVal) {
-			std::cout << " Please Select your search type:/n" << "1: linear/n" << "2: element find/n" << "3: binary search" << std::endl;
-			int search_type;
-			// Doesnt work with matching to ENUM!!
-			std::cin >> search_type;
-			if (search_type >= 1 && search_type < 5) {
-				locVal = true;
-				srchType = static_cast<_searchType>(search_type); // static casting the int fed in to match the enums of search types.
+			}*/
+			locVal = false;
+			while (!locVal) {
+				std::cout << " Please Select your search type:" << "1: linear" << std::endl << "2: element find" << std::endl << "3: binary search" << std::endl;
+				int search_type;
+				// Doesnt work with matching to ENUM!!
+				std::cin >> search_type;
+				if (search_type >= 1 && search_type < 5) {
+					locVal = true;
+					srchType = static_cast<_searchType>(search_type); // static casting the int fed in to match the enums of search types.
+				}
+				else { std::cout << "Invalid container selection, try again" << std::endl; }
+
+
 			}
-			else { std::cout << "Invalid container selection, try again" << std::endl; }
-
-
+			std::string tempFileName = dlay->_directory + "\\" + _fileName;
+			std::cout << "Checking file name: " << tempFileName << std::endl;
+			if (tempFileName.length() == 0) {
+				throw std::exception("FileName is empty!");
+			}
+			searchTools::functionRouting(*dlay, srchType, conType, _varType, tempFileName);
+			std::string tempChoice;
+			std::cout << "If you wish to exit the searching operation:" << std::endl << "Enter 1." << std::endl << "Or enter search to start again" << std::endl;
+			std::cin >> tempChoice;
+			if (tempChoice == "1") {
+				_alive = false; 
+			}
 		}
-		std::string tempFileName = dlay->_directory + "\\" + _fileName;
-		std::cout << "Checking file name: " << tempFileName << std::endl;
-		if (tempFileName.length() == 0) {
-			throw std::exception("FileName is empty!");
+		catch (std::string err){
+			std::cout << "Operation failed with fatal error: " << err << std::endl;
 		}
-		searchTools::functionRouting(*dlay,srchType, conType, _varType, tempFileName);
-
-	}
-	catch (std::string err){
-		std::cout << "Operation failed with fatal error: " << err << std::endl;
-	}
-	catch (std::exception& excep)
-	{
-		std::cout << "Exception thrown, reason: " << excep.what() << std::endl;
+		catch (std::exception& excep)
+		{
+			std::cout << "Exception thrown, reason: " << excep.what() << std::endl;
+		}
 	}
 }
 void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType srch, dataLayer::_container_type conType, std::size_t varType, std::string filename) { // change this to an error code return type yeah. Got err down there kk,
@@ -223,25 +231,52 @@ void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType sr
 //&Datalayer.intVector, 
 bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t rec, bool vec_list)
 {
-	Time timer;
-	_found = false;
-	std::size_t i = 0;
-	
-	if (dlayer.intList.size() <= 1 || dlayer.intList.size() == NULL) {
-		throw "Container is empty, exiting operation";
-	}
-	std::cout << "Starting element find\n";
-	//Need to make the time elements public or do not return the values.
-	timer.clock_start();
-	for (_listIntIT = dlayer.intList.begin(); _listIntIT != dlayer.intList.end(); _listIntIT++) {
-		if (*_listIntIT == key){
-			break;
+	try {
+		Time timer;
+		_found = false;
+		std::size_t i = 0;
+		if (vec_list){
+			if (dlayer.intVector.size() <= 1) {
+				throw std::exception("Container is empty, exiting operation");
+			}
+			std::cout << "Starting element find" << std::endl;
+			for (rec; rec < dlayer.intVector.size(); rec++)
+			{
+				if (dlayer.intVector[rec] == key)
+				{
+					std::cout << "Element Found Postion in container: " << rec << std::endl;
+					_found = true;
+					break;
+				}
+				if (rec >= dlayer.intVector.size() && dlayer.intVector[rec] != key){
+					std::cout << "Could not find element in container, key: " << key << std::endl;
+				}
+			}
 		}
-		/*if (i < dlayer->intList.size()) {
-			_found = true;
-		}*/
-	}
+		else {
+			if (dlayer.intList.size() <= 1) {
+				throw std::exception("Container is empty, exiting operation");
+			}
+			std::cout << "Starting element find" << std::endl;
+			//Need to make the time elements public or do not return the values.
+			//timer.clock_start();
+			for (_listIntIT = dlayer.intList.begin(); _listIntIT != dlayer.intList.end(); _listIntIT++) {
+				if (*_listIntIT == key){
 
+					break;
+				}
+				rec++;
+				if (i <= dlayer.intList.size()) {
+					std::cout << "No element found" << std::endl;
+					_found = false;
+					rec = 0;
+				}
+			}
+		}
+	}
+	catch (std::exception& e){
+		std::cout << "Exception thrown: " << e.what() << std::endl;
+	}
 	return _found;
 }
 bool searchTools::linearSearch(dataLayer& dlayer, std::string _stringKey, std::string _stringRec, bool vec_list)

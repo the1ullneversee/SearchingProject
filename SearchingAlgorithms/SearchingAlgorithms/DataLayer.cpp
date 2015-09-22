@@ -2,7 +2,7 @@
 
 dataLayer::dataLayer()
 {
-	std::cout << "Loading data layer" << std::endl;
+	//std::cout << "Loading data layer" << std::endl;
 	_ret = 0;
 	dataLayer::getCWD();
 	//dataLayer::_directory = "";
@@ -23,7 +23,7 @@ void dataLayer::getCWD() {
 	_cBaseDirectory[sizeof(_cBaseDirectory) - 1] = '\0'; /* not really required */
 	_directory = _cBaseDirectory;
 	//Can add in for testing 
-	std::cout << "The current working directory is: " << _directory << std::endl;
+	//std::cout << "The current working directory is: " << _directory << std::endl;
 }
 dataLayer::~dataLayer()
 {
@@ -35,7 +35,7 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 	//_container_type con_type = static_cast<_container_type>(containerSelection);
 	ret_code ret = func_passed;
 	try{
-		std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
+		//std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
 		inFile.open(filename);
 		//inFile.exceptions(std::ios::failbit);
 		if (inFile) {
