@@ -2,8 +2,10 @@
 
 dataLayer::dataLayer()
 {
+	std::cout << "Loading data layer" << std::endl;
 	_ret = 0;
-	dataLayer::_directory = "";
+	dataLayer::getCWD();
+	//dataLayer::_directory = "";
 	dataLayer::intVector.push_back(0);
 	dataLayer::intList.push_back(0);
 	dataLayer::stringVector;
@@ -21,27 +23,30 @@ void dataLayer::getCWD() {
 	_cBaseDirectory[sizeof(_cBaseDirectory) - 1] = '\0'; /* not really required */
 	_directory = _cBaseDirectory;
 	//Can add in for testing 
-	//std::cout << "The current working directory is: " << _directory << std::endl;
+	std::cout << "The current working directory is: " << _directory << std::endl;
 }
 dataLayer::~dataLayer()
 {
 	// Can add in for testing 
-	//std::cout << "DESTRUCTION" << std::endl;
+	std::cout << "DESTRUCTION" << std::endl;
 }
 
-ret dataLayer::readFile(std::string filename, int containerSelection){
-	_container_type con_type = static_cast<_container_type>(containerSelection);
+error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){
+	//_container_type con_type = static_cast<_container_type>(containerSelection);
+	ret_code ret = func_passed;
 	try{
-		inFile.open(_directory + filename);
+		std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
+		inFile.open(filename);
 		//inFile.exceptions(std::ios::failbit);
-		if (inFile){
+		if (inFile) {
 			//std::cout << "The current working directory is: " << _cBaseDirectory + filename
-			while (!inFile.eof()){
+			while (!inFile.eof()) {
 				switch (con_type) {
 				case 0:
 					throw "Container selection not supported";
+					ret = bad_input;
 					break;
-				case 1:
+				case 1: 
 					//Filling the int vector
 					inFile >> _stringTemp;
 					//std::getline(inFile, _stringTemp);
@@ -70,7 +75,7 @@ ret dataLayer::readFile(std::string filename, int containerSelection){
 					break;
 				default:
 					std::cout << "Couldn't find a matching case\n";
-					_ret = 0;
+					ret = function_fail;
 					break;
 				}
 			}
@@ -78,25 +83,25 @@ ret dataLayer::readFile(std::string filename, int containerSelection){
 		}
 		else {
 			std::cout << "Error reading file" << std::endl;
-			throw "Error";
+			throw std::exception("Error reading file");
 			//free(&inFileTemp);
 		}
 	}
-	catch (std::string err)
+	catch (std::invalid_argument& e)
 	{
 		std::cout << "Function failed reason: "
-			<< err << std::endl;
+			<< e.what() << std::endl;
 	}
-	/*catch (const std::exception & ex) {
-		std::cerr << "Could not convert to int - reason is "
+	catch (const std::exception & ex) {
+		std::cerr << "Function failed - reason is "
 			<< ex.what();
-	}*/
-	return _ret;
+	}
+	return ret;// Change this static cast. 
 }
 
-ret dataLayer::saveFile(std::string filename, int containerSelection, dataLayer &fhandler_copy)
+ret_code dataLayer::saveFile(std::string filename, int containerSelection, dataLayer &fhandler_copy)
 {
-	_ret = 1;
+	ret_code ret = func_passed;
 	try {
 		_container_type con_type = static_cast<_container_type>(containerSelection);
 		ofFile.open(_directory + filename);
@@ -128,11 +133,11 @@ ret dataLayer::saveFile(std::string filename, int containerSelection, dataLayer 
 		else {
 			std::cout << "Error reading file" << std::endl;
 			throw "Error";
+			ret = function_fail;
 		}
 	}
 	catch (std::string err) {
 		std::cout << err << std::endl;
-		_ret = 1;
 	}
 	/*catch (const std::exception & ex) {
 		std::cerr << "Saving operation failed - reason is "
@@ -142,13 +147,14 @@ ret dataLayer::saveFile(std::string filename, int containerSelection, dataLayer 
 		ofFile.close();
 	}
 
-	return _ret;
+	return ret;
 }
 
-ret dataLayer::randomNumbers()
+ret_code dataLayer::randomNumbers()
 {
-	unsigned int random = 0;
-	unsigned int MAX = 10000;
+	ret_code ret = func_passed;
+	std::size_t random = 0;
+	std::size_t MAX = std::numeric_limits<std::size_t>::max();
 	try
 	{
 		ofFile.open(_directory + "\\randomNumbers.txt");
@@ -161,11 +167,13 @@ ret dataLayer::randomNumbers()
 		}
 		else {
 			throw "Operation Failed";
+			ret = function_fail;
 		}
 	}
 	catch (std::string err)
 	{
 		std::cout << "The following error has occured" << err << std::endl;
+		//ret = 1;
 	}
 	/*catch (const std::exception & ex) {
 		std::cerr << "File operation failed - reason is "
@@ -174,34 +182,22 @@ ret dataLayer::randomNumbers()
 	if (ofFile.is_open()){
 		ofFile.close();
 	}
-	return _ret;
+	return ret;
 }
-ret dataLayer::containerFiller(std::vector<int> intVector, std::string filename)
+ret_code dataLayer::containerFiller(std::string filename,dataLayer::_container_type conType)
 {
-	return ret();
-}
-ret dataLayer::containerFiller(std::list<int> intList, std::string filename)
-{
-	return ret();
-}
-ret dataLayer::containerFiller(std::vector<std::string> stringVector, std::string filename)
-{
-	return ret();
-}
-ret dataLayer::containerFiller(std::list<std::string> stringList, std::string filename)
-{
-	return ret();
+	return dataLayer::readFile(filename, conType);
 }
 std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
 {
-	for (unsigned int i = 0; i < vecString.size(); i++){
+	for (std::size_t i = 0; i < vecString.size(); i++){
 		out << vecString[i] << " ";
 	}
 	return out;
 }
-std::ostream& operator << (std::ostream &out, std::vector<int> &vecInt)
+std::ostream& operator << (std::ostream &out, std::vector<std::size_t> &vecInt)
 {
-	for (unsigned int i = 0; i < vecInt.size(); i++){
+	for (std::size_t i = 0; i < vecInt.size(); i++){
 		out << vecInt[i] << " ";
 	}
 	return out;
@@ -214,9 +210,9 @@ std::ostream& operator << (std::ostream &out, std::list<std::string> &listString
 	}
 	return out;
 }
-std::ostream& operator << (std::ostream &out, std::list<int> &listInt)
+std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
 {
-	for (std::list<int>::const_iterator i = listInt.begin(); i != listInt.end(); i++)
+	for (std::list<std::size_t>::const_iterator i = listInt.begin(); i != listInt.end(); i++)
 	{
 		out << *i << " ";
 	}

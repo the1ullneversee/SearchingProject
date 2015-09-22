@@ -2,7 +2,7 @@
 #define DATALAYER_H
 
 #include "stdafx.h"
-#define ret int
+typedef  error_type ret_code;
 
 class dataLayer {
 public:
@@ -10,38 +10,38 @@ public:
 	~dataLayer();
 	void getCWD();
 	bool directoryList(LPCTSTR pstr);
-	ret readFile(std::string filename, int containerSelection);
-	ret saveFile(std::string filename, int containerSelection, dataLayer &dataLayer_copy);
-	ret randomNumbers();
+	enum _container_type : int { default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4, enumTypeEnd = 5 };
+	error_type readFile(std::string filename, dataLayer::_container_type con_type);
+	ret_code saveFile(std::string filename, int containerSelection, dataLayer &dataLayer_copy);
+	ret_code randomNumbers();
 	std::ifstream inFile;
 	std::ofstream ofFile;
-	ret containerFiller(std::vector<int> intVector, std::string filename);
-	ret containerFiller(std::vector<std::string> stringVector, std::string filename);
-	ret containerFiller(std::list<int> intList, std::string filename);
-	ret containerFiller(std::list<std::string> stringList, std::string filename);
+	
+	ret_code containerFiller(std::string filename, dataLayer::_container_type conType);
+
 	friend std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString);
-	friend std::ostream& operator << (std::ostream &out, std::vector<int> &vecInt);
+	friend std::ostream& operator << (std::ostream &out, std::vector<std::size_t> &vecInt);
 	friend std::ostream& operator << (std::ostream &out, std::list<std::string> &listString);
-	friend std::ostream& operator << (std::ostream &out, std::list<int> &listInt);
+	friend std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt);
 	std::string _directory;
-	std::vector<int> intVector;
-	std::list<int> intList;
+	std::vector<std::size_t> intVector;
+	std::list<std::size_t> intList;
 	std::vector<std::string> stringVector;
 	std::list<std::string> stringList;
-	std::vector<std::vector<int>> vectorStorer;
-	std::list<std::list<int>> listStorer;
+	std::vector<std::vector<std::size_t>> vectorStorer;
+	std::list<std::list<std::size_t>> listStorer;
 private:
 	char _cBaseDirectory[FILENAME_MAX];
 	
 	// Define error return types for greater reporting 
-	//enum error_type : int {};
-	enum _container_type : int {default,vectorInt, vectorString, listInt, listString};
+	
+	
 	int _ret;
 	std::string _stringTemp;
-	int _intTemp;
+	std::size_t _intTemp;
 	int active_containers;
-	int count;
-	int index;
+	std::size_t count;
+	std::size_t index;
 	int temp;
 	bool active;
 };

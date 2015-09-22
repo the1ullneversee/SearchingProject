@@ -9,8 +9,8 @@ int _tmain(int argc, _TCHAR* argv [])
 	// Smart pointers mean you do not have to worry about the deletion of the pointer when you are done using it.
 	// Pass them around to different functions by references
 	// you cannot copy them to stop them being deleted multiple times.
-	std::unique_ptr<dataLayer> dlayerhandle(new dataLayer);
-	std::unique_ptr<dataLayer> dlayerhandleTemp(new dataLayer);
+	//std::unique_ptr<dataLayer> dlayerhandle(new dataLayer);
+	//std::unique_ptr<dataLayer> dlayerhandleTemp(new dataLayer);
 	//fileHandler *file = new fileHandler();
 
 	/*rt = dlayerhandle->randomNumbers();

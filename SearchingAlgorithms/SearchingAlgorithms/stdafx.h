@@ -5,6 +5,8 @@
 
 #pragma once
 #define _AFXDLL
+#define NOMINMAX
+const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2, bad_input = 3 };
 
 #include "targetver.h"
 
@@ -23,11 +25,13 @@
 #include <cstring>
 #include "afx.h"
 #include <comdef.h>
+#include <limits>
 
 #include "DataLayer.h"
 #include "SearchTools.h"
 #include "ThreadHandler.h"
 #include "Timing.h"
+
 
 
 // TODO: reference additional headers your program requires here
