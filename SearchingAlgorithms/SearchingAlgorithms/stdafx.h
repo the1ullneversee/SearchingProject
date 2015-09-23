@@ -6,7 +6,7 @@
 #pragma once
 #define _AFXDLL
 #define NOMINMAX
-const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2, bad_input = 3 };
+const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2, bad_input = 3, killApplication = 4, ENDOFENUM = 5 };
 
 #include "targetver.h"
 
@@ -26,11 +26,13 @@ const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2
 #include "afx.h"
 #include <comdef.h>
 #include <limits>
-
 #include "DataLayer.h"
 #include "SearchTools.h"
+
+#include "MainMenu.h"
 #include "ThreadHandler.h"
 #include "Timing.h"
+
 
 
 

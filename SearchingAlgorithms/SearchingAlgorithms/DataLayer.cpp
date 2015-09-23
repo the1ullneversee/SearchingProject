@@ -3,6 +3,7 @@
 dataLayer::dataLayer()
 {
 	//std::cout << "Loading data layer" << std::endl;
+	
 	_ret = 0;
 	dataLayer::getCWD();
 	//dataLayer::_directory = "";
@@ -31,7 +32,7 @@ dataLayer::~dataLayer()
 	std::cout << "DESTRUCTION" << std::endl;
 }
 
-error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){
+error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
 	//_container_type con_type = static_cast<_container_type>(containerSelection);
 	ret_code ret = func_passed;
 	try{
@@ -99,11 +100,10 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 	return ret;// Change this static cast. 
 }
 
-ret_code dataLayer::saveFile(std::string filename, int containerSelection, dataLayer &fhandler_copy)
+ret_code dataLayer::saveFile(std::string filename, dataLayer::_container_type con_type, dataLayer &fhandler_copy)
 {
 	ret_code ret = func_passed;
 	try {
-		_container_type con_type = static_cast<_container_type>(containerSelection);
 		ofFile.open(_directory + filename);
 		//ofFile.exceptions(std::ios::failbit);
 		if (ofFile) {
@@ -188,37 +188,7 @@ ret_code dataLayer::containerFiller(std::string filename,dataLayer::_container_t
 {
 	return dataLayer::readFile(filename, conType);
 }
-std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
-{
-	for (std::size_t i = 0; i < vecString.size(); i++){
-		out << vecString[i] << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::vector<std::size_t> &vecInt)
-{
-	for (std::size_t i = 0; i < vecInt.size(); i++){
-		out << vecInt[i] << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::list<std::string> &listString)
-{
-	for (std::list<std::string>::const_iterator i = listString.begin(); i != listString.end(); i++)
-	{
-		out << *i << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
-{
-	for (std::list<std::size_t>::const_iterator i = listInt.begin(); i != listInt.end(); i++)
-	{
-		out << *i << " ";
-	}
 
-	return out;
-}
 bool dataLayer::directoryList(LPCTSTR pstr) {
 
 	CFileFind finder;
