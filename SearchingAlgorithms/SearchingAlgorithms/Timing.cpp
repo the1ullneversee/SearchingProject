@@ -21,7 +21,30 @@ void Time::duration() {
 	//std::cout << "The execution duration was: " << 00 << ":" << 01 << ":" << 12 << std::endl;
 	std::cout << "The execution duration was: " << float(Time::_duration.count() / 1E6) << "(seconds)" << std::endl;
 }
-void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t postion, std::chrono::duration<long long, std::nano> duration)
+void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t postion, chrono_type_duration duration)
 {
+	std::ifstream inStream;
+	std::ofstream ofStream;
+	std::string _stringTemp;
+	//Need to check if file is empty or has contents
+	//if there are contents then we need to read all of the values into a vector, and write that out before writing new values. 
+	//Shall we do a directory look up.
 
+	inStream.open("TimeArchive.txt");
+	if (inStream)
+	{
+		std::vector<std::string> stringInVect;
+		while (!inStream.eof()){
+			std::getline(inStream, _stringTemp);
+			//std::cout << _stringTemp;
+			stringInVect.push_back(_stringTemp);
+		}
+		inStream.close();
+		// Need to reading in
+	}
+	ofStream.open("TimeArchive.txt");
+	if (ofStream)
+	{
+
+	}
 }

@@ -15,10 +15,11 @@ public:
 	void clock_start();
 	void clock_end();
 	void duration();
-	void capture(dataLayer& dlayer, std::size_t element, std::size_t postion, std::chrono::duration<long long, std::nano> duration);
+	chrono_type_duration _duration;
+	void capture(dataLayer& dlayer, std::size_t element, std::size_t postion, chrono_type_duration duration);
 private:
 	chrono_type _phase_start;
 	chrono_type _phase_end;
-	chrono_type_duration _duration;
+	
 };
 #endif TIMING_H

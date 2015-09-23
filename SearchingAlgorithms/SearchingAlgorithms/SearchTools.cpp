@@ -150,7 +150,7 @@ bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t r
 		if (_found)
 		{
 			timer->duration();
-			timer->capture(dlayer._filename, key, rec);
+			timer->capture(dlayer, key, rec, timer->_duration);
 		}
 	}
 	catch (std::exception& e){
