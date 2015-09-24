@@ -211,3 +211,76 @@ bool dataLayer::directoryList(LPCTSTR pstr) {
 	}
 	return 0;
 }
+std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
+{
+	for (std::size_t i = 0; i < vecString.size(); i++) {
+		out << vecString[i] << " ";
+	}
+	return out;
+}
+std::ostream& operator << (std::ostream &out, std::vector<std::size_t> &vecInt)
+{
+	for (std::size_t i = 0; i < vecInt.size(); i++) {
+		out << vecInt[i] << " ";
+	}
+	return out;
+}
+std::ostream& operator << (std::ostream &out, std::list<std::string> &listString)
+{
+	for (std::list<std::string>::const_iterator i = listString.begin(); i != listString.end(); i++)
+	{
+		out << *i << " ";
+	}
+	return out;
+}
+std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
+{
+	for (std::list<std::size_t>::const_iterator i = listInt.begin(); i != listInt.end(); i++)
+	{
+		out << *i << " ";
+	}
+
+	return out;
+}
+ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conType) {
+	error_type error = func_passed;// Think we need a better way of doing this.
+	//Menu menu; 							   //Need a switch statement here to print the different container types to screen. Can do some fancy formatting. 
+	try {
+		switch (conType)
+		{
+		case 1:
+			if (dlayer.intVector.size() == 0 || dlayer.intVector.empty()) { throw std::exception("Container is empty!"); }
+			std::cout << dlayer.intVector;
+			break;
+		case 2:
+			if (dlayer.stringVector.size() == 0 || dlayer.stringVector.empty()) { throw std::exception("Container is empty!"); }
+			std::cout << dlayer.stringVector;
+			break;
+		case 3:
+			if (dlayer.intList.size() == 0 || dlayer.intList.empty()) { throw std::exception("Container is empty!"); }
+			std::cout << dlayer.intList;
+			break;
+		case 4:
+			if (dlayer.stringList.size() == 0 || dlayer.stringList.empty()) { throw std::exception("Container is empty!"); }
+			std::cout << dlayer.stringList;
+			break;
+		default:
+			
+			break;
+		}
+		menu.clearScreen();
+	}
+	catch (std::exception& e)
+	{
+		menu.errorToScreen(e, "Print Container");
+	}
+	return error;
+}
+void dataLayer::containerFillFromFile(dataLayer& dlayer) {
+	//We will ask what container they wish to have
+	//What the file name is
+}
+dataLayer::_container_type dataLayer::containerTypeSelectionRoutine()
+{
+
+}

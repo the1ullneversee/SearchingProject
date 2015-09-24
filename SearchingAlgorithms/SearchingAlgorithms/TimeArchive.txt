@@ -1,0 +1,48 @@
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 44
+Position in container: 2458
+Time Taken: 1.71428(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 3.00805(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.84087(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.8135(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.85027(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 2.83101(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 45
+Position in container: 4080
+Time Taken: 12.9417(seconds)

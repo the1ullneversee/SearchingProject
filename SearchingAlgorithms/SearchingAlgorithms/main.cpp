@@ -44,7 +44,7 @@ int _tmain(int argc, _TCHAR* argv [])
 	}
 	std::cout << dlayerhandleTemp->intVector << std::endl << dlayerhandleTemp->stringVector;
 	*/
-
+	
 	std::unique_ptr<Menu> menu(new Menu);
 	menu->mainMenu();
 

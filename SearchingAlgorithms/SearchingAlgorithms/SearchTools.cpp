@@ -1,5 +1,4 @@
 #include "stdafx.h"
-std::unique_ptr<Menu> menu(new Menu);
 std::unique_ptr<Time> timer(new Time);
 searchTools::~searchTools(){
 
@@ -14,80 +13,87 @@ std::wstring searchTools::s2ws(const std::string& s)
 	std::wstring r(buf);
 	delete [] buf;
 	return r;
-}
+} 
 
 void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType srch, dataLayer::_container_type conType, std::string filename) { // change this to an error code return type yeah. Got err down there kk,
 	//Can overload the functions, so do not need to know what type of variable per se. 
 	//dataLayer dlayer;
 	error_type err = func_passed;
 	dlayer._filename = filename;
+	bool wantToSearch = true;
+	std::string userChoice;
 	try {
+		err = dlayer.containerFiller(filename, conType);
 		//read the file into relevant container, then pass to the searching algorithm. 
 		//WE have to read file in and do the search that way.
 		//Move the container selection into the data layer!
 	//CONTAINER TYPE DEFINTION{ default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4 };
-		switch (conType) // Type of container
-		{
-		case 1: //Vector
-				//int
-			std::cout << "Please Enter the element you would like to find: " << std::endl;
-			std::cin >> _intKey;
-			if (_intKey == NULL) {
-				menu->errorToScreen("Nothing inputed", "function routing");
-				_found = true; // Whats this for
-			}
-			err = dlayer.containerFiller(filename, conType);
-			if (err == func_passed) {
-				switch (srch) {
-				case 1: linearSearch(dlayer, _intKey, _intRec, true);  break; case 2: break; case 3: break; case 4: break; // fill in for every case
+		while (wantToSearch) {
+			clearScreen();
+			switch (conType) // Type of container
+			{
+			case 1: //Vector
+					//int
+				std::cout << "Please Enter the element you would like to find: " << std::endl;
+				std::cin >> _intKey;
+				if (_intKey == NULL) {
+					errorToScreen("Nothing inputed", "function routing");
+					_found = true; // Whats this for
 				}
-			}
-			else {
-				throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-				err = function_fail;
-			}
-			
-			break;
-		case 2:
-			//vect string
-			std::cout << "Please Enter the element you would like to find: " << std::endl;
-			std::cin >> _stringKey;
-			if (_stringKey == "exit") {
-				throw "Nothing entered!";
-				_found = true; // Whats this for
-			}
-			err = dlayer.containerFiller(filename, conType);
-			if (err == func_passed) {
-				switch (srch) {
-				case 1: linearSearch(dlayer, _stringKey, _stringRec, true);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
+				if (err == func_passed) {
+					switch (srch) {
+					case 1: linearSearch(dlayer, _intKey, _intRec, true);  break; case 2: break; case 3: break; case 4: break; // fill in for every case
+					}
 				}
-			}
-			else {
-				throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-				err = function_fail;
-			}
-			break;
-		case 3: //list int
-			std::cout << "Please Enter the element you would like to find: " << std::endl;
-			std::cin >> _intKey;
-			if (_intKey == NULL) {
-				throw "Nothing entered!";
-				_found = true; // Whats this for
-			}
-			err = dlayer.containerFiller(filename, conType);
-			if (err == func_passed) {
-				switch (srch) {
-				case 1: linearSearch(dlayer, _intKey, _intRec, false);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
+				else {
+					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
+					err = function_fail;
 				}
-			}
-			else {
-				throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-				err = function_fail;
-			}
-			break;
-		case 4: // list string
 
-			break;
+				break;
+			case 2:
+				//vect string
+				std::cout << "Please Enter the element you would like to find: " << std::endl;
+				std::cin >> _stringKey;
+				if (_stringKey == "exit") {
+					throw "Nothing entered!";
+					_found = true; // Whats this for
+				}
+				if (err == func_passed) {
+					switch (srch) {
+					case 1: linearSearch(dlayer, _stringKey, _stringRec, true);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
+					}
+				}
+				else {
+					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
+					err = function_fail;
+				}
+				break;
+			case 3: //list int
+				std::cout << "Please Enter the element you would like to find: " << std::endl;
+				std::cin >> _intKey;
+				if (_intKey == NULL) {
+					throw "Nothing entered!";
+					_found = true; // Whats this for
+				}
+				if (err == func_passed) {
+					switch (srch) {
+					case 1: linearSearch(dlayer, _intKey, _intRec, false);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
+					}
+				}
+				else {
+					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
+					err = function_fail;
+				}
+				break;
+			case 4: // list string
+
+				break;
+			}
+
+			std::cout << "Enter 'search' to search the container again" << std::endl << "Or enter 'exit' to go back to search menu." << std::endl;
+			std::cin >> userChoice;
+			if (userChoice == "exit" || userChoice == "Exit") { wantToSearch = false; }
 		}
 	}
 	catch (std::string error) {
@@ -106,13 +112,14 @@ bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t r
 	try {
 		_found = false;
 		std::size_t i = 0;
+		rec = 0;
 		if (vec_list) {
 			if (dlayer.intVector.size() <= 1) {
 				throw std::exception("Container is empty, exiting operation");
 			}
 			std::cout << "Starting element find" << std::endl;
 			timer->clock_start();
-			for (rec; rec < dlayer.intVector.size(); rec++)
+			for (rec; rec <= dlayer.intVector.size() -1; rec++)
 			{
 				if (dlayer.intVector[rec] == key)
 				{
@@ -121,9 +128,9 @@ bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t r
 					timer->clock_end();
 					break;
 				}
-				if (rec >= dlayer.intVector.size() && dlayer.intVector[rec] != key) {
+			}
+			if (!_found) {
 					std::cout << "Could not find element in container, key: " << key << std::endl;
-				}
 			}
 		}
 		else {
@@ -150,11 +157,12 @@ bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t r
 		if (_found)
 		{
 			timer->duration();
-			timer->capture(dlayer, key, rec, timer->_duration);
+			timer->capture(dlayer, key, rec, timer->_duration, "linearSearch", vec_list);
+			//dlayer.printContainer(dlayer, dataLayer::vectorInt);
 		}
 	}
 	catch (std::exception& e){
-		menu->errorToScreen(e, "Integer Linear Search");
+		errorToScreen(e, "Integer Linear Search");
 	}
 	return _found;
 }

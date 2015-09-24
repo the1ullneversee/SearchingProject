@@ -1,8 +1,7 @@
-
 #include "stdafx.h"
+#include "MainMenu.h"
 Menu::Menu()
 {
-
 }
 Menu::~Menu()
 {
@@ -10,6 +9,8 @@ Menu::~Menu()
 }
 void Menu::mainMenu()
 {
+	std::unique_ptr<dataLayer> dlay(new dataLayer);
+	std::unique_ptr<classHolder> clsHolder(new classHolder(*dlay));
 	error_type err = func_passed;
 	bool Alive = true;
 	int choice = 0;
@@ -24,7 +25,7 @@ void Menu::mainMenu()
 				<< "2. Data Functions" << std::endl
 				<< "3. Time Functions" << std::endl;
 			std::cin >> choice;
-			for (int i = 0; i < ENDOFENUM; i++)
+			for (int i = 0; i < ENDOFMenuEnum; i++)
 			{
 				if (choice == i)
 				{
@@ -70,63 +71,7 @@ ret Menu::textToScreen(std::string stringToScreen) {
 	std::cout << stringToScreen << std::endl;
 	return locRet;
 }
-std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
-{
-	for (std::size_t i = 0; i < vecString.size(); i++) {
-		out << vecString[i] << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::vector<std::size_t> &vecInt)
-{
-	for (std::size_t i = 0; i < vecInt.size(); i++) {
-		out << vecInt[i] << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::list<std::string> &listString)
-{
-	for (std::list<std::string>::const_iterator i = listString.begin(); i != listString.end(); i++)
-	{
-		out << *i << " ";
-	}
-	return out;
-}
-std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
-{
-	for (std::list<std::size_t>::const_iterator i = listInt.begin(); i != listInt.end(); i++)
-	{
-		out << *i << " ";
-	}
 
-	return out;
-}
-ret Menu::printContainer(dataLayer& dlayer, dataLayer::_container_type conType) {
-	error_type error = func_passed;// Think we need a better way of doing this.
-	//Need a switch statement here to print the different container types to screen. Can do some fancy formatting. 
-	try {
-		switch (conType)
-		{
-		case 1:
-
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		default:
-			break;
-		}
-		clearScreen();
-	}
-	catch (std::exception& e)
-	{
-
-	}
-	return error;
-}
 ret Menu::clearScreen() {
 
 	COORD topLeft = { 0,0 };
@@ -276,9 +221,9 @@ ret Menu::searchMenu()
 				}
 				search->functionRouting(*dlay, srchType, conType, tempFileName);
 				std::string tempChoice;
-				std::cout << "If you wish to exit the searching operation:" << std::endl << "Enter 1" << std::endl << "Or enter search to start again" << std::endl;
+				std::cout << "If you wish to exit the searching operation:" << std::endl << "Enter 'exit'" << std::endl << "Or enter 'search' to start file finding again." << std::endl;
 				std::cin >> tempChoice;
-				if (tempChoice == "1") {
+				if (tempChoice == "exit" || tempChoice == "Exit") {
 					_alive = false;
 				}
 			}
@@ -302,6 +247,95 @@ ret Menu::timeMenu()
 ret Menu::dataMenu()
 {
 	error_type ret_err = func_passed;
+	std::size_t userChoice;
+	dataMenuItems dMenuItems;
+	std::unique_ptr<dataLayer> dataLayer(new dataLayer);
 
+	/*if (menuReRouting)
+	{
+		dataLayer &dataLayer = dataLayerMaster;
+		}
+	else { 
+		dataLayer dataLayer;
+	}*/
+	bool valid = false;
+	int choice = 0;
+	bool locVal = false;
+	bool alive = true;
+	try {
+		while (alive)
+		{
+			clearScreen();
+			std::cout << "Welcome to the Data menu!" << std::endl
+				<< "Here are the menu options:" << std::endl
+				<< "1. Create Container" << std::endl
+				<< "2. Print Container" << std::endl
+				<< "3. Save a Container to File" << std::endl
+				<< "4. Load a Container from a File" << std::endl
+				<< "5. Select 5 to exit. " << std::endl;
+			std::cin >> userChoice;
+			if (userChoice == 5) { alive = false; break; }
+			//dataMenuItems
+			while (!valid) {
+				for (int i = 0; i < ENDOFMenuEnum; i++)
+				{
+					if (userChoice == i)
+					{
+						valid = true;
+						break;
+					}
+				}
+				if (!valid)
+				{
+					errorToScreen("Bad Input, Please choose again. Loading Menu...", "Menu");
+				}
+			}
+			dMenuItems = static_cast<dataMenuItems>(userChoice);
+
+			switch (dMenuItems)
+			{
+			case 1:
+
+				break;
+			case 2:
+				//Let them select the container they want to print out. 
+				// have to of filled a container first. or Loaded one. 
+				dataLayer::_container_type conType;
+
+				while (!locVal)
+				{
+					std::cout << " Please Select your container type: " << std::endl << "1: integer vector" << std::endl << "2: string vector" << std::endl << "3: integer list" << std::endl << "4: string list" << std::endl;
+					std::cin >> choice;
+					conType = static_cast<dataLayer::_container_type>(choice);
+					for (int i = 0; i < dataLayer::enumTypeEnd; i++) {
+						if (conType == i) { locVal = true; break; }
+					}
+					if (!locVal) {
+						std::cout << "Invalid container selection, try again" << std::endl;
+					}
+				}
+				if (menuReRouting)
+				{
+					dataLayer->printContainer(dataLayerMaster, conType);
+				}
+				else { 
+					//Must have been prefilled by the user. 
+					dataLayer->printContainer(*dataLayer, conType);
+				}
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			default:
+				throw std::exception("Invalid menu item choice!");
+				break;
+			}
+		}
+	}
+	catch (std::exception& e)
+	{
+		errorToScreen(e, "Data Menu");
+	}
 	return ret_err;
 }
