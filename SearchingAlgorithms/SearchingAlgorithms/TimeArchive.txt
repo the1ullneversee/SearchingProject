@@ -46,3 +46,388 @@ Type of Container: Vector
 Element Trying to find: 45
 Position in container: 4080
 Time Taken: 12.9417(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.89905(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 2.01907(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 2.15792(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.83319(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.90218(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 8.04323(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 6.78736(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 2.59412(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 1224
+Position in container: 3193
+Time Taken: 2.3572(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 10.7788(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.87424(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 12.586(seconds)
+
+File Searched: C:\Users\thomaskn\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 557
+Position in container: 2785
+Time Taken: 2.62919(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.9478(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 12.0338(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 4
+Position in container: 6391
+Time Taken: 3.40466(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 2.34181(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 676
+Position in container: 236
+Time Taken: 7.43397(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 567
+Position in container: 6330
+Time Taken: 3.18342(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 77
+Position in container: 9039
+Time Taken: 4.48404(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 678
+Position in container: 4763
+Time Taken: 2.47238(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 67
+Position in container: 1739
+Time Taken: 1.54039(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 678
+Position in container: 4764
+Time Taken: 2.55278(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2879
+Time Taken: 1.89905(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 67
+Position in container: 1738
+Time Taken: 1.74452(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 78
+Position in container: 7143
+Time Taken: 4.07806(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.9076(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6567
+Time Taken: 4.11513(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 546
+Position in container: 1532
+Time Taken: 1.75621(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 224
+Position in container: 2143
+Time Taken: 10.913(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6566
+Time Taken: 3.27152(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 678
+Position in container: 4763
+Time Taken: 2.76033(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 3.24928(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 120
+Position in container: 6112
+Time Taken: 3.26182(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 44
+Position in container: 2458
+Time Taken: 9.96337(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 22
+Position in container: 1191
+Time Taken: 2.95078(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 65
+Position in container: 2315
+Time Taken: 4.91597(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.84317(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6567
+Time Taken: 3.27066(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 24
+Position in container: 2543
+Time Taken: 1.7143(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6566
+Time Taken: 3.4631(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6566
+Time Taken: 3.2795(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 67
+Position in container: 1738
+Time Taken: 1.44403(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 12
+Position in container: 2880
+Time Taken: 1.87424(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 45
+Position in container: 4079
+Time Taken: 2.31045(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 454
+Position in container: 466
+Time Taken: 1.19998(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 77
+Position in container: 9039
+Time Taken: 4.0812(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 456
+Position in container: 2010
+Time Taken: 8.34572(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 567
+Position in container: 6330
+Time Taken: 4.67649(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 456
+Position in container: 2010
+Time Taken: 2.17303(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 576
+Position in container: 5757
+Time Taken: 3.77244(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6567
+Time Taken: 3.4306(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6566
+Time Taken: 3.42804(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6567
+Time Taken: 3.2048(seconds)
+
+File Searched: newNumbers.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: 56
+Position in container: 6566
+Time Taken: 3.55262(seconds)

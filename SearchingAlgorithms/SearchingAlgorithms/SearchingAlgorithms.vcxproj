@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classHolder.h" />
+    <ClInclude Include="ContainerPro.h" />
     <ClInclude Include="DataLayer.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="MainMenu.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classHolder.cpp" />
+    <ClCompile Include="ContainerPro.cpp" />
     <ClCompile Include="DataLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />

@@ -45,6 +45,9 @@
     <ClInclude Include="classHolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ContainerPro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="classHolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerPro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

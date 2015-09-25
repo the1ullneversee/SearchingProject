@@ -1,32 +1,5 @@
-﻿Build started 23/09/2015 20:10:41.
-     1>Project "C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\SearchingAlgorithms.vcxproj" on node 2 (Rebuild target(s)).
-     1>ClCompile:
-         T:\Programs\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D CODE_ANALYSIS /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\SearchingAlgorithms.pch.codeanalysis" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze /analyze:pluginT:\Programs\VC\\bin\localespc.dll /errorReport:prompt   /analyze:quiet stdafx.cpp
-         stdafx.cpp
-         T:\Programs\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D CODE_ANALYSIS /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SearchingAlgorithms.pch.codeanalysis" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze /analyze:pluginT:\Programs\VC\\bin\localespc.dll /errorReport:prompt   /analyze:quiet DataLayer.cpp main.cpp MainMenu.cpp SearchTools.cpp ThreadHandler.cpp Timing.cpp
-         Timing.cpp
-         ThreadHandler.cpp
-         SearchTools.cpp
-         MainMenu.cpp
-     1>c:\users\tom.tom-phantom\documents\github\searchingproject\searchingalgorithms\searchingalgorithms\mainmenu.cpp(124): warning C4101: 'e' : unreferenced local variable
-         main.cpp
-         DataLayer.cpp
-     1>c:\users\tom.tom-phantom\documents\github\searchingproject\searchingalgorithms\searchingalgorithms\datalayer.cpp(164): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tom.tom-phantom\documents\github\searchingproject\searchingalgorithms\searchingalgorithms\datalayer.cpp(197): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\tom.tom-phantom\documents\github\searchingproject\searchingalgorithms\searchingalgorithms\datalayer.cpp(199): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
-         Running Code Analysis for C/C++...
-         Generating Code...
-       Link:
-         T:\Programs\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\Debug\SearchingAlgorithms.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\Debug\SearchingAlgorithms.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\Debug\SearchingAlgorithms.lib" /MACHINE:X86 Debug\DataLayer.obj
-         Debug\main.obj
-         Debug\MainMenu.obj
-         Debug\SearchTools.obj
-         Debug\stdafx.obj
-         Debug\ThreadHandler.obj
-         Debug\Timing.obj
-         SearchingAlgorithms.vcxproj -> C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\Debug\SearchingAlgorithms.exe
-     1>Done Building Project "C:\Users\Tom.Tom-Phantom\Documents\GitHub\SearchingProject\SearchingAlgorithms\SearchingAlgorithms\SearchingAlgorithms.vcxproj" (Rebuild target(s)).
+﻿Build started 25/09/2015 17:21:18.
 
 Build succeeded.
 
-Time Elapsed 00:00:11.44
+Time Elapsed 00:00:00.01

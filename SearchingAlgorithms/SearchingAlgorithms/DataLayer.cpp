@@ -29,7 +29,12 @@ void dataLayer::getCWD() {
 dataLayer::~dataLayer()
 {
 	// Can add in for testing 
-	std::cout << "DESTRUCTION" << std::endl;
+	std::cout << "Data layer ending" << std::endl;
+}
+
+Menu * dataLayer::getMenu()
+{
+	return menu;
 }
 
 error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
@@ -188,29 +193,6 @@ ret_code dataLayer::containerFiller(std::string filename,dataLayer::_container_t
 {
 	return dataLayer::readFile(filename, conType);
 }
-
-bool dataLayer::directoryList(LPCTSTR pstr) {
-
-	CFileFind finder;
-	CString strWildCard(pstr);
-	strWildCard += _T("\\*.*");
-	bool bworking = finder.FindFile(strWildCard);
-	while (bworking) {
-		bworking = finder.FindNextFile();
-
-		//Skip dots
-		if (finder.IsDots())
-			continue;
-
-		if (finder.IsDirectory())
-		{
-			CString str = finder.GetFilePath();
-			std::cout << (LPCTSTR) str << std::endl;
-			directoryList(str);
-		}
-	}
-	return 0;
-}
 std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
 {
 	for (std::size_t i = 0; i < vecString.size(); i++) {
@@ -268,11 +250,11 @@ ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conT
 			
 			break;
 		}
-		menu.clearScreen();
+		menu->clearScreen();
 	}
 	catch (std::exception& e)
 	{
-		menu.errorToScreen(e, "Print Container");
+		menu->errorToScreen(e, "Print Container");
 	}
 	return error;
 }
@@ -283,4 +265,100 @@ void dataLayer::containerFillFromFile(dataLayer& dlayer) {
 dataLayer::_container_type dataLayer::containerTypeSelectionRoutine()
 {
 
+	return dataLayer::listInt;
+}
+std::wstring dataLayer::s2ws(const std::string& s)
+{
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
+}
+ret_code dataLayer::getFile(bool& functionAlive)
+{
+	bool locVal = false;
+	bool functionLocalAlive = true;
+	functionAlive = functionLocalAlive;
+	LPCTSTR errorText = NULL;
+	WIN32_FIND_DATA winData;
+	while (!locVal) {
+		std::cout << "Please enter in the file name you want to search" << std::endl << "Enter 1 to get local file list" << std::endl << "Enter exit  to go back to main menu" << std::endl;
+		//try to open the file incase invalid file name;
+		std::cin >> _filename;
+		if (_filename == "exit" || _filename == "Exit") {
+			locVal = true;
+			functionLocalAlive = false;
+			functionAlive = false;
+		}
+		else if (_filename == "1") {
+			bool found = false;
+			menu->clearScreen();
+			std::string locChoice;
+			std::wstring locDirFileName;
+			std::cout << _directory << std::endl;
+			while (!found) {
+
+				std::wstring stemp = s2ws(_directory + "\\*");
+				LPCWSTR dirwstr = stemp.c_str();
+				HANDLE searchHandle = FindFirstFile(dirwstr, &winData);
+				locDirFileName = winData.cFileName;
+				std::cout << "Listing directory!" << std::endl;
+				//Only finds one file which so happens to be the same as the last folder in directory address? Returns Error 18
+				do {
+					//std::wcout << dirwstr << std::endl;
+					std::wcout << winData.cFileName << std::endl;
+				} while (FindNextFile(searchHandle, &winData));
+				menu->changeColourScreen("blue", "Red");
+				std::cout << std::endl << "Enter up to go up a directory level" << std::endl << "Alternatively type the folder name to enter." << std::endl << "OR type exit if filename is found" << std::endl;
+				std::cin >> locChoice;
+				if (locChoice == "exit" || locChoice == "Exit") {
+					found = true;
+				}
+				else if (locChoice == "up" || locChoice == "Up")
+				{
+
+					std::size_t Textfound = _directory.find_last_of("/\\");
+					std::cout << _directory << "Size:" << _directory.size() << "found: " << Textfound << std::endl;
+					_directory = _directory.substr(0, Textfound);
+					std::cout << _directory << "Size: " << _directory.size() << std::endl;
+				}
+				else {
+					_directory = _directory += "\\" + locChoice;
+				}
+				//reverting back to the normal color
+				FindClose(searchHandle);
+			}
+		}
+		else {
+			getCWD();
+			std::ifstream infile;
+			infile.open(_directory + "\\" + _filename);
+			if (infile.is_open()) { locVal = true; }
+			else { std::cout << "Could not open file, try again!" << std::endl; }
+		}
+	}
+
+	return func_passed;
+}
+dataLayer::_container_type dataLayer::getUserConType()
+{
+	bool locVal = false;
+	_container_type conType = vectorInt;
+	int conChoice;
+	while (!locVal) {
+		std::cout << " Please Select your container type: " << std::endl << "1: integer vector" << std::endl << "2: string vector" << std::endl << "3: integer list" << std::endl << "4: string list" << std::endl;
+		std::cin >> conChoice;
+		conType = static_cast<_container_type>(conChoice);
+		for (int i = 0; i < enumTypeEnd; i++) {
+			if (conType == i) { locVal = true; break; }
+		}
+		if (!locVal) {
+			std::cout << "Invalid container selection, try again" << std::endl;
+		}
+	}
+	return conType;
 }

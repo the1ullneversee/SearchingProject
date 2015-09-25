@@ -1,35 +1,24 @@
 #include "stdafx.h"
 std::unique_ptr<Time> timer(new Time);
+std::unique_ptr<Menu> menu(new Menu);
 searchTools::~searchTools(){
 
 }
-std::wstring searchTools::s2ws(const std::string& s)
-{
-	int len;
-	int slength = (int) s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete [] buf;
-	return r;
-} 
 
-void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType srch, dataLayer::_container_type conType, std::string filename) { // change this to an error code return type yeah. Got err down there kk,
+
+void searchTools::searchFunctionRouting(dataLayer& dlayer, searchTools::_searchType srch, dataLayer::_container_type conType, std::string filename) { // change this to an error code return type yeah. Got err down there kk,
 	//Can overload the functions, so do not need to know what type of variable per se. 
 	//dataLayer dlayer;
 	error_type err = func_passed;
-	dlayer._filename = filename;
 	bool wantToSearch = true;
 	std::string userChoice;
 	try {
-		err = dlayer.containerFiller(filename, conType);
 		//read the file into relevant container, then pass to the searching algorithm. 
 		//WE have to read file in and do the search that way.
 		//Move the container selection into the data layer!
 	//CONTAINER TYPE DEFINTION{ default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4 };
 		while (wantToSearch) {
-			clearScreen();
+			menu->clearScreen();
 			switch (conType) // Type of container
 			{
 			case 1: //Vector
@@ -37,17 +26,11 @@ void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType sr
 				std::cout << "Please Enter the element you would like to find: " << std::endl;
 				std::cin >> _intKey;
 				if (_intKey == NULL) {
-					errorToScreen("Nothing inputed", "function routing");
+					menu->errorToScreen("Nothing inputed", "function routing");
 					_found = true; // Whats this for
 				}
-				if (err == func_passed) {
-					switch (srch) {
-					case 1: linearSearch(dlayer, _intKey, _intRec, true);  break; case 2: break; case 3: break; case 4: break; // fill in for every case
-					}
-				}
-				else {
-					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-					err = function_fail;
+				switch (srch) {
+				case 1: linearSearch(dlayer, _intKey, _intRec, true);  break; case 2: break; case 3: break; case 4: break; // fill in for every case
 				}
 
 				break;
@@ -59,14 +42,9 @@ void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType sr
 					throw "Nothing entered!";
 					_found = true; // Whats this for
 				}
-				if (err == func_passed) {
-					switch (srch) {
-					case 1: linearSearch(dlayer, _stringKey, _stringRec, true);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
-					}
-				}
-				else {
-					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-					err = function_fail;
+
+				switch (srch) {
+				case 1: linearSearch(dlayer, _stringKey, _stringRec, true);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
 				}
 				break;
 			case 3: //list int
@@ -76,14 +54,8 @@ void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType sr
 					throw "Nothing entered!";
 					_found = true; // Whats this for
 				}
-				if (err == func_passed) {
-					switch (srch) {
-					case 1: linearSearch(dlayer, _intKey, _intRec, false);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
-					}
-				}
-				else {
-					throw std::invalid_argument("Filling Function failed, Cannot complete search!");
-					err = function_fail;
+				switch (srch) {
+				case 1: linearSearch(dlayer, _intKey, _intRec, false);  break; case 2:  break; case 3: break; case 4: break; // fill in for every case
 				}
 				break;
 			case 4: // list string
@@ -105,6 +77,26 @@ void searchTools::functionRouting(dataLayer& dlayer, searchTools::_searchType sr
 	//So we choose Vector|List -> Int|String -> Linear | bubble etc..
 	
 
+}
+searchTools::_searchType searchTools::searchSelect()
+{
+	searchTools::_searchType srchType = searchTools::findElement;
+	bool locVal = false;
+	while (!locVal) {
+		//{ linear = 1, findElement = 2, binary = 3, bubbleSort = 4, EndOfSearchEnum = 5 }
+		std::cout << " Please Select your search type:" << "1: linear" << std::endl << "2: element find" << std::endl << "3: binary search" << std::endl;
+		int search_type;
+		// Doesnt work with matching to ENUM!!
+		std::cin >> search_type;
+		srchType = static_cast<searchTools::_searchType>(search_type);
+		for (int i = 0; i < searchTools::EndOfSearchEnum; i++) {
+			if (srchType == i) { locVal = true; break; }
+		}
+		if (!locVal) {
+			std::cout << "Invalid container selection, try again" << std::endl;
+		}
+	}
+	return srchType;
 }
 //&Datalayer.intVector, 
 bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t rec, bool vec_list)
@@ -162,7 +154,7 @@ bool searchTools::linearSearch(dataLayer& dlayer, std::size_t key, std::size_t r
 		}
 	}
 	catch (std::exception& e){
-		errorToScreen(e, "Integer Linear Search");
+		menu->errorToScreen(e, "Integer Linear Search");
 	}
 	return _found;
 }

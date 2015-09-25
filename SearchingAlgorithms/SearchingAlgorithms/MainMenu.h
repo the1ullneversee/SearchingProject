@@ -4,14 +4,14 @@
 typedef error_type ret;
 #include "stdafx.h"
 class dataLayer;
-
+class ContainerPro;
 class Menu
 {
 public:
 	Menu();
 	~Menu();
 	dataLayer* getDataLayer();
-	ret searchMenu();
+	ret searchMenu(Menu& menu);
 	ret timeMenu();
 	ret dataMenu();
 	void mainMenu();
@@ -19,12 +19,15 @@ public:
 	void errorToScreen(std::invalid_argument& invArg, std::string functionName);
 	void errorToScreen(std::string strErr, std::string functionName);
 	ret textToScreen(std::string); // Want a function to output errors and stuff to screen.
-	
+	bool functionReRouting;
 	ret clearScreen();
 	ret changeColourScreen(std::string textColour, std::string backgroundColour);
 protected:
+	std::vector<std::unique_ptr<ContainerPro>> containerMaster;
+	std::vector<std::size_t> IDsInUse;
 	bool menuReRouting;
-	dataLayer* dlayerMain;
+	std::unique_ptr<dataLayer> dlayerMain; // Might still need this. 
+	//dataLayer* dlayerMain;
 	//WE gonna store some references to pass around super sneaky style. 
 	//searchTools &searchToolsMaster;
 private:

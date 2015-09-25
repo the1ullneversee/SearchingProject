@@ -1,5 +1,5 @@
 #include "stdafx.h"
-//std::unique_ptr<Menu> menu(new Menu);
+std::unique_ptr<Menu> tMenu(new Menu);
 Time::Time() {
 	
 	_phase_start = std::chrono::high_resolution_clock::now();
@@ -20,6 +20,11 @@ void Time::duration() {
 	Time::_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(Time::_phase_end - Time::_phase_start);
 	//std::cout << "The execution duration was: " << 00 << ":" << 01 << ":" << 12 << std::endl;
 	std::cout << "The execution duration was: " << float(Time::_duration.count() / 1E6) << "(seconds)" << std::endl;
+}
+std::string Time::currTime() {
+	Time::_time = std::chrono::system_clock::now();
+	Time::end_time = std::chrono::system_clock::to_time_t(_time);
+	return ctime(&end_time);
 }
 void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list)
 {
@@ -51,7 +56,7 @@ void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t position,
 		{
 			if (fileFound)
 			{
-				for (int i = 0; i < stringInVect.size(); i++)
+				for (unsigned int i = 0; i < stringInVect.size(); i++)
 					ofStream << stringInVect[i] << std::endl;
 			}
 			if (vec_list) { conType = "Vector"; }
@@ -65,5 +70,6 @@ void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t position,
 	}
 	catch (std::exception& e)
 	{
+		tMenu->errorToScreen(e, "Time Capture");
 	}
 }
