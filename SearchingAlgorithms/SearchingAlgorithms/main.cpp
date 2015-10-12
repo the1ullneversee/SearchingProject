@@ -46,6 +46,13 @@ int _tmain(int argc, _TCHAR* argv [])
 	*/
 	
 	std::unique_ptr<Menu> menu(new Menu);
+	//std::unique_ptr<Menu> menu1(new Menu);
+	////auto t = std::thread(menu->dataMenu());
+	//std::thread t1(&Menu::mainMenu, menu.get());
+	//std::thread t2(&Menu::dataMenu, menu1.get());
+
+	//t1.join();
+	//t2.join();
 	menu->mainMenu();
 
 	return 0;

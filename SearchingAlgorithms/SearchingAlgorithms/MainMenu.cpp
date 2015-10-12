@@ -40,12 +40,12 @@ void Menu::mainMenu()
 		while (!valid) {
 			if (menu->containerMaster.size() != 0)
 			{
-				for (int i = 0; i <= menu->containerMaster.size() -1; i++) {
+				for (int i = 0; i <= menu->containerMaster.size() - 1; i++) {
 					std::unique_ptr<ContainerPro> conProMain(new ContainerPro);
 					std::swap(conProMain, menu->containerMaster[i]);
 					//conProMain = std::move(menu->containerMaster[i]);
 					std::cout << conProMain->ContainerID << conProMain->metaDataName << std::endl;
-					std::swap(menu->containerMaster[i],conProMain);
+					std::swap(menu->containerMaster[i], conProMain);
 					//std::cout << conProMain->intVect << std::endl;
 					//std::cout << conProMain->stringVect << std::endl;
 				}
@@ -53,7 +53,7 @@ void Menu::mainMenu()
 			}
 			std::cout << "1. Searching Functions" << std::endl
 				<< "2. Data Functions" << std::endl
-1				<< "3. Time Functions" << std::endl;
+				<< "3. Time Functions" << std::endl;
 			std::cin >> choice;
 			for (int i = 0; i < ENDOFMenuEnum; i++)
 			{
@@ -181,12 +181,16 @@ ret Menu::searchMenu(Menu& menu)
 			if (tempFileName.length() == 0) {
 				throw std::exception("FileName is empty!");
 			}
-
-			ret_err = dlay->containerFiller(tempFileName, conType);
+			std::thread t1(&dataLayer::containerFiller,dlay.get(), tempFileName, conType);
+			
+			//ret_err = dlay->containerFiller(tempFileName, conType);
+			std::cout << "Waiting for File to finish reading" << std::endl;
+			
 			if (ret_err != func_passed)
 			{
 				throw std::exception("container filler failed!");
 			}
+			t1.join();
 			//throws in the containers. what search they want, container type, and the filename? why the filename.
 			search->searchFunctionRouting(*dlay, srchType, conType, tempFileName);
 			

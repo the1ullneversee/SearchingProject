@@ -40,52 +40,92 @@ Menu * dataLayer::getMenu()
 error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
 	//_container_type con_type = static_cast<_container_type>(containerSelection);
 	ret_code ret = func_passed;
+	Time timer;
+
 	try{
 		//std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
 		inFile.open(filename);
+		float bar;
+		float prog = 0.00;
+		std::ifstream::pos_type filesize;
+		std::ifstream in(filename, std::ios::binary | std::ios::ate);
+		dataLayer::_fileSize = in.tellg();
+		std::cout << "File Size: " << dataLayer::_fileSize << std::endl;
 		//inFile.exceptions(std::ios::failbit);
 		if (inFile) {
-			//std::cout << "The current working directory is: " << _cBaseDirectory + filename
-			while (!inFile.eof()) {
-				switch (con_type) {
-				case 0:
-					throw "Container selection not supported";
-					ret = bad_input;
-					break;
-				case 1: 
+			timer.clock_start();
+			//std::cout << "The current working directory is: " << _cBaseDirectory + filenam
+			switch (con_type) {
+			case 0:
+				throw "Container selection not supported";
+				ret = bad_input;
+				break;
+			case 1:
+				while (!inFile.eof()) {
+					_completion++;
+					float prog(_completion / float(_fileSize));
+					std::cout << std::fixed << std::setprecision(2)
+						<< "\r   [" << std::string(_completion, '#')
+						<< std::string(_fileSize + 1 - _completion, ' ') << "] " << 100 * prog << "%";
+
 					//Filling the int vector
 					inFile >> _stringTemp;
 					//std::getline(inFile, _stringTemp);
 					_intTemp = std::atoi(_stringTemp.c_str());
 					//std::cout << _stringTemp;
 					intVector.push_back(_intTemp);
-					break;
-				case 2:
-					// filling the String vector
+				}
+				break;
+			case 2:
+				// filling the String vector
+				int cur;
+				
+				while (!inFile.eof()) {
+					
+					prog = _completion / float(_fileSize);
+					//if (prog == bar || prog == 0.2 || prog == 0.3 || prog == 0.00) {
+					if (prog == bar)
+					{
+						if (bar == 0.00)
+						{
+							bar = 0.10;
+						}
+						else {
+							bar = bar * 2;
+						}
+						cur = std::ceil(_completion * _fileSize);
+						std::cout << std::fixed << std::setprecision(2)
+							<< "\r   [" << std::string(0, '#')
+							<< "] " << 100 * prog << "%";
+					}
 					std::getline(inFile, _stringTemp);
 					//std::cout << _stringTemp;
 					stringVector.push_back(_stringTemp);
-					break;
-				case 3:
-					//Filling the int list
+					_completion++;
+				}
+				break;
+			case 3:
+				//Filling the int list
+				while (!inFile.eof()) {
 					std::getline(inFile, _stringTemp);
 					_intTemp = std::atoi(_stringTemp.c_str());
 					//std::cout << _stringTemp;
 					intList.push_back(_intTemp);
-					break;
-				case 4:
-					//Filling the String List
+				}
+				break;
+			case 4:
+				//Filling the String List
+				while (!inFile.eof()) {
 					std::getline(inFile, _stringTemp);
 					//std::cout << _stringTemp;
 					stringList.push_back(_stringTemp);
-					break;
-				default:
-					std::cout << "Couldn't find a matching case\n";
-					ret = function_fail;
-					break;
 				}
+				break;
+			default:
+				std::cout << "Couldn't find a matching case\n";
+				ret = function_fail;
+				break;
 			}
-			inFile.close();
 		}
 		else {
 			std::cout << "Error reading file" << std::endl;
@@ -102,6 +142,9 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 		std::cerr << "Function failed - reason is "
 			<< ex.what();
 	}
+	timer.clock_end();
+	timer.duration();
+	inFile.close();
 	return ret;// Change this static cast. 
 }
 
@@ -225,8 +268,7 @@ std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
 	return out;
 }
 ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conType) {
-	error_type error = func_passed;// Think we need a better way of doing this.
-	//Menu menu; 							   //Need a switch statement here to print the different container types to screen. Can do some fancy formatting. 
+	error_type error = func_passed;// Think we need a better way of doing this
 	try {
 		switch (conType)
 		{
@@ -264,6 +306,8 @@ void dataLayer::containerFillFromFile(dataLayer& dlayer) {
 }
 dataLayer::_container_type dataLayer::containerTypeSelectionRoutine()
 {
+	_container_type conType = vectorInt;
+
 
 	return dataLayer::listInt;
 }

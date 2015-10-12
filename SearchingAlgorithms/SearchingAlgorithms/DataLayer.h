@@ -44,6 +44,8 @@ private:
 	std::string _stringTemp;
 	std::size_t _intTemp;
 	int active_containers;
+	std::size_t _completion;
+	std::size_t _fileSize;
 	std::size_t count;
 	std::size_t index;
 	int temp;

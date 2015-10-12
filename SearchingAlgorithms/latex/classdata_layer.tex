@@ -1,0 +1,115 @@
+\hypertarget{classdata_layer}{}\section{data\+Layer Class Reference}
+\label{classdata_layer}\index{data\+Layer@{data\+Layer}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classdata_layer_a705d65c89e886e8e8eed3a471a9f920c}{}enum {\bfseries \+\_\+container\+\_\+type} \+: int \{ \\*
+{\bfseries default} = 0, 
+{\bfseries vector\+Int} = 1, 
+{\bfseries vector\+String} = 2, 
+{\bfseries list\+Int} = 3, 
+\\*
+{\bfseries list\+String} = 4, 
+{\bfseries enum\+Type\+End} = 5
+ \}\label{classdata_layer_a705d65c89e886e8e8eed3a471a9f920c}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classdata_layer_a91dd3eca2c6d77878fd95d92243096a5}{}\hyperlink{class_menu}{Menu} $\ast$ {\bfseries get\+Menu} ()\label{classdata_layer_a91dd3eca2c6d77878fd95d92243096a5}
+
+\item 
+\hypertarget{classdata_layer_a19e22378d3c1df8f490579520326fd0d}{}void {\bfseries get\+C\+W\+D} ()\label{classdata_layer_a19e22378d3c1df8f490579520326fd0d}
+
+\item 
+\hypertarget{classdata_layer_aca307b69d5e42fc1df38c852f4cd5b61}{}void {\bfseries container\+Fill\+From\+File} (\hyperlink{classdata_layer}{data\+Layer} \&dlayer)\label{classdata_layer_aca307b69d5e42fc1df38c852f4cd5b61}
+
+\item 
+\hypertarget{classdata_layer_a092412284e24eaaae2d46501bf7f5abd}{}error\+\_\+type {\bfseries read\+File} (std\+::string filename, data\+Layer\+::\+\_\+container\+\_\+type con\+\_\+type)\label{classdata_layer_a092412284e24eaaae2d46501bf7f5abd}
+
+\item 
+\hypertarget{classdata_layer_addb798c6db32d58ae731f629e8975dd0}{}\+\_\+container\+\_\+type {\bfseries container\+Type\+Selection\+Routine} ()\label{classdata_layer_addb798c6db32d58ae731f629e8975dd0}
+
+\item 
+\hypertarget{classdata_layer_a1dec4c9cce96d69ca6682b6feb9db66c}{}ret\+\_\+code {\bfseries save\+File} (std\+::string filename, data\+Layer\+::\+\_\+container\+\_\+type con\+\_\+type, \hyperlink{classdata_layer}{data\+Layer} \&data\+Layer\+\_\+copy)\label{classdata_layer_a1dec4c9cce96d69ca6682b6feb9db66c}
+
+\item 
+\hypertarget{classdata_layer_ae1612efd69f0c114892cdbfbe37529e9}{}ret\+\_\+code {\bfseries random\+Numbers} ()\label{classdata_layer_ae1612efd69f0c114892cdbfbe37529e9}
+
+\item 
+\hypertarget{classdata_layer_a8a5cd5b8a03186e545f2cfe59ba91634}{}data\+Layer\+::\+\_\+container\+\_\+type {\bfseries get\+User\+Con\+Type} ()\label{classdata_layer_a8a5cd5b8a03186e545f2cfe59ba91634}
+
+\item 
+\hypertarget{classdata_layer_a1700388af65d3a2c3574bbfc469cb657}{}ret\+\_\+code {\bfseries get\+File} (bool \&function\+Alive)\label{classdata_layer_a1700388af65d3a2c3574bbfc469cb657}
+
+\item 
+\hypertarget{classdata_layer_a86172ed5533e1c94e132a1fefd1a263b}{}std\+::wstring {\bfseries s2ws} (const std\+::string \&s)\label{classdata_layer_a86172ed5533e1c94e132a1fefd1a263b}
+
+\item 
+\hypertarget{classdata_layer_aa09cfd7bb4e7bd3772b2959cc0238ce3}{}ret\+\_\+code {\bfseries print\+Container} (\hyperlink{classdata_layer}{data\+Layer} \&dlayer, data\+Layer\+::\+\_\+container\+\_\+type con\+Type)\label{classdata_layer_aa09cfd7bb4e7bd3772b2959cc0238ce3}
+
+\item 
+\hypertarget{classdata_layer_ab667fa967de628fffdd1728ca7e42f58}{}ret\+\_\+code {\bfseries container\+Filler} (std\+::string filename, data\+Layer\+::\+\_\+container\+\_\+type con\+Type)\label{classdata_layer_ab667fa967de628fffdd1728ca7e42f58}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classdata_layer_ae862e8767b83ffb0c8677dfd017ebe2d}{}std\+::ifstream {\bfseries in\+File}\label{classdata_layer_ae862e8767b83ffb0c8677dfd017ebe2d}
+
+\item 
+\hypertarget{classdata_layer_a109520acac1f8d5bc41b7b7193074b40}{}std\+::ofstream {\bfseries of\+File}\label{classdata_layer_a109520acac1f8d5bc41b7b7193074b40}
+
+\item 
+\hypertarget{classdata_layer_a68d73a9df4c62e19cc763d87eebfe603}{}std\+::string {\bfseries \+\_\+directory}\label{classdata_layer_a68d73a9df4c62e19cc763d87eebfe603}
+
+\item 
+\hypertarget{classdata_layer_a5397e314212e5e3d2b0018ab30599f3f}{}std\+::vector$<$ std\+::size\+\_\+t $>$ {\bfseries int\+Vector}\label{classdata_layer_a5397e314212e5e3d2b0018ab30599f3f}
+
+\item 
+\hypertarget{classdata_layer_a12e94882b9ab2f5eb9efd50f19911d64}{}std\+::list$<$ std\+::size\+\_\+t $>$ {\bfseries int\+List}\label{classdata_layer_a12e94882b9ab2f5eb9efd50f19911d64}
+
+\item 
+\hypertarget{classdata_layer_a4cb4aa1196957e2557020fc2a5fa84f5}{}std\+::vector$<$ std\+::string $>$ {\bfseries string\+Vector}\label{classdata_layer_a4cb4aa1196957e2557020fc2a5fa84f5}
+
+\item 
+\hypertarget{classdata_layer_af3f560c7b8727ed3f4ddf8f50dd09927}{}std\+::list$<$ std\+::string $>$ {\bfseries string\+List}\label{classdata_layer_af3f560c7b8727ed3f4ddf8f50dd09927}
+
+\item 
+\hypertarget{classdata_layer_af15c46bfc1df95c928793836a9db9ab3}{}std\+::vector$<$ std\+::vector$<$ std\+::size\+\_\+t $>$ $>$ {\bfseries vector\+Storer}\label{classdata_layer_af15c46bfc1df95c928793836a9db9ab3}
+
+\item 
+\hypertarget{classdata_layer_adbe820aa1352d66c245e01e25ad2e024}{}std\+::list$<$ std\+::list$<$ std\+::size\+\_\+t $>$ $>$ {\bfseries list\+Storer}\label{classdata_layer_adbe820aa1352d66c245e01e25ad2e024}
+
+\item 
+\hypertarget{classdata_layer_a6f2da2b5e0caf2710ae430fc1d56d87b}{}std\+::string {\bfseries \+\_\+filename}\label{classdata_layer_a6f2da2b5e0caf2710ae430fc1d56d87b}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classdata_layer_a761d663f6a0979d9792b799713f5e3bf}{}\hyperlink{class_menu}{Menu} $\ast$ {\bfseries menu}\label{classdata_layer_a761d663f6a0979d9792b799713f5e3bf}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classdata_layer_afe77e05dc6854c055657315b56f65ca0}{}std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&out, std\+::vector$<$ std\+::string $>$ \&vec\+String)\label{classdata_layer_afe77e05dc6854c055657315b56f65ca0}
+
+\item 
+\hypertarget{classdata_layer_a6f6f94355da0d50c7a8ec69b9d4208d7}{}std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&out, std\+::vector$<$ std\+::size\+\_\+t $>$ \&vec\+Int)\label{classdata_layer_a6f6f94355da0d50c7a8ec69b9d4208d7}
+
+\item 
+\hypertarget{classdata_layer_a68e491304adfecb6981d3749efab0fe2}{}std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&out, std\+::list$<$ std\+::string $>$ \&list\+String)\label{classdata_layer_a68e491304adfecb6981d3749efab0fe2}
+
+\item 
+\hypertarget{classdata_layer_a51e4795782ce6ef6982b97afe4a8d604}{}std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&out, std\+::list$<$ std\+::size\+\_\+t $>$ \&list\+Int)\label{classdata_layer_a51e4795782ce6ef6982b97afe4a8d604}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Data\+Layer.\+h\item 
+Data\+Layer.\+cpp\end{DoxyCompactItemize}

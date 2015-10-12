@@ -1,0 +1,80 @@
+\hypertarget{classsearch_tools}{}\section{search\+Tools Class Reference}
+\label{classsearch_tools}\index{search\+Tools@{search\+Tools}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classsearch_tools_abfbf89b8633afad7c82b8895465127e4}{}enum {\bfseries \+\_\+search\+Type} \+: int \{ \\*
+{\bfseries linear} = 1, 
+{\bfseries find\+Element} = 2, 
+{\bfseries binary} = 3, 
+{\bfseries bubble\+Sort} = 4, 
+\\*
+{\bfseries End\+Of\+Search\+Enum} = 5
+ \}\label{classsearch_tools_abfbf89b8633afad7c82b8895465127e4}
+
+\item 
+\hypertarget{classsearch_tools_a2a594da1ab2a79fe04d7d53fc52d5bfd}{}enum {\bfseries \+\_\+container\+Type} \+: int \{ {\bfseries vector} = 1, 
+{\bfseries list} = 2
+ \}\label{classsearch_tools_a2a594da1ab2a79fe04d7d53fc52d5bfd}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classsearch_tools_adaeb42ca9640d29a100373f7a4bc27e2}{}virtual bool {\bfseries linear\+Search} (\hyperlink{classdata_layer}{data\+Layer} \&dlayer, std\+::size\+\_\+t key, std\+::size\+\_\+t rec, bool vec\+\_\+list)\label{classsearch_tools_adaeb42ca9640d29a100373f7a4bc27e2}
+
+\item 
+\hypertarget{classsearch_tools_adfd03735dd20fec599a1d4c0e50375a0}{}virtual bool {\bfseries linear\+Search} (\hyperlink{classdata_layer}{data\+Layer} \&dlayer, std\+::string string\+Key, std\+::string string\+Rec, bool vec\+\_\+list)\label{classsearch_tools_adfd03735dd20fec599a1d4c0e50375a0}
+
+\item 
+\hypertarget{classsearch_tools_a956cf1c9629b15f4610ed71e409c77b1}{}bool {\bfseries element\+Find} (std\+::list$<$ std\+::size\+\_\+t $>$ \&list, std\+::size\+\_\+t key)\label{classsearch_tools_a956cf1c9629b15f4610ed71e409c77b1}
+
+\item 
+\hypertarget{classsearch_tools_afcdbe186a67a1f594a73db0f0dc3da40}{}bool {\bfseries element\+Find} (std\+::list$<$ std\+::string $>$ \&list, std\+::string key)\label{classsearch_tools_afcdbe186a67a1f594a73db0f0dc3da40}
+
+\item 
+\hypertarget{classsearch_tools_a894018c55b921bfe8069bf6080e4bb96}{}bool {\bfseries element\+Find} (std\+::vector$<$ std\+::size\+\_\+t $>$ \&vector, std\+::size\+\_\+t key)\label{classsearch_tools_a894018c55b921bfe8069bf6080e4bb96}
+
+\item 
+\hypertarget{classsearch_tools_a6cb8b3b063e770b2e6b52e8e20999cfa}{}bool {\bfseries element\+Find} (std\+::vector$<$ std\+::string $>$ \&vector, std\+::string)\label{classsearch_tools_a6cb8b3b063e770b2e6b52e8e20999cfa}
+
+\item 
+\hypertarget{classsearch_tools_ac7ee5bde189487c52868cd97e05fbdb6}{}void {\bfseries search\+Function\+Routing} (\hyperlink{classdata_layer}{data\+Layer} \&dlayer, search\+Tools\+::\+\_\+search\+Type srch, data\+Layer\+::\+\_\+container\+\_\+type con\+Type, std\+::string filename)\label{classsearch_tools_ac7ee5bde189487c52868cd97e05fbdb6}
+
+\item 
+\hypertarget{classsearch_tools_a5c6bb52d9e52decd92d6700f12158751}{}search\+Tools\+::\+\_\+search\+Type {\bfseries search\+Select} ()\label{classsearch_tools_a5c6bb52d9e52decd92d6700f12158751}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classsearch_tools_a042d217c4ee0f423d459f918df7d4e52}{}unsigned int {\bfseries \+\_\+con\+Choice} = N\+U\+L\+L\label{classsearch_tools_a042d217c4ee0f423d459f918df7d4e52}
+
+\item 
+\hypertarget{classsearch_tools_aaf5e2ffcea6777296006d54be4972b9a}{}unsigned int {\bfseries \+\_\+var\+Type} = N\+U\+L\+L\label{classsearch_tools_aaf5e2ffcea6777296006d54be4972b9a}
+
+\item 
+\hypertarget{classsearch_tools_a347c312715c636f6b30d9424d4a14e60}{}bool {\bfseries \+\_\+found}\label{classsearch_tools_a347c312715c636f6b30d9424d4a14e60}
+
+\item 
+\hypertarget{classsearch_tools_a6e06160b42e73a6e79d13d42b6a36f36}{}bool {\bfseries \+\_\+alive}\label{classsearch_tools_a6e06160b42e73a6e79d13d42b6a36f36}
+
+\item 
+\hypertarget{classsearch_tools_ab9031cdf5f301a867c504b5960912166}{}std\+::size\+\_\+t {\bfseries \+\_\+int\+Key}\label{classsearch_tools_ab9031cdf5f301a867c504b5960912166}
+
+\item 
+\hypertarget{classsearch_tools_a5d38c76de0683ffcb41c4560b3f0e8fb}{}std\+::size\+\_\+t {\bfseries \+\_\+int\+Rec}\label{classsearch_tools_a5d38c76de0683ffcb41c4560b3f0e8fb}
+
+\item 
+\hypertarget{classsearch_tools_a33c186a29a882e4718990c14007eb5f1}{}std\+::string {\bfseries \+\_\+string\+Rec}\label{classsearch_tools_a33c186a29a882e4718990c14007eb5f1}
+
+\item 
+\hypertarget{classsearch_tools_a53b3b8b6c233f6f3fea03ad518e5928a}{}std\+::string {\bfseries \+\_\+string\+Key}\label{classsearch_tools_a53b3b8b6c233f6f3fea03ad518e5928a}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Search\+Tools.\+h\item 
+Search\+Tools.\+cpp\end{DoxyCompactItemize}
