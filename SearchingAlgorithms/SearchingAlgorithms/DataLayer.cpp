@@ -42,96 +42,150 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 	ret_code ret = func_passed;
 	Time timer;
 
-	try{
+	try {
 		//std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
-		inFile.open(filename);
-		float bar;
+		float bar = 0.00;
 		float prog = 0.00;
+		std::size_t line_count = 0;
 		std::ifstream::pos_type filesize;
+		std::string s;
 		std::ifstream in(filename, std::ios::binary | std::ios::ate);
 		dataLayer::_fileSize = in.tellg();
+		std::ofstream os;
+		std::ostringstream osString;
 		std::cout << "File Size: " << dataLayer::_fileSize << std::endl;
+		std::vector<std::string> heapVect;
+		
+		std::size_t sint = 0;
+		std::vector<std::string> data;
+		
+		std::vector<std::string> test1Vect;
+		std::vector<std::string> test2Vect;
 		//inFile.exceptions(std::ios::failbit);
-		if (inFile) {
-			timer.clock_start();
-			//std::cout << "The current working directory is: " << _cBaseDirectory + filenam
-			switch (con_type) {
-			case 0:
-				throw "Container selection not supported";
-				ret = bad_input;
-				break;
-			case 1:
-				while (!inFile.eof()) {
-					_completion++;
-					float prog(_completion / float(_fileSize));
-					std::cout << std::fixed << std::setprecision(2)
-						<< "\r   [" << std::string(_completion, '#')
-						<< std::string(_fileSize + 1 - _completion, ' ') << "] " << 100 * prog << "%";
+		std::string s4;
+		//if (inFile) {
+		std::ifstream inFile;
+		std::ifstream file(filename);
+		//std::cout << "The current working directory is: " << _cBaseDirectory + filenam
+		switch (con_type) {
+		case 0:
+			throw "Container selection not supported";
+			ret = bad_input;
+			break;
+		case 1:
+			while (!inFile.eof()) {
+				_completion++;
+				float prog(_completion / float(_fileSize));
+				std::cout << std::fixed << std::setprecision(2)
+					<< "\r   [" << std::string(_completion, '#')
+					<< std::string(_fileSize + 1 - _completion, ' ') << "] " << 100 * prog << "%";
 
-					//Filling the int vector
-					inFile >> _stringTemp;
-					//std::getline(inFile, _stringTemp);
-					_intTemp = std::atoi(_stringTemp.c_str());
-					//std::cout << _stringTemp;
-					intVector.push_back(_intTemp);
-				}
-				break;
-			case 2:
-				// filling the String vector
-				int cur;
-				
-				while (!inFile.eof()) {
-					
-					prog = _completion / float(_fileSize);
-					//if (prog == bar || prog == 0.2 || prog == 0.3 || prog == 0.00) {
-					if (prog == bar)
-					{
-						if (bar == 0.00)
-						{
-							bar = 0.10;
-						}
-						else {
-							bar = bar * 2;
-						}
-						cur = std::ceil(_completion * _fileSize);
-						std::cout << std::fixed << std::setprecision(2)
-							<< "\r   [" << std::string(0, '#')
-							<< "] " << 100 * prog << "%";
-					}
-					std::getline(inFile, _stringTemp);
-					//std::cout << _stringTemp;
-					stringVector.push_back(_stringTemp);
-					_completion++;
-				}
-				break;
-			case 3:
-				//Filling the int list
-				while (!inFile.eof()) {
-					std::getline(inFile, _stringTemp);
-					_intTemp = std::atoi(_stringTemp.c_str());
-					//std::cout << _stringTemp;
-					intList.push_back(_intTemp);
-				}
-				break;
-			case 4:
-				//Filling the String List
-				while (!inFile.eof()) {
-					std::getline(inFile, _stringTemp);
-					//std::cout << _stringTemp;
-					stringList.push_back(_stringTemp);
-				}
-				break;
-			default:
-				std::cout << "Couldn't find a matching case\n";
-				ret = function_fail;
-				break;
+				//Filling the int vector
+				inFile >> _stringTemp;
+				//std::getline(inFile, _stringTemp);
+				_intTemp = std::atoi(_stringTemp.c_str());
+				//std::cout << _stringTemp;
+				intVector.push_back(_intTemp);
 			}
+			break;
+		case 2:
+			// filling the String vector
+
+			int cur;
+			timer.clock_start();
+			//data.resize(1045924);
+			osString << file.rdbuf();
+			timer.clock_end();
+			timer.duration();
+			//// new lines will be skipped unless we stop it from happening:    
+			//inFile.unsetf(std::ios_base::skipws);
+			//// count the newlines with an algorithm specialized for counting: // This takes 46 seconds!!
+			///*line_count = std::count(
+			//	std::istream_iterator<char>(inFile),
+			//	std::istream_iterator<char>(),
+			//	'\n');*/
+			//inFile.close();
+			//data.resize((_fileSize)/97);
+			//inFile.open(filename);
+			//std::getline(inFile, _stringTemp);
+			
+			///*for (unsigned int ui = 0; ui < data.capacity(); ui++) {
+			//	data.push_back(_stringTemp);
+			//}*/
+			//
+			//while (std::getline(inFile, _stringTemp))
+			//{
+			//	data[sint] = _stringTemp;
+			//	//std::cout << std::fixed << "\r [ " << sint;
+			//	sint++;
+
+			//}
+			//timer.clock_end();
+			//timer.duration();
+			//os.open("FileRegurd.txt");
+			//os << data;
+			//os.close();
+			//inFile.close();
+			heapVect.resize((_fileSize / 97));
+			for (unsigned int ui = 0; ui < heapVect.capacity() - 1; ui++) {
+				heapVect[ui].reserve(sizeof(_stringTemp));
+			}
+			inFile.open(filename);
+			while (std::getline(inFile, _stringTemp)) {
+
+				/*prog = _completion / float(_fileSize);
+				if (prog == bar)
+				{
+					if (bar == 0.00)
+					{
+						bar = 0.10;
+					}
+					else {
+						bar = bar * 2;
+					}
+					cur = std::ceil(_completion * _fileSize);
+					std::cout << std::fixed << std::setprecision(2)
+						<< "\r   [" << std::string(0, '#')
+						<< "] " << 100 * prog << "%";
+				}
+*/
+				//std::cout << _stringTemp;
+				heapVect.push_back(_stringTemp);
+				_completion++;
+			}
+			timer.clock_end();
+			timer.duration();
+			break;
+		case 3:
+			//Filling the int list
+			while (!inFile.eof()) {
+				std::getline(inFile, _stringTemp);
+				_intTemp = std::atoi(_stringTemp.c_str());
+				//std::cout << _stringTemp;
+				intList.push_back(_intTemp);
+			}
+			break;
+		case 4:
+			//Filling the String List
+			timer.clock_start();
+			while (std::getline(inFile, _stringTemp)) {
+				//std::cout << _stringTemp;
+				stringList.push_back(_stringTemp);
+			}
+			timer.clock_end();
+			timer.duration();
+			break;
+		default:
+			std::cout << "Couldn't find a matching case\n";
+			ret = function_fail;
+			break;
 		}
-		else {
-			std::cout << "Error reading file" << std::endl;
-			throw std::exception("Error reading file");
-			//free(&inFileTemp);
-		}
+		//else {
+		//	std::cout << "Error reading file" << std::endl;
+		//	throw std::exception("Error reading file");
+		//	//free(&inFileTemp);
+		//}
+		std::cout << "Size of vect: " << heapVect.size() << std::endl;
 	}
 	catch (std::invalid_argument& e)
 	{
@@ -142,8 +196,6 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 		std::cerr << "Function failed - reason is "
 			<< ex.what();
 	}
-	timer.clock_end();
-	timer.duration();
 	inFile.close();
 	return ret;// Change this static cast. 
 }

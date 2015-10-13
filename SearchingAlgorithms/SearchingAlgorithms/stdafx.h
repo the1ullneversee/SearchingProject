@@ -28,7 +28,10 @@ const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2
 #include "afx.h"
 #include <comdef.h>
 #include <limits>
-
+#include <sstream>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
 #include "DataLayer.h"
 #include "MainMenu.h"
 #include "classHolder.h"

@@ -19,7 +19,7 @@ void Time::clock_end(){
 void Time::duration() {
 	Time::_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(Time::_phase_end - Time::_phase_start);
 	//std::cout << "The execution duration was: " << 00 << ":" << 01 << ":" << 12 << std::endl;
-	std::cout << "The execution duration was: " << float(Time::_duration.count() / 1E6) << "(seconds)" << std::endl;
+	std::cout << "The execution duration was: " << float(Time::_duration.count() / 1E6) << "(ns)" << "In seconds: " << float((Time::_duration.count() / 1E6)/1000) << std::endl;
 }
 std::string Time::currTime() {
 	Time::_time = std::chrono::system_clock::now();

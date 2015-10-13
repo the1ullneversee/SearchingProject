@@ -10,9 +10,6 @@ class Time {
 public:
 	Time();
 	~Time();
-	//void clock_start();
-	//void clock_end();
-	//void duration();
 	void clock_start();
 	void clock_end();
 	void duration();
