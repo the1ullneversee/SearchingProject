@@ -37,7 +37,7 @@ Menu * dataLayer::getMenu()
 	return menu;
 }
 
-error_type dataLayer::readFile(std::string filename, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
+error_type dataLayer::readFile(dataLayer& dlay, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
 	//_container_type con_type = static_cast<_container_type>(containerSelection);
 	ret_code ret = func_passed;
 	Time timer;
@@ -45,17 +45,17 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 	try {
 		//std::cout << "FileName and Directory Test: " << filename << std::endl << _directory << std::endl;
 		float bar = 0.00;
+		int i = 0;
 		float prog = 0.00;
 		std::size_t line_count = 0;
 		std::ifstream::pos_type filesize;
 		std::string s;
-		std::ifstream in(filename, std::ios::binary | std::ios::ate);
+		std::ifstream in(dlay._filename, std::ios::binary | std::ios::ate);
 		dataLayer::_fileSize = in.tellg();
 		std::ofstream os;
 		std::ostringstream osString;
 		std::cout << "File Size: " << dataLayer::_fileSize << std::endl;
 		std::vector<std::string> heapVect;
-		
 		std::size_t sint = 0;
 		std::vector<std::string> data;
 		
@@ -65,7 +65,7 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 		std::string s4;
 		//if (inFile) {
 		std::ifstream inFile;
-		std::ifstream file(filename);
+		std::ifstream file(dlay._filename);
 		//std::cout << "The current working directory is: " << _cBaseDirectory + filenam
 		switch (con_type) {
 		case 0:
@@ -90,69 +90,29 @@ error_type dataLayer::readFile(std::string filename, dataLayer::_container_type 
 			break;
 		case 2:
 			// filling the String vector
-
 			int cur;
-			timer.clock_start();
-			//data.resize(1045924);
-			osString << file.rdbuf();
-			timer.clock_end();
-			timer.duration();
-			//// new lines will be skipped unless we stop it from happening:    
-			//inFile.unsetf(std::ios_base::skipws);
-			//// count the newlines with an algorithm specialized for counting: // This takes 46 seconds!!
-			///*line_count = std::count(
-			//	std::istream_iterator<char>(inFile),
-			//	std::istream_iterator<char>(),
-			//	'\n');*/
-			//inFile.close();
-			//data.resize((_fileSize)/97);
-			//inFile.open(filename);
-			//std::getline(inFile, _stringTemp);
-			
-			///*for (unsigned int ui = 0; ui < data.capacity(); ui++) {
-			//	data.push_back(_stringTemp);
-			//}*/
-			//
-			//while (std::getline(inFile, _stringTemp))
-			//{
-			//	data[sint] = _stringTemp;
-			//	//std::cout << std::fixed << "\r [ " << sint;
-			//	sint++;
 
-			//}
-			//timer.clock_end();
-			//timer.duration();
-			//os.open("FileRegurd.txt");
-			//os << data;
-			//os.close();
-			//inFile.close();
-			heapVect.resize((_fileSize / 97));
-			for (unsigned int ui = 0; ui < heapVect.capacity() - 1; ui++) {
-				heapVect[ui].reserve(sizeof(_stringTemp));
-			}
-			inFile.open(filename);
+			dlay.stringVector.resize(_fileSize /100);
+			/*for (unsigned int ui = 0; ui < dlay.stringVector.capacity() - 1; ui++) {
+				dlay.stringVector[ui].reserve(sizeof(_stringTemp));
+			}*/
+			inFile.open(dlay._filename);
 			while (std::getline(inFile, _stringTemp)) {
-
-				/*prog = _completion / float(_fileSize);
-				if (prog == bar)
+				if (i <= (dlay.stringVector.capacity() - 1))
 				{
-					if (bar == 0.00)
-					{
-						bar = 0.10;
-					}
-					else {
-						bar = bar * 2;
-					}
-					cur = std::ceil(_completion * _fileSize);
-					std::cout << std::fixed << std::setprecision(2)
-						<< "\r   [" << std::string(0, '#')
-						<< "] " << 100 * prog << "%";
+					dlay.stringVector[i] = _stringTemp;
 				}
-*/
-				//std::cout << _stringTemp;
-				heapVect.push_back(_stringTemp);
+				else {
+					dlay.stringVector.push_back(_stringTemp);
+				}
+				i++;
 				_completion++;
 			}
+			//inFile.close();
+			/*inFile.open(dlay._filename);
+			while (std::getline(inFile, _stringTemp)) {
+				dlay.stringVector.push_back(_stringTemp);
+			}*/
 			timer.clock_end();
 			timer.duration();
 			break;
@@ -284,9 +244,9 @@ ret_code dataLayer::randomNumbers()
 	}
 	return ret;
 }
-ret_code dataLayer::containerFiller(std::string filename,dataLayer::_container_type conType)
+ret_code dataLayer::containerFiller(dataLayer& dlay)
 {
-	return dataLayer::readFile(filename, conType);
+	return dataLayer::readFile(dlay,dataLayer::_container_type::vectorString);
 }
 std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
 {
@@ -352,7 +312,7 @@ ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conT
 	}
 	return error;
 }
-void dataLayer::containerFillFromFile(dataLayer& dlayer) {
+void dataLayer::containerFillFromFile(std::string _filename) {
 	//We will ask what container they wish to have
 	//What the file name is
 }

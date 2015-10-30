@@ -10,9 +10,10 @@ public:
 	~dataLayer();
 	Menu* getMenu();
 	void getCWD();
-	void containerFillFromFile(dataLayer& dlayer);
+	void containerFillFromFile(std::string _filename);
+	//void containerFillFromFile(dataLayer& dlayer);
 	enum _container_type : int { default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4, enumTypeEnd = 5 };
-	error_type readFile(std::string filename, dataLayer::_container_type con_type);
+	error_type readFile(dataLayer& dlay, dataLayer::_container_type con_type);
 	_container_type dataLayer::containerTypeSelectionRoutine();
 	ret_code saveFile(std::string filename, dataLayer::_container_type con_type, dataLayer &dataLayer_copy);
 	ret_code randomNumbers();
@@ -22,7 +23,7 @@ public:
 	std::ofstream ofFile;
 	std::wstring s2ws(const std::string& s);
 	ret_code printContainer(dataLayer& dlayer, dataLayer::_container_type conType);
-	ret_code containerFiller(std::string filename, dataLayer::_container_type conType);
+	ret_code containerFiller(dataLayer& dlay);
 	std::string _directory;
 	std::vector<std::size_t> intVector;
 	std::list<std::size_t> intList;

@@ -26,7 +26,7 @@ protected:
 	std::vector<std::unique_ptr<ContainerPro>> containerMaster;
 	std::vector<std::size_t> IDsInUse;
 	bool menuReRouting;
-	std::unique_ptr<dataLayer> dlayerMain; // Might still need this. 
+	dataLayer* dlayerMain; // Might still need this. 
 	//dataLayer* dlayerMain;
 	//WE gonna store some references to pass around super sneaky style. 
 	//searchTools &searchToolsMaster;

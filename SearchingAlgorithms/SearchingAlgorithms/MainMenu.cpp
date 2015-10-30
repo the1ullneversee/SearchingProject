@@ -10,7 +10,7 @@ Menu::~Menu()
 }
 dataLayer * Menu::getDataLayer()
 {
-	return dlayerMain.get();
+	return dlayerMain;
 }
 void Menu::mainMenu()
 {
@@ -47,7 +47,7 @@ void Menu::mainMenu()
 					std::cout << conProMain->ContainerID << conProMain->metaDataName << std::endl;
 					std::swap(menu->containerMaster[i], conProMain);
 					//std::cout << conProMain->intVect << std::endl;
-					//std::cout << conProMain->stringVect << std::endl;
+					std::cout << conProMain->stringVect << std::endl;
 				}
 
 			}
@@ -147,15 +147,18 @@ void Menu::errorToScreen(std::invalid_argument& invArg, std::string functionName
 void Menu::errorToScreen(std::string strErr, std::string functionName) {
 	std::cout << std::endl << "The function " << functionName << "has failed with the following error message: " << std::endl << strErr << std::endl;
 }
+void fill(std::string tom, dataLayer& dlay) {
+	
+}
 ret Menu::searchMenu(Menu& menu)
 {
 	bool _alive = true;
 	bool locVal = false;
 	error_type ret_err = func_passed;
 	std::unique_ptr<searchTools> search(new searchTools);
-	std::unique_ptr<dataLayer> dlay(new dataLayer);
+	//dataLayer dlay;
 	std::unique_ptr<Time> time(new Time);
-	
+	dataLayer* dlayPtr = new (dataLayer);
 	searchTools::_searchType srch = searchTools::linear;
 	searchTools::_searchType srchType = searchTools::linear;
 	dataLayer::_container_type conType = dataLayer::vectorInt;
@@ -163,25 +166,30 @@ ret Menu::searchMenu(Menu& menu)
 	std::string tempFileName;
 	LPCTSTR errorText = NULL;
 	bool functionAlive = new (bool);
-	//dlay.reset(menu.dlayerMain);
-	//std::unique_ptr<dataLayer> dlay(new dataLayer);
+
 	while (_alive) {
 		try {
-			//std::wstring stemp = s2ws("C:\\Users\\thomaskn\\Downloads\\*");
-			ret_err = dlay->getFile(functionAlive);
+			ret_err = dlayPtr->getFile(functionAlive);
 			if (!functionAlive) { _alive = false; break; }
 			if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
-			conType = dlay->getUserConType();
+			conType = dlayPtr->getUserConType();
 			if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
 
 			srchType = search->searchSelect();
 
-			tempFileName = dlay->_directory + "\\" + dlay->_filename;
+			tempFileName = dlayPtr->_directory + "\\" + dlayPtr->_filename;
 			std::cout << "Checking file name: " << tempFileName << std::endl;
 			if (tempFileName.length() == 0) {
 				throw std::exception("FileName is empty!");
 			}
-			std::thread t1(&dataLayer::containerFiller,dlay.get(), tempFileName, conType);
+			//We care gonna have to let them input multiple containers.
+
+			
+			dataLayer x;
+			std::thread t1(&dataLayer::containerFiller,&x, std::ref(*dlayPtr));
+			//std::thread t1(&dataLayer::containerFiller, dlayPtr);
+			std::thread t2(fill, "hello", std::ref(*dlayPtr));
+			//dlay->containerFiller(*dlay, conType);
 			
 			//ret_err = dlay->containerFiller(tempFileName, conType);
 			std::cout << "Waiting for File to finish reading" << std::endl;
@@ -191,8 +199,10 @@ ret Menu::searchMenu(Menu& menu)
 				throw std::exception("container filler failed!");
 			}
 			t1.join();
+			t2.join();
+			dlayPtr->printContainer(*dlayPtr, dlayPtr->vectorString);
 			//throws in the containers. what search they want, container type, and the filename? why the filename.
-			search->searchFunctionRouting(*dlay, srchType, conType, tempFileName);
+			search->searchFunctionRouting(*dlayPtr, srchType, conType, tempFileName);
 			
 			std::cout << "If you wish to exit the searching operation:" << std::endl << "Enter 'exit'" << std::endl << "Or enter 'search' to start file finding again." << std::endl
 				<< "If you wish to save this container for later use enter 'save'" << std::endl;
@@ -206,7 +216,7 @@ ret Menu::searchMenu(Menu& menu)
 				size_t idToUse;
 				idToUse = conPro->IDWorked(menu.containerMaster.size(), menu.IDsInUse);
 				conPro->metaDataName = conPro->fillMetaData(srchType, conType, time->currTime(), idToUse);
-				conPro->saveContainer(*dlay, conType);
+				conPro->saveContainer(*dlayPtr, conType);
 				menu.containerMaster.push_back(std::move(conPro));
 			}
 		}
@@ -222,12 +232,12 @@ ret Menu::searchMenu(Menu& menu)
 	
 	
 	//menu.containerMaster
-	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlay << std::endl;
+	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
 	menu.functionReRouting = true; 
-	menu.dlayerMain = std::move(dlay);
+	menu.dlayerMain = std::move(dlayPtr);
 	
 	//menu.dlayerMain = dlay._Myptr(); 
-	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlay << std::endl;
+	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
 	
 	//dlay.reset(menu.getDataLayer());
 	return ret_err;
