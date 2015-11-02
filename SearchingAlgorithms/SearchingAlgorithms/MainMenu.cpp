@@ -147,8 +147,18 @@ void Menu::errorToScreen(std::invalid_argument& invArg, std::string functionName
 void Menu::errorToScreen(std::string strErr, std::string functionName) {
 	std::cout << std::endl << "The function " << functionName << "has failed with the following error message: " << std::endl << strErr << std::endl;
 }
-void fill(std::string tom, dataLayer& dlay) {
+void fill(std::string tom, std::shared_ptr<dataLayer> dl) {
 	
+}
+ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec)
+{
+	error_type err = func_passed;
+	for (auto thread = 0; thread != threadVec.size(); thread++) {
+		std::cout << "Waiting for threads to finish\n";
+		threadVec[thread].join();
+	}
+
+	return err;
 }
 ret Menu::searchMenu(Menu& menu)
 {
@@ -158,17 +168,20 @@ ret Menu::searchMenu(Menu& menu)
 	std::unique_ptr<searchTools> search(new searchTools);
 	//dataLayer dlay;
 	std::unique_ptr<Time> time(new Time);
-	dataLayer* dlayPtr = new (dataLayer);
+	std::vector<std::shared_ptr<dataLayer>> dataPtr;
 	searchTools::_searchType srch = searchTools::linear;
 	searchTools::_searchType srchType = searchTools::linear;
 	dataLayer::_container_type conType = dataLayer::vectorInt;
 	std::string tempChoice;
 	std::string tempFileName;
 	LPCTSTR errorText = NULL;
+	std::shared_ptr<dataLayer> dl;
 	bool functionAlive = new (bool);
 
 	while (_alive) {
 		try {
+		more:
+			dataLayer* dlayPtr = new (dataLayer);
 			ret_err = dlayPtr->getFile(functionAlive);
 			if (!functionAlive) { _alive = false; break; }
 			if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
@@ -183,23 +196,37 @@ ret Menu::searchMenu(Menu& menu)
 				throw std::exception("FileName is empty!");
 			}
 			//We care gonna have to let them input multiple containers.
-
-			
 			dataLayer x;
-			std::thread t1(&dataLayer::containerFiller,&x, std::ref(*dlayPtr));
-			//std::thread t1(&dataLayer::containerFiller, dlayPtr);
-			std::thread t2(fill, "hello", std::ref(*dlayPtr));
+			std::vector<std::thread> threadVec;
+			//threadVec.push_back(std::thread(&Menu::multiContainers,&x,std::ref(*dlayPtr)));
+			//threadVec.push_back(std::thread(&dataLayer::containerFiller, &x, std::ref(*dlayPtr)));
+			threadVec.push_back(std::thread(fill,dlayPtr->_filename, dl));
+			
+			
+			dataPtr.push_back(dl);
+			//threadVec.push_back(std::thread(&dataLayer::containerFiller,dl));
+			//dataLayer* dlayPtrCopy = dlayPtr;
+			//dlayPtrCopy = dlayPtr;
+			std::cout << "Would you like to create another container? y/n";
+			std::cin >> tempChoice;
+			if (tempChoice == "y")
+				goto more;
+			
+			//dataPtr.at(0) = *dlayPtrCopy;
+			multiContainersJoin(threadVec);
+			
+			//dataPtr.push_back(std::move(*dlayPtr));
+			//std::thread t1(&dataLayer::containerFiller,&x, std::ref(*dlayPtr));
+			//std::thread t2(fill, "hello", std::ref(*dlayPtr));
 			//dlay->containerFiller(*dlay, conType);
 			
 			//ret_err = dlay->containerFiller(tempFileName, conType);
-			std::cout << "Waiting for File to finish reading" << std::endl;
 			
 			if (ret_err != func_passed)
 			{
 				throw std::exception("container filler failed!");
 			}
-			t1.join();
-			t2.join();
+			
 			dlayPtr->printContainer(*dlayPtr, dlayPtr->vectorString);
 			//throws in the containers. what search they want, container type, and the filename? why the filename.
 			search->searchFunctionRouting(*dlayPtr, srchType, conType, tempFileName);
@@ -230,15 +257,15 @@ ret Menu::searchMenu(Menu& menu)
 	}
 	
 	
-	
+	// SORT THIS PART OUT.
 	//menu.containerMaster
-	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
-	menu.functionReRouting = true; 
-	menu.dlayerMain = std::move(dlayPtr);
-	
-	//menu.dlayerMain = dlay._Myptr(); 
-	std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
-	
+	//std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
+	//menu.functionReRouting = true; 
+	//menu.dlayerMain = std::move(dlayPtr);
+	//
+	////menu.dlayerMain = dlay._Myptr(); 
+	//std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
+	//
 	//dlay.reset(menu.getDataLayer());
 	return ret_err;
 }

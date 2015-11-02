@@ -91,22 +91,28 @@ error_type dataLayer::readFile(dataLayer& dlay, dataLayer::_container_type con_t
 		case 2:
 			// filling the String vector
 			int cur;
-
-			dlay.stringVector.resize(_fileSize /100);
-			/*for (unsigned int ui = 0; ui < dlay.stringVector.capacity() - 1; ui++) {
-				dlay.stringVector[ui].reserve(sizeof(_stringTemp));
-			}*/
-			inFile.open(dlay._filename);
-			while (std::getline(inFile, _stringTemp)) {
-				if (i <= (dlay.stringVector.capacity() - 1))
-				{
-					dlay.stringVector[i] = _stringTemp;
+			if (_fileSize > 100000) {
+				dlay.stringVector.resize(_fileSize / 100);
+				/*for (unsigned int ui = 0; ui < dlay.stringVector.capacity() - 1; ui++) {
+					dlay.stringVector[ui].reserve(sizeof(_stringTemp));
+				}*/
+				inFile.open(dlay._filename);
+				while (std::getline(inFile, _stringTemp)) {
+					if (i <= (dlay.stringVector.capacity() - 1))
+					{
+						dlay.stringVector[i] = _stringTemp;
+					}
+					else {
+						dlay.stringVector.push_back(_stringTemp);
+					}
+					i++;
+					_completion++;
 				}
-				else {
+			}
+			else {
+				while (std::getline(inFile, _stringTemp)) {
 					dlay.stringVector.push_back(_stringTemp);
 				}
-				i++;
-				_completion++;
 			}
 			//inFile.close();
 			/*inFile.open(dlay._filename);

@@ -8,6 +8,8 @@ class dataLayer {
 public:
 	dataLayer();
 	~dataLayer();
+	dataLayer(const dataLayer&) = default;
+	//dataLayer& operator=(const dataLayer&) = default; // Move and copy constructors 
 	Menu* getMenu();
 	void getCWD();
 	void containerFillFromFile(std::string _filename);

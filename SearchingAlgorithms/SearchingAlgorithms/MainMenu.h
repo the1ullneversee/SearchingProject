@@ -15,6 +15,7 @@ public:
 	ret timeMenu();
 	ret dataMenu();
 	void mainMenu();
+	ret multiContainersJoin(std::vector<std::thread>& threadVec);
 	void errorToScreen(std::exception& excpt, std::string functionName);
 	void errorToScreen(std::invalid_argument& invArg, std::string functionName);
 	void errorToScreen(std::string strErr, std::string functionName);
