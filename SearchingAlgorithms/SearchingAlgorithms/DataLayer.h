@@ -4,6 +4,7 @@
 #include "stdafx.h"
 typedef  error_type ret_code;
 class Menu;
+class DataWrapper;
 class dataLayer {
 public:
 	dataLayer();
@@ -14,18 +15,21 @@ public:
 	void getCWD();
 	void containerFillFromFile(std::string _filename);
 	//void containerFillFromFile(dataLayer& dlayer);
-	enum _container_type : int { default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4, enumTypeEnd = 5 };
-	error_type readFile(dataLayer& dlay, dataLayer::_container_type con_type);
-	_container_type dataLayer::containerTypeSelectionRoutine();
-	ret_code saveFile(std::string filename, dataLayer::_container_type con_type, dataLayer &dataLayer_copy);
+	
+	error_type readFile(dataLayer& dlay, _container_type con_type);
+	error_type readFile(DataWrapper& dwrap, _container_type con_type);
+	_container_type dataLayer::containerTypeSelectionRoutine();	
+	ret_code saveFile(std::string filename, _container_type con_type, dataLayer &dataLayer_copy);
+	ret_code linearNumbers(std::size_t amount, std::string fileName);
 	ret_code randomNumbers();
 	dataLayer::_container_type getUserConType();
 	ret_code getFile(bool& functionAlive);
 	std::ifstream inFile;
 	std::ofstream ofFile;
 	std::wstring s2ws(const std::string& s);
-	ret_code printContainer(dataLayer& dlayer, dataLayer::_container_type conType);
-	ret_code containerFiller(dataLayer& dlay);
+	ret_code printContainer(DataWrapper& dlayer, _container_type conType);
+	//ret_code containerFiller(dataLayer& dlay);
+	ret_code containerFiller(DataWrapper*& dwrap);
 	std::string _directory;
 	std::vector<std::size_t> intVector;
 	std::list<std::size_t> intList;

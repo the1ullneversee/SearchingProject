@@ -6,7 +6,6 @@ ContainerPro::ContainerPro()
 
 ContainerPro::~ContainerPro()
 {
-	std::cout << "Deconstructing the object" << std::endl;
 }
 std::size_t ContainerPro::IDWorked(std::size_t mainSize, std::vector<size_t>& IDsInUse)
 {
@@ -30,7 +29,7 @@ std::size_t ContainerPro::IDWorked(std::size_t mainSize, std::vector<size_t>& ID
 //WILL NEED A CONTAINER BROWSER TO UNFILL THE VECTORS.
 
 // This also fills the ID number for the container reference.
-std::string ContainerPro::fillMetaData(searchTools::_searchType srchType, dataLayer::_container_type conType, std::string time, std::size_t idToUse) {
+std::string ContainerPro::fillMetaData(_searchType srchType, _container_type conType, std::string time, std::size_t idToUse) {
 	std::string searchTypeString, ContainerTypeString;
 	switch (conType)
 	{
@@ -66,21 +65,21 @@ std::string ContainerPro::fillMetaData(searchTools::_searchType srchType, dataLa
 	return searchTypeString + ContainerTypeString + time;
 }
 
-void ContainerPro::saveContainer(dataLayer& dlayerSwap, dataLayer::_container_type conType)
+void ContainerPro::saveContainer(DataWrapper& dwrapSwap, _container_type conType)
 {
 	switch (conType)
 	{
 	case 1:
-		std::swap(dlayerSwap.intVector, intVect);
+		std::swap(dwrapSwap.intVector, intVect);
 		break;
 	case 2:
-		std::swap(dlayerSwap.stringVector, stringVect);
+		std::swap(dwrapSwap.stringVector, stringVect);
 		break;
 	case 3:
-		std::swap(dlayerSwap.intList, intList);
+		std::swap(dwrapSwap.intList, intList);
 		break;
 	case 4:
-		std::swap(dlayerSwap.stringList, stringList);
+		std::swap(dwrapSwap.stringList, stringList);
 		break;
 	}
 }

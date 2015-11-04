@@ -15,7 +15,7 @@ public:
 	void duration();
 	std::string currTime();
 	chrono_type_duration _duration;
-	void capture(dataLayer& dlayer, std::size_t element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list);
+	void capture(std::string filename, std::string element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list, bool found);
 private:
 	chrono_type _phase_start;
 	chrono_type _phase_end;

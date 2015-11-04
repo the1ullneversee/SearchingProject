@@ -10,7 +10,9 @@ dataLayer::dataLayer()
 	dataLayer::intVector.push_back(0);
 	dataLayer::intList.push_back(0);
 	dataLayer::stringVector;
-	dataLayer::stringList.push_back("");
+	//dataLayer::stringList.push_back("");
+	this->stringList.push_back("");
+	this->_completion = 0;
 	//dataLayer::vectorStorer.push_back(dataLayer::stringVector);
 	//dataLayer::listStorer
 }
@@ -23,8 +25,6 @@ void dataLayer::getCWD() {
 
 	_cBaseDirectory[sizeof(_cBaseDirectory) - 1] = '\0'; /* not really required */
 	_directory = _cBaseDirectory;
-	//Can add in for testing 
-	//std::cout << "The current working directory is: " << _directory << std::endl;
 }
 dataLayer::~dataLayer()
 {
@@ -36,8 +36,182 @@ Menu * dataLayer::getMenu()
 {
 	return menu;
 }
+error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
+	ret_code ret = func_passed;
+	Time timer;
 
-error_type dataLayer::readFile(dataLayer& dlay, dataLayer::_container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
+	try {
+		float bar = 0.00;
+		int i = 0;
+		float prog = 0.00;
+		std::size_t _completion = 0;
+		std::string tempString = "";
+		std::size_t filesize = 0;
+		std::size_t line_count = 0;
+		std::string s;
+		std::ifstream in(dwrap._filename, std::ios::binary | std::ios::ate);
+		filesize = in.tellg();
+		std::fstream myfile(dwrap._filename, std::ios_base::in);
+		std::ifstream inFile;
+		switch (con_type) {
+		case 0:
+			throw "Container selection not supported";
+			ret = bad_input;
+			break;
+		case 1:
+			timer.clock_start();
+			
+			/*if (filesize > 100000) {
+				dwrap.intVector.resize(filesize / 100);
+				line_count = dwrap.intVector.capacity();
+				if (!myfile.is_open())
+					throw std::exception("Failed to open function");
+				while (std::getline(myfile, tempString)) {
+					if (i <= (line_count - 1))
+					{
+						_intTemp = std::atoi(tempString.c_str());
+						dwrap.intVector[i] = _intTemp;
+					}
+					else {
+						_intTemp = std::atoi(tempString.c_str());
+						dwrap.intVector.push_back(_intTemp);
+					}
+					i++;
+					_completion++;
+				}
+			}
+			else {*/
+				//inFile.open(dwrap._filename);
+				if (!myfile.is_open())
+					throw std::exception("Failed to open function");
+				while (!myfile.eof()) {
+					myfile >> tempString;
+					_intTemp = std::atoi(tempString.c_str());
+					dwrap.intVector.push_back(_intTemp);
+				}
+			//}
+			timer.clock_end();
+			timer.duration();
+			break;
+		case 2:
+			// filling the String vector
+			int cur;
+			timer.clock_start();
+			if (filesize > 100000) {
+				dwrap.stringVector.resize(filesize / 100);
+				inFile.open(dwrap._filename);
+				if (!inFile.is_open())
+					throw std::exception("Failed to open function");
+				while (std::getline(inFile, tempString)) {
+					if (i <= (dwrap.stringVector.capacity() - 1))
+					{
+						dwrap.stringVector[i] = tempString;
+					}
+					else {
+						dwrap.stringVector.push_back(tempString);
+					}
+					i++;
+					_completion++;
+				}
+			}
+			else {
+				inFile.open(dwrap._filename);
+				while (std::getline(inFile, tempString)) {
+					dwrap.stringVector.push_back(tempString);
+				}
+			}
+			timer.clock_end();
+			timer.duration();
+			break;
+		case 3:
+			timer.clock_start();
+			if (filesize > 100000) {
+				dwrap.intList.resize(filesize / 100);
+				inFile.open(dwrap._filename);
+				if (!inFile.is_open())
+					throw std::exception("Failed to open function");
+				auto listStringIT = dwrap.intList.begin();
+				while (std::getline(inFile, tempString)) {
+					if (listStringIT != dwrap.intList.end())
+					{
+						_intTemp = std::atoi(tempString.c_str());
+						dwrap.intList.insert(listStringIT, _intTemp);
+						listStringIT++;
+					}
+					else {
+						_intTemp = std::atoi(tempString.c_str());
+						dwrap.intList.push_back(_intTemp);
+					}
+					i++;
+					_completion++;
+				}
+			}
+			else {
+				if (!myfile.is_open())
+					throw std::exception("Failed to open function");
+				while (!myfile.eof()) {
+					myfile >> tempString;
+					_intTemp = std::atoi(tempString.c_str());
+					dwrap.intList.push_back(_intTemp);
+				}
+			}
+			timer.clock_end();
+			timer.duration();
+			break;
+		case 4:
+			//Filling the String List
+			timer.clock_start();
+			if (filesize > 100000) {
+				dwrap.stringList.resize(filesize / 100);
+				inFile.open(dwrap._filename);
+				if (!inFile.is_open())
+					throw std::exception("Failed to open function");
+				auto listStringIT = dwrap.stringList.begin();
+				while (std::getline(inFile, tempString)) {
+					if (listStringIT != dwrap.stringList.end())
+					{
+							dwrap.stringList.insert(listStringIT,tempString);
+							listStringIT++;
+					}
+					else {
+						dwrap.stringList.push_back(tempString);
+					}
+					i++;
+					_completion++;
+				}
+			}
+			else {
+				inFile.open(dwrap._filename);
+				while (std::getline(inFile, tempString)) {
+					dwrap.stringList.push_back(tempString);
+				}
+			}
+			timer.clock_end();
+			timer.duration();
+			break;
+		default:
+			std::cout << "Couldn't find a matching case\n";
+			ret = function_fail;
+			break;
+		}
+	}
+	catch (std::invalid_argument& e)
+	{
+		std::cout << "Function failed reason: "
+			<< e.what() << std::endl;
+	}
+	catch (const std::exception & ex) {
+		std::cerr << "Function failed - reason is "
+			<< ex.what();
+	}
+	catch (...) {   // catch block will only be executed under /EHa
+		std::cout << "Caught an exception in catch(...)." << std::endl;
+	}
+	inFile.close();
+	return ret;// Change this static cast. 
+}
+error_type dataLayer::readFile(dataLayer& dlay, _container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
+
 	//_container_type con_type = static_cast<_container_type>(containerSelection);
 	ret_code ret = func_passed;
 	Time timer;
@@ -97,6 +271,8 @@ error_type dataLayer::readFile(dataLayer& dlay, dataLayer::_container_type con_t
 					dlay.stringVector[ui].reserve(sizeof(_stringTemp));
 				}*/
 				inFile.open(dlay._filename);
+				if (!inFile)
+					throw std::exception("File not open!");
 				while (std::getline(inFile, _stringTemp)) {
 					if (i <= (dlay.stringVector.capacity() - 1))
 					{
@@ -166,7 +342,7 @@ error_type dataLayer::readFile(dataLayer& dlay, dataLayer::_container_type con_t
 	return ret;// Change this static cast. 
 }
 
-ret_code dataLayer::saveFile(std::string filename, dataLayer::_container_type con_type, dataLayer &fhandler_copy)
+ret_code dataLayer::saveFile(std::string filename, _container_type con_type, dataLayer &fhandler_copy)
 {
 	ret_code ret = func_passed;
 	try {
@@ -250,9 +426,41 @@ ret_code dataLayer::randomNumbers()
 	}
 	return ret;
 }
-ret_code dataLayer::containerFiller(dataLayer& dlay)
+ret_code dataLayer::linearNumbers(std::size_t amount, std::string fileName)
 {
-	return dataLayer::readFile(dlay,dataLayer::_container_type::vectorString);
+	ret_code ret = function_fail;
+	std::ofstream out(fileName);
+	try {
+		if (!out)
+			throw std::exception("Could not create file");
+		for (auto i = 0; i < amount; i++)
+		{
+			out << i << std::endl;
+		}
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Linear Numbers");
+	}
+	if (out.is_open())
+	{
+		out.close();
+
+	}
+	return ret;
+}
+ret_code dataLayer::containerFiller(DataWrapper*& dwrap)
+{
+	ret_code ret = function_fail;
+	try {
+		dataLayer dlay;
+		ret = dlay.readFile(*dwrap, dwrap->conType);
+	}
+	catch(...)
+	{ 
+		std::cout << "Caught an exception in catch(...)." << std::endl;
+	}
+	return ret;
 }
 std::ostream& operator << (std::ostream &out, std::vector<std::string> &vecString)
 {
@@ -285,7 +493,7 @@ std::ostream& operator << (std::ostream &out, std::list<std::size_t> &listInt)
 
 	return out;
 }
-ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conType) {
+ret dataLayer::printContainer(DataWrapper& dlayer, _container_type conType) {
 	error_type error = func_passed;// Think we need a better way of doing this
 	try {
 		switch (conType)
@@ -310,11 +518,14 @@ ret dataLayer::printContainer(dataLayer& dlayer, dataLayer::_container_type conT
 			
 			break;
 		}
-		menu->clearScreen();
+		//menu->clearScreen();
 	}
 	catch (std::exception& e)
 	{
 		menu->errorToScreen(e, "Print Container");
+	}
+	catch (...) {   // catch block will only be executed under /EHa
+		std::cout << "Caught an exception in catch(...)." << std::endl;
 	}
 	return error;
 }
@@ -322,12 +533,12 @@ void dataLayer::containerFillFromFile(std::string _filename) {
 	//We will ask what container they wish to have
 	//What the file name is
 }
-dataLayer::_container_type dataLayer::containerTypeSelectionRoutine()
+_container_type dataLayer::containerTypeSelectionRoutine()
 {
 	_container_type conType = vectorInt;
 
 
-	return dataLayer::listInt;
+	return listInt;
 }
 std::wstring dataLayer::s2ws(const std::string& s)
 {
@@ -406,7 +617,7 @@ ret_code dataLayer::getFile(bool& functionAlive)
 
 	return func_passed;
 }
-dataLayer::_container_type dataLayer::getUserConType()
+_container_type dataLayer::getUserConType()
 {
 	bool locVal = false;
 	_container_type conType = vectorInt;

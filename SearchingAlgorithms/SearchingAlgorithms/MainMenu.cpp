@@ -16,24 +16,12 @@ void Menu::mainMenu()
 {
 	std::unique_ptr<dataLayer> dataMainLayer(new dataLayer);
 	std::unique_ptr<Menu> menu(new Menu);
-	/*std::unique_ptr<ContainerPro> conPro(new ContainerPro);
-	conPro->ID = "1";
-	conPro->metaDataName = "This is the test";
-	dataMainLayer->_filename = "Tom";
-	menu->dlayerMain = std::move(dataMainLayer);
-	std::cout << menu->dlayerMain->_filename << std::endl;
-	menu->containerMaster.push_back(std::move(conPro));
-	std::unique_ptr<ContainerPro> conProTest(new ContainerPro);
-	conProTest = std::move(menu->containerMaster[0]);
-	std::cout << conProTest->ID << conProTest->metaDataName << std::endl;
-*/
-
 	error_type err = func_passed;
 	bool Alive = true;
 	int choice = 0;
 	bool valid = false;
 	changeColourScreen("Blue", "Black");
-	std::cout << "Welcome to the Searching Utility Application." << std::endl << "Use this application to perform different searches on different C++ container types!" << std::endl;
+	std::cout << "Welcome to the Searching Utility Application." << std::endl << "Use this application to perform different se1arches on different C++ container types!" << std::endl;
 	while (Alive) {
 		std::cout << "Here is the Menu enter the corresponding function number to proceed!" << std::endl;
 		changeColourScreen("Red", "Black");
@@ -47,7 +35,7 @@ void Menu::mainMenu()
 					std::cout << conProMain->ContainerID << conProMain->metaDataName << std::endl;
 					std::swap(menu->containerMaster[i], conProMain);
 					//std::cout << conProMain->intVect << std::endl;
-					std::cout << conProMain->stringVect << std::endl;
+					//std::cout << conProMain->stringVect << std::endl;
 				}
 
 			}
@@ -138,7 +126,7 @@ ret Menu::changeColourScreen(std::string textColour, std::string backgroundColou
 	return func_passed;
 }
 void Menu::errorToScreen(std::exception& e, std::string functionName) {
-	changeColourScreen("red", "black");
+	Menu::changeColourScreen("red", "black");
 	std::cout << std::endl << "The function " << functionName << "has failed with the following exception: " << std::endl << e.what() << std::endl;
 }
 void Menu::errorToScreen(std::invalid_argument& invArg, std::string functionName) {
@@ -150,6 +138,15 @@ void Menu::errorToScreen(std::string strErr, std::string functionName) {
 void fill(std::string tom, std::shared_ptr<dataLayer> dl) {
 	
 }
+ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec, std::vector<DataWrapper>& vecDWrapper)
+{
+	error_type err = func_passed;
+	for (auto thread = 0; thread != threadVec.size(); thread++) {
+		std::cout << "Waiting for threads to finish\n";
+		threadVec[thread].join();
+	}
+	return err;
+}
 ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec)
 {
 	error_type err = func_passed;
@@ -157,94 +154,106 @@ ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec)
 		std::cout << "Waiting for threads to finish\n";
 		threadVec[thread].join();
 	}
-
 	return err;
+}
+void Menu::invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& dwrap)
+{
+	dataLayer dlayNorm;
+	dataLayer* dlayPtr = new(dataLayer);
+	error_type ret_err = func_passed;
+	_searchType srchType = linear;
+	_container_type conType = vectorInt;
+	bool functionAlive = new (bool);
+	std::unique_ptr<searchTools> search(new searchTools);
+	//dataLayer dlay;
+	std::unique_ptr<Time> time(new Time);
+	std::string tempFileName;
+	try {
+		std::cout << "Setting up container for searching \n";
+		ret_err = dlayPtr->getFile(functionAlive);
+		if (!functionAlive) {}//dwrap = nullptr; }
+		if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
+		conType = dlayPtr->getUserConType();
+		if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
+
+		srchType = search->searchSelect();
+		dwrap->setUserChoices(srchType, conType);
+
+		tempFileName = dlayPtr->_directory + "\\" + dlayPtr->_filename;
+		std::cout << "Checking file name: " << tempFileName << std::endl;
+		if (tempFileName.length() == 0) {
+			throw std::exception("FileName is empty!");
+		}
+
+		//We care gonna have to let them input multiple containers.
+		dwrap->_directory = dlayPtr->_directory;
+		dwrap->_filename = dlayPtr->_filename;
+		threadVec.push_back(std::thread(&dataLayer::containerFiller, &dlayNorm, std::ref(dwrap)));
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e,"invoke data wrapper");
+	}
 }
 ret Menu::searchMenu(Menu& menu)
 {
 	bool _alive = true;
 	bool locVal = false;
-	error_type ret_err = func_passed;
-	std::unique_ptr<searchTools> search(new searchTools);
-	//dataLayer dlay;
 	std::unique_ptr<Time> time(new Time);
-	std::vector<std::shared_ptr<dataLayer>> dataPtr;
-	searchTools::_searchType srch = searchTools::linear;
-	searchTools::_searchType srchType = searchTools::linear;
-	dataLayer::_container_type conType = dataLayer::vectorInt;
+	error_type ret_err = func_passed;
+	std::vector<DataWrapper*> vecDWrap;
+	searchTools search;
 	std::string tempChoice;
-	std::string tempFileName;
+	DataWrapper mDwrap;
 	LPCTSTR errorText = NULL;
-	std::shared_ptr<dataLayer> dl;
 	bool functionAlive = new (bool);
-
+	std::vector<std::thread>* threadVec(new std::vector<std::thread>);
 	while (_alive) {
 		try {
-		more:
-			dataLayer* dlayPtr = new (dataLayer);
-			ret_err = dlayPtr->getFile(functionAlive);
-			if (!functionAlive) { _alive = false; break; }
-			if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
-			conType = dlayPtr->getUserConType();
-			if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
-
-			srchType = search->searchSelect();
-
-			tempFileName = dlayPtr->_directory + "\\" + dlayPtr->_filename;
-			std::cout << "Checking file name: " << tempFileName << std::endl;
-			if (tempFileName.length() == 0) {
-				throw std::exception("FileName is empty!");
+			for (;;) {
+				DataWrapper* dwrapMain = new (DataWrapper);
+				invokeDataWrapper(*threadVec, dwrapMain);
+				vecDWrap.push_back(dwrapMain);
+				std::cout << "Would you like to create another container? y/n";
+				std::cin >> tempChoice;
+				if (tempChoice == "n")
+					break;
 			}
-			//We care gonna have to let them input multiple containers.
-			dataLayer x;
-			std::vector<std::thread> threadVec;
-			//threadVec.push_back(std::thread(&Menu::multiContainers,&x,std::ref(*dlayPtr)));
-			//threadVec.push_back(std::thread(&dataLayer::containerFiller, &x, std::ref(*dlayPtr)));
-			threadVec.push_back(std::thread(fill,dlayPtr->_filename, dl));
-			
-			
-			dataPtr.push_back(dl);
-			//threadVec.push_back(std::thread(&dataLayer::containerFiller,dl));
-			//dataLayer* dlayPtrCopy = dlayPtr;
-			//dlayPtrCopy = dlayPtr;
-			std::cout << "Would you like to create another container? y/n";
-			std::cin >> tempChoice;
-			if (tempChoice == "y")
-				goto more;
-			
-			//dataPtr.at(0) = *dlayPtrCopy;
-			multiContainersJoin(threadVec);
-			
-			//dataPtr.push_back(std::move(*dlayPtr));
-			//std::thread t1(&dataLayer::containerFiller,&x, std::ref(*dlayPtr));
-			//std::thread t2(fill, "hello", std::ref(*dlayPtr));
-			//dlay->containerFiller(*dlay, conType);
-			
-			//ret_err = dlay->containerFiller(tempFileName, conType);
-			
+
+			multiContainersJoin(*threadVec);
 			if (ret_err != func_passed)
 			{
 				throw std::exception("container filler failed!");
 			}
-			
-			dlayPtr->printContainer(*dlayPtr, dlayPtr->vectorString);
-			//throws in the containers. what search they want, container type, and the filename? why the filename.
-			search->searchFunctionRouting(*dlayPtr, srchType, conType, tempFileName);
-			
-			std::cout << "If you wish to exit the searching operation:" << std::endl << "Enter 'exit'" << std::endl << "Or enter 'search' to start file finding again." << std::endl
-				<< "If you wish to save this container for later use enter 'save'" << std::endl;
-			std::cin >> tempChoice;
-			if (tempChoice == "exit" || tempChoice == "Exit") {
-				_alive = false;
+			Menu::clearScreen();
+			std::cout << "We have found " << vecDWrap.size() << " Containers, using first one" << std::endl;
+			for (int i = 0; i < vecDWrap.size(); i++) {
+				std::cout << "This is Container " << i+1 << " it is a " << mDwrap.returnConType(vecDWrap[i]->conType) << std::endl;
+				search.searchFunctionRouting(*vecDWrap[i]);
+				std::cout << "Finished searching" << std::endl
+					<< "Enter 'exit' to stop searching operation" << std::endl
+					<< "Enter 'save' to save this containter for further use" << std::endl;
+				std::cin >> tempChoice;
+				if (tempChoice == "exit" || tempChoice == "Exit") {
+					_alive = false;
+				}
+				else if (tempChoice == "save" || tempChoice == "Save")
+				{
+					std::unique_ptr<ContainerPro> conPro(new ContainerPro);
+					size_t idToUse;
+					idToUse = conPro->IDWorked(menu.containerMaster.size(), menu.IDsInUse);
+					conPro->metaDataName = conPro->fillMetaData(vecDWrap[i]->srchType, vecDWrap[i]->conType, time->currTime(), idToUse);
+
+					conPro->saveContainer(*vecDWrap[i], vecDWrap[i]->conType);
+					menu.containerMaster.push_back(std::move(conPro));
+				}
 			}
-			else if (tempChoice == "save" || tempChoice == "Save")
+			std::cout << "We have finished filling and searching containers, your containers have been saved if specified" << std::endl
+				<< "Do you wish to go again? y/n" << std::endl;
+			std::cin >> tempChoice;
+			if (tempChoice == "n" || tempChoice == "N")
 			{
-				std::unique_ptr<ContainerPro> conPro(new ContainerPro);
-				size_t idToUse;
-				idToUse = conPro->IDWorked(menu.containerMaster.size(), menu.IDsInUse);
-				conPro->metaDataName = conPro->fillMetaData(srchType, conType, time->currTime(), idToUse);
-				conPro->saveContainer(*dlayPtr, conType);
-				menu.containerMaster.push_back(std::move(conPro));
+				_alive = false;
 			}
 		}
 		catch (std::string err) {
@@ -254,19 +263,11 @@ ret Menu::searchMenu(Menu& menu)
 		{
 			errorToScreen(excep, "Search Menu");
 		}
+		catch (...)
+		{
+			std::cout << "Caught an exception in catch(...)." << std::endl;
+		}
 	}
-	
-	
-	// SORT THIS PART OUT.
-	//menu.containerMaster
-	//std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
-	//menu.functionReRouting = true; 
-	//menu.dlayerMain = std::move(dlayPtr);
-	//
-	////menu.dlayerMain = dlay._Myptr(); 
-	//std::cout << "MenuDLayer Address: " << &menu.dlayerMain << "Local dlay pointer: " << &dlayPtr << std::endl;
-	//
-	//dlay.reset(menu.getDataLayer());
 	return ret_err;
 }
 ret Menu::timeMenu()
@@ -275,18 +276,12 @@ ret Menu::timeMenu()
 
 	return ret_err;
 }
-ret Menu::dataMenu()
+ret Menu::dataMenu() //Change the functionality of this to use the new values.
 {
 	error_type ret_err = func_passed;
 	std::size_t userChoice;
 	dataMenuItems dMenuItems;
-	/*if (menuReRouting)
-	{
-		dataLayer &dataLayer = dataLayerMaster;
-		}
-	else { 
-		dataLayer dataLayer;
-	}*/
+	std::unique_ptr<dataLayer> unqDlay (new dataLayer);
 	bool valid = false;
 	int choice = 0;
 	bool locVal = false;
@@ -301,65 +296,67 @@ ret Menu::dataMenu()
 				<< "2. Print Container" << std::endl
 				<< "3. Save a Container to File" << std::endl
 				<< "4. Load a Container from a File" << std::endl
-				<< "5. Select 5 to exit. " << std::endl;
+				<< "5. Save linear data to File" << std::endl
+				<< "6. Select 5 to exit. " << std::endl;
 			std::cin >> userChoice;
-			if (userChoice == 5) { alive = false; break; }
+			if (userChoice == 6) { alive = false; break; }
 			//dataMenuItems
-			while (!valid) {
-				for (int i = 0; i < ENDOFMenuEnum; i++)
-				{
-					if (userChoice == i)
-					{
-						valid = true;
-						break;
-					}
-				}
-				if (!valid)
-				{
-					errorToScreen("Bad Input, Please choose again. Loading Menu...", "Menu");
-				}
-			}
-			dMenuItems = static_cast<dataMenuItems>(userChoice);
-
-			switch (dMenuItems)
+			for (int i = 0; i < ENDOFDataMenuEnum; i++)
 			{
-			case 1:
-
-				break;
-			case 2:
-				//Let them select the container they want to print out. 
-				// have to of filled a container first. or Loaded one. 
-				dataLayer::_container_type conType;
-
-				while (!locVal)
+				if (userChoice == i)
 				{
-					std::cout << " Please Select your container type: " << std::endl << "1: integer vector" << std::endl << "2: string vector" << std::endl << "3: integer list" << std::endl << "4: string list" << std::endl;
-					std::cin >> choice;
-					conType = static_cast<dataLayer::_container_type>(choice);
-					for (int i = 0; i < dataLayer::enumTypeEnd; i++) {
-						if (conType == i) { locVal = true; break; }
-					}
-					if (!locVal) {
-						std::cout << "Invalid container selection, try again" << std::endl;
-					}
+					valid = true;
+					alive = false;
+					break;
 				}
-				if (menuReRouting)
-				{
-					//dataLayer->printContainer(dataLayerMaster, conType);
-				}
-				else { 
-					//Must have been prefilled by the user. 
-					//dataLayer->printContainer(*dataLayer, conType);
-				}
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			default:
-				throw std::exception("Invalid menu item choice!");
-				break;
 			}
+			if (!valid)
+			{
+				errorToScreen("Bad Input, Please choose again. Loading Menu...", "Menu");
+			}
+		}
+		dMenuItems = static_cast<dataMenuItems>(userChoice);
+		std::size_t amount = 0;
+		std::string fileName = "";
+		switch (dMenuItems)
+		{
+		case 1:
+
+			break;
+		case 2:
+			//Let them select the container they want to print out. 
+			// have to of filled a container first. or Loaded one. 
+			_container_type conType;
+
+			while (!locVal)
+			{
+				conType = unqDlay->getUserConType();
+			}
+			if (menuReRouting)
+			{
+				//dataLayer->printContainer(dataLayerMaster, conType);
+			}
+			else {
+				//Must have been prefilled by the user. 
+				//dataLayer->printContainer(*dataLayer, conType);
+			}
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			std::cout << "Data file creation started" << std::endl;
+			std::cout << "How many numbers do you want to write to file?";
+			std::cin >> amount;
+			std::cout << "Name the file: " << std::endl;
+			std::cin >> fileName;
+			unqDlay->_directory += "\\";
+			unqDlay->linearNumbers(amount, unqDlay->_directory += fileName);
+			break;
+		default:
+			throw std::exception("Invalid menu item choice!");
+			break;
 		}
 	}
 	catch (std::exception& e)

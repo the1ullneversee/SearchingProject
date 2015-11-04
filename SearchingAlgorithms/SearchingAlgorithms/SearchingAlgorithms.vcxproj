@@ -68,6 +68,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,6 +112,7 @@
     <ClInclude Include="classHolder.h" />
     <ClInclude Include="ContainerPro.h" />
     <ClInclude Include="DataLayer.h" />
+    <ClInclude Include="DataWrapper.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="SearchTools.h" />
@@ -123,6 +125,7 @@
     <ClCompile Include="classHolder.cpp" />
     <ClCompile Include="ContainerPro.cpp" />
     <ClCompile Include="DataLayer.cpp" />
+    <ClCompile Include="DataWrapper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="SearchTools.cpp" />

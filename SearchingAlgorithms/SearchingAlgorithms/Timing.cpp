@@ -18,7 +18,6 @@ void Time::clock_end(){
 }
 void Time::duration() {
 	Time::_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(Time::_phase_end - Time::_phase_start);
-	//std::cout << "The execution duration was: " << 00 << ":" << 01 << ":" << 12 << std::endl;
 	std::cout << "The execution duration was: " << float(Time::_duration.count() / 1E6) << "(ns)" << "In seconds: " << float((Time::_duration.count() / 1E6)/1000) << std::endl;
 }
 std::string Time::currTime() {
@@ -26,10 +25,10 @@ std::string Time::currTime() {
 	Time::end_time = std::chrono::system_clock::to_time_t(_time);
 	return ctime(&end_time);
 }
-void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list)
+void Time::capture(std::string filename, std::string element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list, bool found)
 {
 	try {
-		bool fileFound = false;
+e		bool fileFound = false;
 		std::ifstream inStream;
 		std::ofstream ofStream;
 		std::string _stringTemp;
@@ -60,16 +59,25 @@ void Time::capture(dataLayer& dlayer, std::size_t element, std::size_t position,
 					ofStream << stringInVect[i] << std::endl;
 			}
 			if (vec_list) { conType = "Vector"; }
-			ofStream << "File Searched: " << dlayer._filename << std::endl << "Type of Search: " << typeOfSearch << std::endl << "Type of Container: " << conType
-			<< std::endl << "Element Trying to find: " << element << std::endl << "Position in container: " << position
-				<< std::endl << "Time Taken: " << float(duration.count() / 1E6) << "(seconds)" << std::endl;
+			ofStream << "File Searched: " << filename << std::endl << "Type of Search: " << typeOfSearch << std::endl << "Type of Container: " << conType
+				<< std::endl << "Element Trying to find: " << element << std::endl << "Found = ";
+			if (found) {
+				ofStream << "true" << std::endl << "Position in container: " << position
+					<< std::endl << "Time Taken: " << float(duration.count() / 1E6) << "(seconds)" << std::endl;
+			}
+			else
+			{
+				ofStream << "False" << std::endl;
+			}
 		}
 		else {
 			throw std::exception("Could not create file!");
 		}
+		ofStream.close();
 	}
 	catch (std::exception& e)
 	{
 		tMenu->errorToScreen(e, "Time Capture");
 	}
+
 }
