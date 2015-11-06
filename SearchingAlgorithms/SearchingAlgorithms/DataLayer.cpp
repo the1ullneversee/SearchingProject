@@ -2,19 +2,14 @@
 
 dataLayer::dataLayer()
 {
-	//std::cout << "Loading data layer" << std::endl;
-	
 	_ret = 0;
 	dataLayer::getCWD();
-	//dataLayer::_directory = "";
 	dataLayer::intVector.push_back(0);
 	dataLayer::intList.push_back(0);
 	dataLayer::stringVector;
-	//dataLayer::stringList.push_back("");
 	this->stringList.push_back("");
 	this->_completion = 0;
-	//dataLayer::vectorStorer.push_back(dataLayer::stringVector);
-	//dataLayer::listStorer
+
 }
 void dataLayer::getCWD() {
 
@@ -28,13 +23,7 @@ void dataLayer::getCWD() {
 }
 dataLayer::~dataLayer()
 {
-	// Can add in for testing 
 	std::cout << "Data layer ending" << std::endl;
-}
-
-Menu * dataLayer::getMenu()
-{
-	return menu;
 }
 error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 	ret_code ret = func_passed;
@@ -49,9 +38,9 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 		std::size_t filesize = 0;
 		std::size_t line_count = 0;
 		std::string s;
-		std::ifstream in(dwrap._filename, std::ios::binary | std::ios::ate);
+		std::ifstream in(dwrap.getFilename(), std::ios::binary | std::ios::ate);
 		filesize = in.tellg();
-		std::fstream myfile(dwrap._filename, std::ios_base::in);
+		std::fstream myfile(dwrap.getFilename(), std::ios_base::in);
 		std::ifstream inFile;
 		switch (con_type) {
 		case 0:
@@ -60,36 +49,13 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 			break;
 		case 1:
 			timer.clock_start();
-			
-			/*if (filesize > 100000) {
-				dwrap.intVector.resize(filesize / 100);
-				line_count = dwrap.intVector.capacity();
-				if (!myfile.is_open())
-					throw std::exception("Failed to open function");
-				while (std::getline(myfile, tempString)) {
-					if (i <= (line_count - 1))
-					{
-						_intTemp = std::atoi(tempString.c_str());
-						dwrap.intVector[i] = _intTemp;
-					}
-					else {
-						_intTemp = std::atoi(tempString.c_str());
-						dwrap.intVector.push_back(_intTemp);
-					}
-					i++;
-					_completion++;
-				}
+			if (!myfile.is_open())
+				throw std::exception("Failed to open function");
+			while (!myfile.eof()) {
+				myfile >> tempString;
+				_intTemp = std::atoi(tempString.c_str());
+				dwrap.intVector.push_back(_intTemp);
 			}
-			else {*/
-				//inFile.open(dwrap._filename);
-				if (!myfile.is_open())
-					throw std::exception("Failed to open function");
-				while (!myfile.eof()) {
-					myfile >> tempString;
-					_intTemp = std::atoi(tempString.c_str());
-					dwrap.intVector.push_back(_intTemp);
-				}
-			//}
 			timer.clock_end();
 			timer.duration();
 			break;
@@ -99,7 +65,7 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 			timer.clock_start();
 			if (filesize > 100000) {
 				dwrap.stringVector.resize(filesize / 100);
-				inFile.open(dwrap._filename);
+				inFile.open(dwrap.getFilename());
 				if (!inFile.is_open())
 					throw std::exception("Failed to open function");
 				while (std::getline(inFile, tempString)) {
@@ -115,7 +81,7 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 				}
 			}
 			else {
-				inFile.open(dwrap._filename);
+				inFile.open(dwrap.getFilename());
 				while (std::getline(inFile, tempString)) {
 					dwrap.stringVector.push_back(tempString);
 				}
@@ -127,7 +93,7 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 			timer.clock_start();
 			if (filesize > 100000) {
 				dwrap.intList.resize(filesize / 100);
-				inFile.open(dwrap._filename);
+				inFile.open(dwrap.getFilename());
 				if (!inFile.is_open())
 					throw std::exception("Failed to open function");
 				auto listStringIT = dwrap.intList.begin();
@@ -163,15 +129,15 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 			timer.clock_start();
 			if (filesize > 100000) {
 				dwrap.stringList.resize(filesize / 100);
-				inFile.open(dwrap._filename);
+				inFile.open(dwrap.getFilename());
 				if (!inFile.is_open())
 					throw std::exception("Failed to open function");
 				auto listStringIT = dwrap.stringList.begin();
 				while (std::getline(inFile, tempString)) {
 					if (listStringIT != dwrap.stringList.end())
 					{
-							dwrap.stringList.insert(listStringIT,tempString);
-							listStringIT++;
+						dwrap.stringList.insert(listStringIT, tempString);
+						listStringIT++;
 					}
 					else {
 						dwrap.stringList.push_back(tempString);
@@ -181,7 +147,7 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 				}
 			}
 			else {
-				inFile.open(dwrap._filename);
+				inFile.open(dwrap.getFilename());
 				while (std::getline(inFile, tempString)) {
 					dwrap.stringList.push_back(tempString);
 				}
@@ -208,7 +174,7 @@ error_type dataLayer::readFile(DataWrapper& dwrap, _container_type con_type) {
 		std::cout << "Caught an exception in catch(...)." << std::endl;
 	}
 	inFile.close();
-	return ret;// Change this static cast. 
+	return ret;
 }
 error_type dataLayer::readFile(dataLayer& dlay, _container_type con_type){ // Might have to pass in a handle to stop corruption of data when doing threading. 
 
@@ -347,8 +313,8 @@ ret_code dataLayer::saveFile(std::string filename, _container_type con_type, dat
 	ret_code ret = func_passed;
 	try {
 		ofFile.open(_directory + filename);
-		//ofFile.exceptions(std::ios::failbit);
-		if (ofFile) {
+		ofFile.exceptions(std::ios::failbit);
+		if (ofFile)
 			switch (con_type)
 			{
 			case 1:
@@ -363,28 +329,26 @@ ret_code dataLayer::saveFile(std::string filename, _container_type con_type, dat
 				break;
 			case 3:
 				//int list
+				ofFile << fhandler_copy.intList;
+				ofFile.close();
 				break;
 			case 4:
 				//string list
+				ofFile << fhandler_copy.stringList;
+				ofFile.close();
 				break;
 			default:
 				throw "No container type selection";
 				break;
 			}
-		}
 		else {
-			std::cout << "Error reading file" << std::endl;
-			throw "Error";
+			throw std::exception("Error opening file");
 			ret = function_fail;
 		}
 	}
-	catch (std::string err) {
-		std::cout << err << std::endl;
+	catch (std::exception& ex) {
+		Menu::errorToScreen(ex, "Read File");
 	}
-	/*catch (const std::exception & ex) {
-		std::cerr << "Saving operation failed - reason is "
-			<< ex.what();
-	}*/
 	if (ofFile.is_open()){
 		ofFile.close();
 	}
@@ -408,19 +372,13 @@ ret_code dataLayer::randomNumbers()
 			}
 		}
 		else {
-			throw "Operation Failed";
-			ret = function_fail;
+			throw std::exception("File could not be opened");
 		}
 	}
-	catch (std::string err)
-	{
-		std::cout << "The following error has occured" << err << std::endl;
-		//ret = 1;
+	catch (std::exception & ex) {
+		Menu::errorToScreen(ex, "Random numbers");
+		ret = function_fail;
 	}
-	/*catch (const std::exception & ex) {
-		std::cerr << "File operation failed - reason is "
-			<< ex.what();
-	}*/
 	if (ofFile.is_open()){
 		ofFile.close();
 	}
@@ -445,7 +403,6 @@ ret_code dataLayer::linearNumbers(std::size_t amount, std::string fileName)
 	if (out.is_open())
 	{
 		out.close();
-
 	}
 	return ret;
 }
@@ -454,7 +411,7 @@ ret_code dataLayer::containerFiller(DataWrapper*& dwrap)
 	ret_code ret = function_fail;
 	try {
 		dataLayer dlay;
-		ret = dlay.readFile(*dwrap, dwrap->conType);
+		ret = dlay.readFile(*dwrap, dwrap->getConType());
 	}
 	catch(...)
 	{ 
@@ -518,7 +475,6 @@ ret dataLayer::printContainer(DataWrapper& dlayer, _container_type conType) {
 			
 			break;
 		}
-		//menu->clearScreen();
 	}
 	catch (std::exception& e)
 	{
@@ -529,16 +485,16 @@ ret dataLayer::printContainer(DataWrapper& dlayer, _container_type conType) {
 	}
 	return error;
 }
-void dataLayer::containerFillFromFile(std::string _filename) {
+void dataLayer::containerFillFromFile(DataWrapper& dwrap_) {
 	//We will ask what container they wish to have
 	//What the file name is
-}
-_container_type dataLayer::containerTypeSelectionRoutine()
-{
-	_container_type conType = vectorInt;
-
-
-	return listInt;
+	try {
+		readFile(dwrap_, dwrap_.getConType());
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Container Fill From File");
+	}
 }
 std::wstring dataLayer::s2ws(const std::string& s)
 {

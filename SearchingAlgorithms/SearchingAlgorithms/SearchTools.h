@@ -22,6 +22,7 @@ public:
 	bool elementFind(std::vector<std::size_t> &vector, std::size_t key);
 	bool elementFind(std::vector<std::string> &vector, std::string);
 	bool binarySearch(DataWrapper& dwrapper, std::size_t key, std::size_t rec, bool vec_list);
+	static bool bubbleSort(std::vector<std::size_t> intVec);
 	void searchFunctionRouting(DataWrapper& dwrapper);
 	_searchType searchSelect();
 	std::size_t _intKey;

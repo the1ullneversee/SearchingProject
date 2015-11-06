@@ -15,7 +15,7 @@ void searchTools::searchFunctionRouting(DataWrapper& dwrapper) { // change this 
 	try {
 		while (wantToSearch) {
 			//menu->clearScreen();
-			switch (dwrapper.conType) // Type of container
+			switch (dwrapper.getConType()) // Type of container
 			{
 			case 1: //Vector
 					//int
@@ -25,7 +25,7 @@ void searchTools::searchFunctionRouting(DataWrapper& dwrapper) { // change this 
 					menu->errorToScreen("Nothing inputed", "function routing");
 					_found = true; // Whats this for
 				}
-				switch (dwrapper.srchType) {
+				switch (dwrapper.getSrchType()) {
 					//-> change
 				case 1: linearSearch(dwrapper, _intKey, _intRec, true);  break;
 				case 2: break;
@@ -43,7 +43,7 @@ void searchTools::searchFunctionRouting(DataWrapper& dwrapper) { // change this 
 					_found = true; // Whats this for
 				}
 
-				switch (dwrapper.srchType) {
+				switch (dwrapper.getSrchType()) {
 					//-> change
 				case 1: linearSearch(dwrapper, _stringKey, _stringRec, true);  break;
 				case 2: break;
@@ -58,7 +58,7 @@ void searchTools::searchFunctionRouting(DataWrapper& dwrapper) { // change this 
 					throw "Nothing entered!";
 					_found = true; // Whats this for
 				}
-				switch (dwrapper.srchType) {
+				switch (dwrapper.getSrchType()) {
 					//-> change
 				case 1: linearSearch(dwrapper, _intKey, _intRec, false);  break;
 				case 2: break;
@@ -73,7 +73,7 @@ void searchTools::searchFunctionRouting(DataWrapper& dwrapper) { // change this 
 					throw "Nothing entered!";
 					_found = true; // Whats this for
 				}
-				switch (dwrapper.srchType) {
+				switch (dwrapper.getSrchType()) {
 					//-> change
 				case 1: linearSearch(dwrapper, _stringKey, _stringRec, false);  break;
 				case 2: break;
@@ -167,7 +167,7 @@ bool searchTools::linearSearch(DataWrapper& dwrapper, std::size_t key, std::size
 			}
 		}
 		timer->duration();
-		timer->capture(dwrapper._filename, std::to_string(key), rec, timer->_duration, "linearSearch", vecORList, _found);
+		timer->capture(dwrapper.getFilename(), std::to_string(key), rec, timer->_duration, "linearSearch", vecORList, _found);
 	}
 	catch (std::exception& e){
 		menu->errorToScreen(e, "Integer Linear Search");
@@ -231,7 +231,7 @@ bool searchTools::linearSearch(DataWrapper& dwrapper, std::string _stringKey, st
 		{
 			findPos = 0;
 		}
-		timer->capture(dwrapper._filename, _stringKey, findPos, timer->_duration, "linearSearch", vec_list, _found);
+		timer->capture(dwrapper.getFilename(), _stringKey, findPos, timer->_duration, "linearSearch", vec_list, _found);
 	}
 	catch (const std::invalid_argument& e) {
 		std::cout << e.what() << std::endl;
@@ -322,7 +322,7 @@ bool searchTools::binarySearch(DataWrapper& dwrapper, std::size_t key, std::size
 			else {
 				timer->duration();
 				std::cout << "Found the element!" << std::endl;
-				timer->capture(dwrapper._filename, std::to_string(key), i, timer->_duration,"Binary Search", vec_list, found);
+				timer->capture(dwrapper.getFilename(), std::to_string(key), i, timer->_duration,"Binary Search", vec_list, found);
 			}
 		}
 		else {
@@ -334,4 +334,26 @@ bool searchTools::binarySearch(DataWrapper& dwrapper, std::size_t key, std::size
 		Menu::errorToScreen(e, "Binary Search");
 	}
 	return found;
+}
+bool searchTools::bubbleSort(std::vector<std::size_t> intVec)
+{
+	int i, j;
+	int flag = 1;
+	int temp;
+	for (i = 0; i < intVec.size() &&flag; i++)
+	{
+		flag = 0;
+		for (j = 0; j < intVec.size() - 1; j++)
+		{
+			if (intVec[j+1] < intVec[j])
+			{
+				temp = intVec[j];
+				intVec[j] = intVec[j + 1];
+				intVec[j + 1] = temp;
+				flag = 1;
+			}
+		}
+	}
+	std::cout << intVec << std::endl;
+	return true;
 }

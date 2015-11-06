@@ -28,7 +28,7 @@ std::string Time::currTime() {
 void Time::capture(std::string filename, std::string element, std::size_t position, chrono_type_duration duration, std::string typeOfSearch, bool vec_list, bool found)
 {
 	try {
-e		bool fileFound = false;
+		bool fileFound = false;
 		std::ifstream inStream;
 		std::ofstream ofStream;
 		std::string _stringTemp;

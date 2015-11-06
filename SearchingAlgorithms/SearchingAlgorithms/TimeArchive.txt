@@ -202,3 +202,107 @@ Element Trying to find: 22
 Found = true
 Position in container: 14
 Time Taken: 0.4151(seconds)
+
+File Searched: tom2.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Tom
+Found = False
+
+File Searched: tom.log
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Error
+Found = true
+Position in container: 157
+Time Taken: 1.17402(seconds)
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: tom
+Found = False
+
+File Searched: katie.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Katie
+Found = False
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Tom
+Found = true
+Position in container: 0
+Time Taken: 0.380317(seconds)
+
+File Searched: katie.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: katie
+Found = true
+Position in container: 0
+Time Taken: 0.361786(seconds)
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: tom
+Found = False
+
+File Searched: katie.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Katie
+Found = False
+
+File Searched: katie.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Katie
+Found = False
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Tom
+Found = true
+Position in container: 0
+Time Taken: 0.357795(seconds)
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Tom
+Found = true
+Position in container: 0
+Time Taken: 0.351523(seconds)
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: tom
+Found = False
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: tom
+Found = False
+
+File Searched: katie.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: katie
+Found = true
+Position in container: 0
+Time Taken: 0.410253(seconds)
+
+File Searched: tomtom.txt
+Type of Search: linearSearch
+Type of Container: Vector
+Element Trying to find: Tom
+Found = true
+Position in container: 0
+Time Taken: 0.392291(seconds)

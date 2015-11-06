@@ -13,9 +13,11 @@ public:
 	dataLayer* getDataLayer();
 	ret searchMenu(Menu& menu);
 	ret timeMenu();
-	ret dataMenu();
+	ret dataMenu(Menu &menu);
 	void mainMenu();
-	void invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& dwrap);
+	bool SaveContainerPerm(Menu &menu, DataWrapper& dwrap, bool temp);
+	bool ClearTempContainers(Menu &menu);
+	ret invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& dwrap);
 	ret multiContainersJoin(std::vector<std::thread>& threadVec, std::vector<DataWrapper>& vecDWrapper);
 	ret multiContainersJoin(std::vector<std::thread>& threadVec);
 	static void errorToScreen(std::exception& excpt, std::string functionName);
@@ -28,6 +30,7 @@ public:
 protected:
 	std::vector<std::unique_ptr<ContainerPro>> containerMaster;
 	std::vector<std::size_t> IDsInUse;
+	std::vector<std::size_t> tempIDS;
 	bool menuReRouting;
 	dataLayer* dlayerMain; // Might still need this. 
 	//dataLayer* dlayerMain;

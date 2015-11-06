@@ -29,7 +29,7 @@ std::size_t ContainerPro::IDWorked(std::size_t mainSize, std::vector<size_t>& ID
 //WILL NEED A CONTAINER BROWSER TO UNFILL THE VECTORS.
 
 // This also fills the ID number for the container reference.
-std::string ContainerPro::fillMetaData(_searchType srchType, _container_type conType, std::string time, std::size_t idToUse) {
+std::string ContainerPro::fillMetaData(_searchType srchType, _container_type conType, std::string time, std::size_t idToUse, std::string origin) {
 	std::string searchTypeString, ContainerTypeString;
 	switch (conType)
 	{
@@ -62,12 +62,12 @@ std::string ContainerPro::fillMetaData(_searchType srchType, _container_type con
 		break;
 	}
 	ContainerID = idToUse;
-	return searchTypeString + ContainerTypeString + time;
+	return searchTypeString + ContainerTypeString + time + origin;
 }
 
-void ContainerPro::saveContainer(DataWrapper& dwrapSwap, _container_type conType)
+void ContainerPro::saveContainer(DataWrapper& dwrapSwap)
 {
-	switch (conType)
+	switch (dwrapSwap.getConType())
 	{
 	case 1:
 		std::swap(dwrapSwap.intVector, intVect);

@@ -10,15 +10,11 @@ public:
 	dataLayer();
 	~dataLayer();
 	dataLayer(const dataLayer&) = default;
-	//dataLayer& operator=(const dataLayer&) = default; // Move and copy constructors 
-	Menu* getMenu();
+	//Menu* getMenu();
 	void getCWD();
-	void containerFillFromFile(std::string _filename);
-	//void containerFillFromFile(dataLayer& dlayer);
-	
+	void containerFillFromFile(DataWrapper& dwrap_);
 	error_type readFile(dataLayer& dlay, _container_type con_type);
 	error_type readFile(DataWrapper& dwrap, _container_type con_type);
-	_container_type dataLayer::containerTypeSelectionRoutine();	
 	ret_code saveFile(std::string filename, _container_type con_type, dataLayer &dataLayer_copy);
 	ret_code linearNumbers(std::size_t amount, std::string fileName);
 	ret_code randomNumbers();
@@ -28,7 +24,6 @@ public:
 	std::ofstream ofFile;
 	std::wstring s2ws(const std::string& s);
 	ret_code printContainer(DataWrapper& dlayer, _container_type conType);
-	//ret_code containerFiller(dataLayer& dlay);
 	ret_code containerFiller(DataWrapper*& dwrap);
 	std::string _directory;
 	std::vector<std::size_t> intVector;

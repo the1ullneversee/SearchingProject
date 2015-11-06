@@ -7,7 +7,7 @@
 #define _AFXDLL
 #define NOMINMAX
 const enum error_type : int { func_passed = 0, function_fail = 1, null_value = 2, bad_input = 3, killApplication = 4, ENDOFENUM = 5 };
-enum _searchType : int { linear = 1, findElement = 2, binary = 3, bubbleSort = 4, EndOfSearchEnum = 5 };
+enum _searchType : int { defaults = 0, linear = 1, findElement = 2, binary = 3, bubbleSort = 4, EndOfSearchEnum = 5 };
 
 enum _container_type : int { default = 0, vectorInt = 1, vectorString = 2, listInt = 3, listString = 4, enumTypeEnd = 5 };
 #define _CRT_SECURE_NO_WARNINGS 1

@@ -16,10 +16,26 @@ void Menu::mainMenu()
 {
 	std::unique_ptr<dataLayer> dataMainLayer(new dataLayer);
 	std::unique_ptr<Menu> menu(new Menu);
+	searchTools srch;
 	error_type err = func_passed;
 	bool Alive = true;
 	int choice = 0;
 	bool valid = false;
+	
+	/*for (int i = 0; i < 10; i++)
+	{
+		std::cin >> choice;
+		menu->IDsInUse.push_back(choice);
+		std::unique_ptr<ContainerPro> conPro(new ContainerPro);
+		conPro->fillMetaData(_searchType::bubbleSort, _container_type::listInt, "5PM", choice);
+		menu->containerMaster.push_back(std::move(conPro));
+	}
+	std::cout << "Change \n";
+	for (int j = 0; j < 4; j++)
+	{
+		std::cin >> choice;
+		menu->tempIDS.push_back(choice);
+	}*/
 	changeColourScreen("Blue", "Black");
 	std::cout << "Welcome to the Searching Utility Application." << std::endl << "Use this application to perform different se1arches on different C++ container types!" << std::endl;
 	while (Alive) {
@@ -28,7 +44,7 @@ void Menu::mainMenu()
 		while (!valid) {
 			if (menu->containerMaster.size() != 0)
 			{
-				for (int i = 0; i <= menu->containerMaster.size() - 1; i++) {
+				for (std::size_t i = 0; i <= menu->containerMaster.size() - 1; i++) {
 					std::unique_ptr<ContainerPro> conProMain(new ContainerPro);
 					std::swap(conProMain, menu->containerMaster[i]);
 					//conProMain = std::move(menu->containerMaster[i]);
@@ -66,7 +82,7 @@ void Menu::mainMenu()
 			break;
 		case 2:
 			clearScreen();
-			err = dataMenu();
+			err = dataMenu(*menu);
 			break;
 		case 3:
 			clearScreen();
@@ -82,6 +98,69 @@ void Menu::mainMenu()
 		}
 		clearScreen();
 	}
+}
+bool Menu::SaveContainerPerm(Menu & menu,DataWrapper& dwrap, bool temp)
+{
+	bool ret = true;
+	try {
+		std::unique_ptr<Time> time(new Time);
+		std::unique_ptr<ContainerPro> conPro(new ContainerPro);
+		size_t idToUse;
+		idToUse = conPro->IDWorked(menu.containerMaster.size(), menu.IDsInUse);
+		conPro->metaDataName = conPro->fillMetaData(dwrap.getSrchType(), dwrap.getConType(), time->currTime(), idToUse, dwrap.getFilename());
+		if (temp)
+			menu.tempIDS.push_back(idToUse);
+
+		conPro->saveContainer(dwrap);
+		menu.containerMaster.push_back(std::move(conPro));
+	}
+	catch (std::exception& e)
+	{
+		ret = false;
+		Menu::errorToScreen(e, "Save Container Perm");
+	}
+	catch (...)
+	{
+		ret = false;
+		Menu::errorToScreen("...", "Save Container Perm");
+	}
+	
+	return true;
+}
+bool Menu::ClearTempContainers(Menu & menu)
+{
+	bool ret = true;
+	int x = 0;
+	std::size_t size = menu.IDsInUse.size()-1;
+	try {
+		std::cout << menu.IDsInUse << std::endl;
+		if (menu.IDsInUse.size() != 0)
+		{
+			for (auto z = 0; z < size; z++) {
+
+				for (auto i = 0; i < menu.IDsInUse.size() - 1; i++)
+				{
+					for (auto j = 0; j < menu.tempIDS.size(); j++)
+					{
+						if (menu.IDsInUse[i] == menu.tempIDS[j])
+						{
+							menu.IDsInUse.erase(menu.IDsInUse.begin() + (i));
+							menu.tempIDS.erase(menu.tempIDS.begin() + j);
+							menu.containerMaster.erase(menu.containerMaster.begin() + (i));
+							menu.containerMaster[i]->ContainerID = i;
+							searchTools::bubbleSort(menu.IDsInUse);
+						}
+					}
+				}
+			}
+		}
+		std::cout << menu.IDsInUse << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Clear Temp containers");
+	}
+	return false;
 }
 ret Menu::textToScreen(std::string stringToScreen) {
 	error_type locRet = func_passed;
@@ -150,31 +229,41 @@ ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec, std::vector<D
 ret Menu::multiContainersJoin(std::vector<std::thread>& threadVec)
 {
 	error_type err = func_passed;
-	for (auto thread = 0; thread != threadVec.size(); thread++) {
-		std::cout << "Waiting for threads to finish\n";
-		threadVec[thread].join();
+	int i = 0;
+	for (auto iterator = threadVec.begin(); iterator != threadVec.end(); iterator++) {
+		std::cout << "Checking whether threads are finished \n";
+		if (threadVec[i].joinable()) {
+			threadVec[i].join();
+			//threadVec.erase(iterator);
+			std::cout << "Joined thread: " << threadVec[i].get_id() << std::endl;
+		}
+		else {
+			std::cout << "Still waiting for thread: " << threadVec[i].get_id() << std::endl;
+		}
+		i++;
 	}
 	return err;
 }
-void Menu::invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& dwrap)
+ret Menu::invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& dwrap)
 {
+	ret rt = function_fail;
 	dataLayer dlayNorm;
 	dataLayer* dlayPtr = new(dataLayer);
 	error_type ret_err = func_passed;
 	_searchType srchType = linear;
 	_container_type conType = vectorInt;
-	bool functionAlive = new (bool);
+	bool functionAlive = true;
 	std::unique_ptr<searchTools> search(new searchTools);
 	//dataLayer dlay;
 	std::unique_ptr<Time> time(new Time);
 	std::string tempFileName;
 	try {
 		std::cout << "Setting up container for searching \n";
-		ret_err = dlayPtr->getFile(functionAlive);
+		rt = dlayPtr->getFile(functionAlive);
 		if (!functionAlive) {}//dwrap = nullptr; }
-		if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
+		if (rt != func_passed) { throw std::exception("function failed", rt); }
 		conType = dlayPtr->getUserConType();
-		if (ret_err != func_passed) { throw std::exception("function failed", ret_err); }
+		if (rt != func_passed) { throw std::exception("function failed", rt); }
 
 		srchType = search->searchSelect();
 		dwrap->setUserChoices(srchType, conType);
@@ -186,14 +275,15 @@ void Menu::invokeDataWrapper(std::vector<std::thread>& threadVec, DataWrapper*& 
 		}
 
 		//We care gonna have to let them input multiple containers.
-		dwrap->_directory = dlayPtr->_directory;
-		dwrap->_filename = dlayPtr->_filename;
+		dwrap->setDirectory(dlayPtr->_directory);
+		dwrap->setFilename(dlayPtr->_filename);
 		threadVec.push_back(std::thread(&dataLayer::containerFiller, &dlayNorm, std::ref(dwrap)));
 	}
 	catch (std::exception& e)
 	{
 		Menu::errorToScreen(e,"invoke data wrapper");
 	}
+	return rt;
 }
 ret Menu::searchMenu(Menu& menu)
 {
@@ -206,29 +296,29 @@ ret Menu::searchMenu(Menu& menu)
 	std::string tempChoice;
 	DataWrapper mDwrap;
 	LPCTSTR errorText = NULL;
-	bool functionAlive = new (bool);
+	bool functionAlive = true;
 	std::vector<std::thread>* threadVec(new std::vector<std::thread>);
+	
 	while (_alive) {
 		try {
 			for (;;) {
 				DataWrapper* dwrapMain = new (DataWrapper);
-				invokeDataWrapper(*threadVec, dwrapMain);
+				ret_err = invokeDataWrapper(*threadVec, dwrapMain);
+				if (ret_err != func_passed)
+					throw std::exception("Invoke Data Wrapper Function Failed");
 				vecDWrap.push_back(dwrapMain);
 				std::cout << "Would you like to create another container? y/n";
 				std::cin >> tempChoice;
 				if (tempChoice == "n")
 					break;
 			}
-
-			multiContainersJoin(*threadVec);
+			ret_err = multiContainersJoin(*threadVec);
 			if (ret_err != func_passed)
-			{
-				throw std::exception("container filler failed!");
-			}
+				throw std::exception("Multi Container Join failed");
 			Menu::clearScreen();
 			std::cout << "We have found " << vecDWrap.size() << " Containers, using first one" << std::endl;
-			for (int i = 0; i < vecDWrap.size(); i++) {
-				std::cout << "This is Container " << i+1 << " it is a " << mDwrap.returnConType(vecDWrap[i]->conType) << std::endl;
+			for (std::size_t i = 0; i < vecDWrap.size(); i++) {
+				std::cout << "This is Container " << i+1 << " it is a " << mDwrap.returnConTypeString(vecDWrap[i]->getConType()) << std::endl;
 				search.searchFunctionRouting(*vecDWrap[i]);
 				std::cout << "Finished searching" << std::endl
 					<< "Enter 'exit' to stop searching operation" << std::endl
@@ -239,13 +329,7 @@ ret Menu::searchMenu(Menu& menu)
 				}
 				else if (tempChoice == "save" || tempChoice == "Save")
 				{
-					std::unique_ptr<ContainerPro> conPro(new ContainerPro);
-					size_t idToUse;
-					idToUse = conPro->IDWorked(menu.containerMaster.size(), menu.IDsInUse);
-					conPro->metaDataName = conPro->fillMetaData(vecDWrap[i]->srchType, vecDWrap[i]->conType, time->currTime(), idToUse);
-
-					conPro->saveContainer(*vecDWrap[i], vecDWrap[i]->conType);
-					menu.containerMaster.push_back(std::move(conPro));
+					SaveContainerPerm(menu, *vecDWrap[i], false);
 				}
 			}
 			std::cout << "We have finished filling and searching containers, your containers have been saved if specified" << std::endl
@@ -276,12 +360,15 @@ ret Menu::timeMenu()
 
 	return ret_err;
 }
-ret Menu::dataMenu() //Change the functionality of this to use the new values.
+ret Menu::dataMenu(Menu &menu) //Change the functionality of this to use the new values.
 {
 	error_type ret_err = func_passed;
 	std::size_t userChoice;
 	dataMenuItems dMenuItems;
 	std::unique_ptr<dataLayer> unqDlay (new dataLayer);
+	std::unique_ptr<searchTools> search(new searchTools);
+	std::shared_ptr<DataWrapper> shDataWrapper(new DataWrapper);
+	std::vector<DataWrapper> dWrapHolder;
 	bool valid = false;
 	int choice = 0;
 	bool locVal = false;
@@ -297,16 +384,19 @@ ret Menu::dataMenu() //Change the functionality of this to use the new values.
 				<< "3. Save a Container to File" << std::endl
 				<< "4. Load a Container from a File" << std::endl
 				<< "5. Save linear data to File" << std::endl
-				<< "6. Select 5 to exit. " << std::endl;
+				<< "6. Select 6 to exit. " << std::endl;
 			std::cin >> userChoice;
-			if (userChoice == 6) { alive = false; break; }
+			if (userChoice == 6) {
+
+				alive = false;
+				break;
+			}
 			//dataMenuItems
 			for (int i = 0; i < ENDOFDataMenuEnum; i++)
 			{
 				if (userChoice == i)
 				{
 					valid = true;
-					alive = false;
 					break;
 				}
 			}
@@ -314,54 +404,57 @@ ret Menu::dataMenu() //Change the functionality of this to use the new values.
 			{
 				errorToScreen("Bad Input, Please choose again. Loading Menu...", "Menu");
 			}
-		}
-		dMenuItems = static_cast<dataMenuItems>(userChoice);
-		std::size_t amount = 0;
-		std::string fileName = "";
-		switch (dMenuItems)
-		{
-		case 1:
-
-			break;
-		case 2:
-			//Let them select the container they want to print out. 
-			// have to of filled a container first. or Loaded one. 
-			_container_type conType;
-
-			while (!locVal)
+			dMenuItems = static_cast<dataMenuItems>(userChoice);
+			std::size_t amount = 0;
+			std::string fileName = "";
+			std::string choice;
+			switch (dMenuItems)
 			{
-				conType = unqDlay->getUserConType();
+			case 1:
+
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				break;
+			case 4:
+				//Load Container from File
+				bool alive;
+				alive = true;
+				std::cout << "Preparing operation \n";
+				shDataWrapper->setConType(unqDlay->getUserConType());
+				unqDlay->getFile(alive);
+				shDataWrapper->dataCopier(unqDlay->_directory, unqDlay->_filename);
+				unqDlay->containerFillFromFile(*shDataWrapper);
+				std::cout << "Do you wish to save this as a temp container? y/n" << std::endl;
+				std::cin >> choice;
+				if (choice == "y")
+					SaveContainerPerm(menu, *shDataWrapper, true);
+				else
+					SaveContainerPerm(menu, *shDataWrapper, false);
+				std::cout << "Operation finished \n";
+				break;
+			case 5:
+				std::cout << "Data file creation started" << std::endl;
+				std::cout << "How many numbers do you want to write to file?";
+				std::cin >> amount;
+				std::cout << "Name the file: " << std::endl;
+				std::cin >> fileName;
+				unqDlay->_directory += "\\";
+				unqDlay->linearNumbers(amount, unqDlay->_directory += fileName);
+				break;
+			default:
+				throw std::exception("Invalid menu item choice!");
+				break;
 			}
-			if (menuReRouting)
-			{
-				//dataLayer->printContainer(dataLayerMaster, conType);
-			}
-			else {
-				//Must have been prefilled by the user. 
-				//dataLayer->printContainer(*dataLayer, conType);
-			}
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			std::cout << "Data file creation started" << std::endl;
-			std::cout << "How many numbers do you want to write to file?";
-			std::cin >> amount;
-			std::cout << "Name the file: " << std::endl;
-			std::cin >> fileName;
-			unqDlay->_directory += "\\";
-			unqDlay->linearNumbers(amount, unqDlay->_directory += fileName);
-			break;
-		default:
-			throw std::exception("Invalid menu item choice!");
-			break;
 		}
+		menu.ClearTempContainers(menu);
 	}
 	catch (std::exception& e)
 	{
 		errorToScreen(e, "Data Menu");
 	}
+	
 	return ret_err;
 }
