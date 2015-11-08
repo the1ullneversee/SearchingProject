@@ -354,12 +354,7 @@ ret Menu::searchMenu(Menu& menu)
 	}
 	return ret_err;
 }
-ret Menu::timeMenu()
-{
-	error_type ret_err = func_passed;
 
-	return ret_err;
-}
 ret Menu::dataMenu(Menu &menu) //Change the functionality of this to use the new values.
 {
 	error_type ret_err = func_passed;
@@ -368,7 +363,6 @@ ret Menu::dataMenu(Menu &menu) //Change the functionality of this to use the new
 	std::unique_ptr<dataLayer> unqDlay (new dataLayer);
 	std::unique_ptr<searchTools> search(new searchTools);
 	std::shared_ptr<DataWrapper> shDataWrapper(new DataWrapper);
-	std::vector<DataWrapper> dWrapHolder;
 	bool valid = false;
 	int choice = 0;
 	bool locVal = false;
@@ -456,5 +450,64 @@ ret Menu::dataMenu(Menu &menu) //Change the functionality of this to use the new
 		errorToScreen(e, "Data Menu");
 	}
 	
+	return ret_err;
+}
+ret Menu::timeMenu()
+{
+	error_type ret_err = func_passed;
+	timeMenuItems tMenuItms;
+	std::unique_ptr<Time> unqTimePtr(new Time);
+	int userChoice = 0;
+	bool alive = true;
+	bool valid = false;
+	try {
+		while (alive)
+		{
+			while (!valid) {
+				clearScreen();
+				std::cout << "Welcome to the Data menu!" << std::endl
+					<< "Here are the menu options:" << std::endl
+					<< "1. Display Past Times" << std::endl
+					<< "2. Edit time archive" << std::endl
+					<< "3. Delete Time archive" << std::endl;
+				std::cin >> userChoice;
+				if (userChoice == timeMenuItems::endTimeEnum) {
+					valid = true;
+					alive = false;
+					break;
+				}
+
+				//dataMenuItems
+				for (int i = 0; i < ENDOFDataMenuEnum; i++)
+				{
+					if (userChoice == i)
+					{
+						valid = true;
+						break;
+					}
+				}
+				if (!valid)
+				{
+					errorToScreen("Bad Input, Please choose again. Loading Menu...", "Menu");
+				}
+				tMenuItms = static_cast<timeMenuItems>(userChoice);
+				switch (tMenuItms)
+				{
+				case 1:
+					unqTimePtr->displayArchive();
+					
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				}
+			}
+		}
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Time Menu");
+	}
 	return ret_err;
 }

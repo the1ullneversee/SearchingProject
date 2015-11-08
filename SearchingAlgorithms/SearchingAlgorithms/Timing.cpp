@@ -1,9 +1,15 @@
 #include "stdafx.h"
 std::unique_ptr<Menu> tMenu(new Menu);
 Time::Time() {
-	
 	_phase_start = std::chrono::high_resolution_clock::now();
 	_phase_end = std::chrono::high_resolution_clock::now();
+	this->_filename = "";
+	this->_typeOfSearch = "";
+	this->_typeOfContainer = "";
+	this->_elementFind = "";
+	this->_found = "";
+	this->_posInContainer = "";
+	this->_timeTaken = "";
 }
 Time::~Time() {
 
@@ -80,4 +86,93 @@ void Time::capture(std::string filename, std::string element, std::size_t positi
 		tMenu->errorToScreen(e, "Time Capture");
 	}
 
+}
+void Time::readArchive()
+{
+	try
+	{
+		int i = 0;
+		bool more = true;
+		std::string temp = "";
+		std::ifstream inFile("TimeArchive.txt");
+		if (!inFile)
+			throw std::exception("Could not open file");
+		while (inFile >> temp)
+		{
+			if (more)
+			{
+				switch (i)
+				{
+				case 0:
+					this->_filename = temp;
+					break;
+				case 1:
+					this->_typeOfSearch = temp;
+					break;
+				case 2:
+					this->_typeOfContainer = temp;
+					break;
+				case 3:
+					this->_elementFind = temp;
+					break;
+				case 4:
+					this->_found = temp;
+					if (temp.find("0"))
+					{
+						this->archiveDetails.push_back(this->_filename);
+						this->archiveDetails.push_back(this->_typeOfSearch);
+						this->archiveDetails.push_back(this->_typeOfContainer);
+						this->archiveDetails.push_back(this->_elementFind);
+						this->archiveDetails.push_back(this->_found);
+						more = false;
+					}
+					else {
+						more = true;
+					}
+					break;
+				case 5: 
+					this->_posInContainer = temp;
+					break;
+				case 6:
+					this->_timeTaken = temp;
+					break;
+				}
+			}
+			if (i == 6) {
+				i = 0;
+				more = true;
+				this->archiveDetails.push_back(this->_filename);
+				this->archiveDetails.push_back(this->_typeOfSearch);
+				this->archiveDetails.push_back(this->_typeOfContainer);
+				this->archiveDetails.push_back(this->_elementFind);
+				this->archiveDetails.push_back(this->_found);
+				this->archiveDetails.push_back(this->_posInContainer);
+				this->archiveDetails.push_back(this->_timeTaken);
+			}
+
+			i++;
+		}
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Read Archive");
+	}
+}
+
+void Time::editArchive()
+{
+
+}
+
+void Time::displayArchive()
+{
+	try {
+		readArchive();
+		for (auto it = this->archiveDetails.begin(); it != this->archiveDetails.end(); it++)
+			std::cout << *it << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		Menu::errorToScreen(e, "Display Archive");
+	}
 }

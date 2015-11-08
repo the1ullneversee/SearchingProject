@@ -40,6 +40,7 @@ private:
 	enum menuItems : int { searching = 1, data_functions = 2, time_functions = 3, ENDOFMenuEnum = 4 };
 	enum colour : int {Black = 0, Blue = 1, Green = 2, Aqua = 3, Red = 4, Purple = 5, Yellow = 6, White =7};
 	enum dataMenuItems : int { CreateContainer = 1, PrintContainer = 2, SaveAContainer = 3, LoadAContainer = 4, LinearNumbers = 5, ENDOFDataMenuEnum = 6};
+	enum timeMenuItems : int { display = 1, editIndividual = 2, deleteEntry = 3, endTimeEnum = 4 };
 };
 
 
